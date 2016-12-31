@@ -1,6 +1,7 @@
 import os
 from flask import Flask
 from shared_objects import db
+from shared_objects import mail
 from shared_objects import passlib
 from user_resource import UserResource
 from shared_objects import swagger_app
@@ -22,6 +23,15 @@ os.environ.setdefault("DATABASE_URL", "postgresql://localhost/postgres")
 flask_app = Flask(__name__)
 flask_app.config.SWAGGER_UI_DOC_EXPANSION = 'list'
 flask_app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+flask_app.config.update(dict(
+    DEBUG=True,
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=587,
+    MAIL_USE_TLS=True,
+    MAIL_USE_SSL=False,
+    MAIL_USERNAME='my_username@gmail.com',
+    MAIL_PASSWORD='my_password',
+))
 
 flask_resource_api = FlaskApi(flask_app)
 
@@ -40,6 +50,8 @@ passlib.init_app(flask_app, context=LazyCryptContext(
         werkzeug_salted_sha512,
     ],
     default='werkzeug_salted_sha512',))
+
+mail.init_app(flask_app)
 
 add_resource(UserResource, '/user')
 

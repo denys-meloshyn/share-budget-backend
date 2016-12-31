@@ -1,6 +1,8 @@
 from user import User
 from shared_objects import db
+from flask_mail import Message
 from constants import Constants
+from shared_objects import mail
 from flask_restful import Resource
 from flask_restful import reqparse
 from shared_objects import swagger_app
@@ -30,9 +32,12 @@ class UserResource(Resource):
 
         items = User.query.filter_by(email=user.email).all()
         if len(items) > 0:
-            return Constants.error_message('user_is_already_exist', 401)
+            return Constants.error_reponse('user_is_already_exist'), 401
+
+        msg = Message('Hello', sender='ned1988@gmail.com', recipients=["ned1988@gmail.com"])
+        mail.send(msg)
 
         db.session.add(user)
         db.session.commit()
 
-        return user.to_json()
+        return Constants.default_response(user.to_json())

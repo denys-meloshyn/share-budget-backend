@@ -9,3 +9,4 @@ python-dateutil
 pytz
 watchdog
 flask_cors
+Flask-Mail
