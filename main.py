@@ -1,9 +1,21 @@
 import os
 from flask import Flask
 from shared_objects import db
+from shared_objects import passlib
 from user_resource import UserResource
 from shared_objects import swagger_app
 from flask_restful import Api as FlaskApi
+
+from flask_passlib import LazyCryptContext
+from flask_passlib.context import werkzeug_salted_md5
+from flask_passlib.context import werkzeug_salted_sha1
+from flask_passlib.context import werkzeug_salted_sha256
+from flask_passlib.context import werkzeug_salted_sha512
+
+
+def add_resource(obj, path):
+    swagger_app.add_resource(obj, path)
+    flask_resource_api.add_resource(obj, path)
 
 os.environ.setdefault("DATABASE_URL", "postgresql://localhost/postgres")
 
@@ -20,10 +32,14 @@ with flask_app.app_context():
 
 swagger_app.init_app(flask_app)
 
-
-def add_resource(obj, path):
-    swagger_app.add_resource(obj, path)
-    flask_resource_api.add_resource(obj, path)
+passlib.init_app(flask_app, context=LazyCryptContext(
+    schemes=[
+        werkzeug_salted_md5,
+        werkzeug_salted_sha1,
+        werkzeug_salted_sha256,
+        werkzeug_salted_sha512,
+    ],
+    default='werkzeug_salted_sha512',))
 
 add_resource(UserResource, '/user')
 

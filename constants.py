@@ -8,3 +8,9 @@ class Constants:
 
     def __init__(self):
         pass
+
+    @staticmethod
+    def error_message(message, status):
+        result = {Constants.k_status: message,
+                  Constants.k_result: []}
+        return result, status
