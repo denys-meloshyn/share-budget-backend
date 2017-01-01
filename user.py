@@ -2,6 +2,7 @@ from datetime import datetime
 from shared_objects import db
 from constants import Constants
 from shared_objects import passlib
+from token_serializer import TokenSerializer
 
 
 class User(db.Model):
@@ -22,6 +23,7 @@ class User(db.Model):
     token = db.Column(db.Text)
     is_removed = db.Column(db.Boolean)
     time_stamp = db.Column(db.DateTime)
+    registration_email_token = db.Column(db.Text)
 
     def __init__(self, input_parameters):
         self.is_removed = False
@@ -34,6 +36,7 @@ class User(db.Model):
 
         encrypted_password = passlib.encrypt(input_parameters[self.k_password], salt_length=100)
         self.password = encrypted_password
+        self.registration_email_token = TokenSerializer.generate_auth_token(self.user_id)
 
     def to_json(self):
         json_object = {Constants.k_user_id: self.user_id,

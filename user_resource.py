@@ -9,13 +9,34 @@ from shared_objects import swagger_app
 
 
 def put_parameters(parser):
-    parser.add_argument('firstName', type=str, help='First Name', location='form', required=True)
     parser.add_argument('lastName', type=str, help='Last Name', location='form')
-    parser.add_argument('password', type=str, help='Password', location='form', required=True)
     parser.add_argument('email', type=str, help='User email', location='form', required=True)
+    parser.add_argument('password', type=str, help='Password', location='form', required=True)
+    parser.add_argument('firstName', type=str, help='First Name', location='form', required=True)
 
 
 class UserResource(Resource):
+    def send_registration_email(self, user):
+        msg = Message()
+        msg.sender = Constants.project_email
+        msg.subject = 'Share Budget Registration Completion Information for ' + user.first_name
+        msg.recipients = [user.email]
+
+        msg.body = 'Hi ' + user.first_name + ',\n\n'
+        msg.body += 'Thanks for joining Share Budget. To complete your registration, please click the link below to ' \
+                    'approve your email:\n\n'
+        msg.body += 'https://sharebudget.herokuapp.com'
+        msg.body += Constants.k_registration_resource_path
+        msg.body += '/?'
+        msg.body += Constants.k_token
+        msg.body += '='
+        msg.body += user.registration_email_token + '\n\n'
+        msg.body += 'If you did not register for Shared Budget, please disregard this message.\n'
+        msg.body += 'Please contact ' + Constants.project_email + 'with any questions.\n\n'
+        msg.body += 'Shared Budget Team'
+
+        mail.send(msg)
+
     # def get(self):
     #     return {'test': 1}
 
@@ -34,8 +55,7 @@ class UserResource(Resource):
         if len(items) > 0:
             return Constants.error_reponse('user_is_already_exist'), 401
 
-        msg = Message('Hello', sender='ned1988@gmail.com', recipients=["ned1988@gmail.com"])
-        mail.send(msg)
+        self.send_registration_email(user)
 
         db.session.add(user)
         db.session.commit()
