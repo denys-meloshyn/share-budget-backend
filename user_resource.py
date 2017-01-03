@@ -27,7 +27,7 @@ class UserResource(Resource):
                     'approve your email:\n\n'
         msg.body += 'https://sharebudget.herokuapp.com'
         msg.body += Constants.k_registration_resource_path
-        msg.body += '/?'
+        msg.body += '?'
         msg.body += Constants.k_token
         msg.body += '='
         msg.body += user.registration_email_token + '\n\n'
@@ -55,7 +55,7 @@ class UserResource(Resource):
         if len(items) > 0:
             return Constants.error_reponse('user_is_already_exist'), 401
 
-        # self.send_registration_email(user)
+        self.send_registration_email(user)
 
         db.session.add(user)
         db.session.commit()
