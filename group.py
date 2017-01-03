@@ -5,7 +5,9 @@ from shared_objects import db
 
 class Group(db.Model):
     __tablename__ = 'GROUP'
-    k_user_group_id = 'user_group_id'
+    k_group_id = 'group_id'
+    k_modified_user_id = 'modified_user_id'
+    k_name = 'name'
 
     group_id = db.Column(db.Integer, primary_key=True)
     modified_user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))

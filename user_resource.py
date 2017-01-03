@@ -9,10 +9,10 @@ from shared_objects import swagger_app
 
 
 def put_parameters(parser):
-    parser.add_argument('lastName', type=str, help='Last Name', location='form')
-    parser.add_argument('email', type=str, help='User email', location='form', required=True)
-    parser.add_argument('password', type=str, help='Password', location='form', required=True)
-    parser.add_argument('firstName', type=str, help='First Name', location='form', required=True)
+    parser.add_argument(User.k_last_name, type=str, help='Last Name', location='form')
+    parser.add_argument(User.k_email, type=str, help='User email', location='form', required=True)
+    parser.add_argument(User.k_password, type=str, help='Password', location='form', required=True)
+    parser.add_argument(User.k_first_name, type=str, help='First Name', location='form', required=True)
 
 
 class UserResource(Resource):

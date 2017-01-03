@@ -9,6 +9,7 @@ from flask_restful import Api as FlaskApi
 
 from user_resource import UserResource
 from login_resource import LoginResource
+from group_resource import GroupResource
 from registration_email_resource import RegistrationEmailResource
 
 from flask_passlib import LazyCryptContext
