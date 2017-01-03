@@ -6,7 +6,7 @@ from token_serializer import TokenSerializer
 
 
 class User(db.Model):
-    __tablename__ = 'user'
+    __tablename__ = 'USER'
 
     k_first_name = 'firstName'
     k_last_name = 'lastName'

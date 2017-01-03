@@ -21,14 +21,12 @@ class RegistrationEmailResource(Resource):
         args = parser.parse_args()
 
         users = User.query.filter_by(registration_email_token=args[Constants.k_token]).all()
-        if len(users) > 0:
-            user = users[0]
-            user.is_email_approved = True
-
-            db.session.add(user)
-            db.session.commit()
-
-            return {Constants.k_message: 'email_registered'}
-        else:
+        if len(users) == 0:
             return Constants.error_reponse('user_doesnt_exist'), 401
 
+        user = users[0]
+        user.is_email_approved = True
+
+        db.session.commit()
+
+        return {Constants.k_message: 'email_registered'}

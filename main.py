@@ -8,6 +8,7 @@ from shared_objects import swagger_app
 from flask_restful import Api as FlaskApi
 
 from user_resource import UserResource
+from login_resource import LoginResource
 from registration_email_resource import RegistrationEmailResource
 
 from flask_passlib import LazyCryptContext
@@ -57,6 +58,7 @@ passlib.init_app(flask_app, context=LazyCryptContext(
 mail.init_app(flask_app)
 
 add_resource(UserResource, '/user')
+add_resource(LoginResource, '/login')
 add_resource(RegistrationEmailResource, Constants.k_registration_resource_path)
 
 if __name__ == '__main__':

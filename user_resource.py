@@ -55,7 +55,7 @@ class UserResource(Resource):
         if len(items) > 0:
             return Constants.error_reponse('user_is_already_exist'), 401
 
-        self.send_registration_email(user)
+        # self.send_registration_email(user)
 
         db.session.add(user)
         db.session.commit()
