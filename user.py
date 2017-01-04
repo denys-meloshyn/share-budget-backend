@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from shared_objects import db
 from constants import Constants
 from shared_objects import passlib
@@ -43,6 +44,11 @@ class User(db.Model):
                        self.k_first_name: self.first_name,
                        self.k_last_name: self.last_name,
                        self.k_email: self.email,
+
+                       Constants.k_is_removed: self.is_removed
                        }
+
+        if self.time_stamp is not None:
+            json_object[Constants.k_time_stamp] = self.time_stamp.isoformat()
 
         return json_object

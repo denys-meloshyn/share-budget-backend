@@ -7,7 +7,7 @@ class BudgetLimit(db.Model):
     __tablename__ = 'BUDGET_LIMIT'
 
     budget_limit_id = db.Column(db.Integer, primary_key=True)
-    group_id = db.Column(db.Integer, db.ForeignKey('group.group_id'))
+    group_id = db.Column(db.Integer, db.ForeignKey('GROUP.group_id'))
     limit = db.Column(db.Double)
     date = db.Column(db.DateTime)
     is_removed = db.Column(db.Boolean)

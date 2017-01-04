@@ -60,6 +60,7 @@ mail.init_app(flask_app)
 
 add_resource(UserResource, '/user')
 add_resource(LoginResource, '/login')
+add_resource(GroupResource, '/group')
 add_resource(RegistrationEmailResource, Constants.k_registration_resource_path)
 
 if __name__ == '__main__':
