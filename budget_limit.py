@@ -1,5 +1,4 @@
 from datetime import datetime
-from dateutil.parser import parse
 
 from group import Group
 from shared_objects import db
@@ -35,12 +34,11 @@ class BudgetLimit(db.Model):
 
         value = new_value.get(self.k_date)
         if value is not None:
-            self.date = parse(value)
+            self.date = value.replace(day=1)
 
         value = new_value.get(Constants.k_is_removed)
         if value is not None:
             self.is_removed = value
-            # print new_value
         self.time_stamp = datetime.utcnow()
 
     def to_json(self):
@@ -52,7 +50,7 @@ class BudgetLimit(db.Model):
                        }
 
         if self.date is not None:
-            json_object[self.k_date] = self.date.isoformat()
+            json_object[self.k_date] = self.date.strftime('%Y-%m-%d')
 
         if self.time_stamp is not None:
             json_object[Constants.k_time_stamp] = self.time_stamp.isoformat()

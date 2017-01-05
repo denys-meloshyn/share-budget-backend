@@ -28,6 +28,7 @@ os.environ.setdefault('DATABASE_URL', 'postgresql://localhost/postgres')
 
 flask_app = Flask(__name__)
 flask_app.config.SWAGGER_UI_DOC_EXPANSION = 'list'
+flask_app.config['BUNDLE_ERRORS'] = True
 flask_app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 flask_app.config.update(dict(
     DEBUG=True,
