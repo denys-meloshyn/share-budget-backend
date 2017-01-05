@@ -1,10 +1,12 @@
-from user import User
-from shared_objects import db
 from flask_mail import Message
-from constants import Constants
-from shared_objects import mail
+from flask_restful import inputs
 from flask_restful import Resource
 from flask_restful import reqparse
+
+from user import User
+from shared_objects import db
+from constants import Constants
+from shared_objects import mail
 from shared_objects import swagger_app
 
 
@@ -13,6 +15,8 @@ def put_parameters(parser):
     parser.add_argument(User.k_email, type=str, help='User email', location='form', required=True)
     parser.add_argument(User.k_password, type=str, help='Password', location='form', required=True)
     parser.add_argument(User.k_first_name, type=str, help='First Name', location='form', required=True)
+
+    parser.add_argument(Constants.k_is_removed, type=inputs.boolean, help='Is group limit removed', location='form')
 
 
 class UserResource(Resource):

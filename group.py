@@ -30,13 +30,18 @@ class Group(db.Model):
         if value is not None:
             self.name = value
 
+        value = new_value.get(Constants.k_is_removed)
+        if value is not None:
+            self.is_removed = value
         self.time_stamp = datetime.utcnow()
 
     def to_json(self):
         json_object = {self.k_group_id: self.group_id,
                        self.k_modified_user_id: self.modified_user_id,
                        self.k_name: self.name,
-                       Constants.k_is_removed: self.is_removed}
+
+                       Constants.k_is_removed: self.is_removed
+                       }
 
         if self.time_stamp is not None:
             json_object[Constants.k_time_stamp] = self.time_stamp.isoformat()

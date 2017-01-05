@@ -29,15 +29,32 @@ class User(db.Model):
     def __init__(self, input_parameters):
         self.is_removed = False
         self.is_email_approved = False
-        self.time_stamp = datetime.utcnow()
-
-        self.email = input_parameters.get(self.k_email)
-        self.last_name = input_parameters.get(self.k_last_name)
-        self.first_name = input_parameters.get(self.k_first_name)
-
-        encrypted_password = passlib.encrypt(input_parameters[self.k_password], salt_length=100)
-        self.password = encrypted_password
         self.registration_email_token = TokenSerializer.generate_auth_token(self.user_id)
+
+        self.update(input_parameters)
+
+    def update(self, new_value):
+        value = new_value.get(self.k_email)
+        if value is not None:
+            self.email = value
+
+        value = new_value.get(self.k_last_name)
+        if value is not None:
+            self.last_name = value
+
+        value = new_value.get(self.k_first_name)
+        if value is not None:
+            encrypted_password = passlib.encrypt(value, salt_length=100)
+            self.password = encrypted_password
+
+        value = new_value.get(self.k_password)
+        if value is not None:
+            self.first_name = value
+
+        value = new_value.get(Constants.k_is_removed)
+        if value is not None:
+            self.is_removed = value
+        self.time_stamp = datetime.utcnow()
 
     def to_json(self):
         json_object = {Constants.k_user_id: self.user_id,

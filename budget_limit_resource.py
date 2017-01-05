@@ -1,3 +1,4 @@
+from dateutil.parser import parse
 from flask_restful import inputs
 from flask_restful import Resource
 from flask_restful import reqparse
@@ -5,6 +6,7 @@ from flask_restful import reqparse
 from group import Group
 from shared_objects import db
 from constants import Constants
+from budget_limit import BudgetLimit
 from shared_objects import swagger_app
 from credentials_validator import CredentialsValidator
 
@@ -12,14 +14,14 @@ from credentials_validator import CredentialsValidator
 def put_parameters(parser):
     parser.add_argument(Constants.k_user_id, type=str, help='User ID', location='form', required=True)
     parser.add_argument(Constants.k_token, type=str, help='User token', location='form', required=True)
-    parser.add_argument(Group.k_group_id, type=int, help='Group ID (if empty new group will be created)',
-                        location='form')
-    parser.add_argument(Group.k_name, type=str, help='Group name', location='form', required=True)
 
+    parser.add_argument(Group.k_group_id, type=str, help='Group ID', location='form', required=True)
+    parser.add_argument(BudgetLimit.k_limit, type=float, help='Limit', location='form', required=True)
+    parser.add_argument(BudgetLimit.k_date, type=str, help='Limit date', location='form', required=True)
     parser.add_argument(Constants.k_is_removed, type=inputs.boolean, help='Is group limit removed', location='form')
 
 
-class GroupResource(Resource):
+class BudgetLimitResource(Resource):
     parser = swagger_app.parser()
     put_parameters(parser)
 
@@ -28,6 +30,7 @@ class GroupResource(Resource):
         parser = reqparse.RequestParser()
         put_parameters(parser)
         args = parser.parse_args()
+        print args
 
         user_id = args[Constants.k_user_id]
         token = args[Constants.k_token]
@@ -36,19 +39,16 @@ class GroupResource(Resource):
         if status is False:
             return message
 
+        date = parse(args.get(BudgetLimit.k_date))
         group_id = args.get(Group.k_group_id)
-        if group_id is None:
-            group = Group(args)
-            db.session.add(group)
-            db.session.commit()
+
+        items = BudgetLimit.query.filter(db.and_(BudgetLimit.date == date, BudgetLimit.group_id == group_id))
+        if items.count() == 0:
+            budget_limit = BudgetLimit(args)
+            db.session.add(budget_limit)
         else:
-            items = Group.query.filter_by(group_id=group_id).all()
+            budget_limit = items[0]
+            budget_limit.update(args)
 
-            if len(items) == 0:
-                return Constants.error_reponse('group_is_not_exist'), 401
-
-            group = items[0]
-            group.update(args)
-            db.session.commit()
-
-        return Constants.default_response(group.to_json())
+        db.session.commit()
+        return Constants.default_response(budget_limit.to_json())
