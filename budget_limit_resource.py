@@ -48,17 +48,15 @@ class BudgetLimitResource(Resource):
         if status is False:
             return message
 
-        print args.get(BudgetLimit.k_date)
         date = args.get(BudgetLimit.k_date).replace(day=1)
 
         group_id = args.get(Group.k_group_id)
 
-        items = BudgetLimit.query.filter(db.and_(BudgetLimit.date <= date, BudgetLimit.group_id == group_id))
+        items = BudgetLimit.query.filter(db.and_(BudgetLimit.date >= date, BudgetLimit.group_id == group_id))
         if items.count() == 0:
             return Constants.error_reponse('group_limit_not_found'), 401
         else:
             budget_limit = items[-1]
-            budget_limit.update(args)
 
             return Constants.default_response(budget_limit.to_json())
 
@@ -81,7 +79,7 @@ class BudgetLimitResource(Resource):
         date = parse(args.get(BudgetLimit.k_date)).replace(day=1)
         group_id = args.get(Group.k_group_id)
 
-        items = BudgetLimit.query.filter(db.and_(BudgetLimit.date <= date, BudgetLimit.group_id == group_id))
+        items = BudgetLimit.query.filter(db.and_(BudgetLimit.date >= date, BudgetLimit.group_id == group_id))
         if items.count() == 0:
             budget_limit = BudgetLimit(args)
             db.session.add(budget_limit)
