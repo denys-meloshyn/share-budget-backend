@@ -81,7 +81,7 @@ class BudgetLimitResource(Resource):
         date = parse(args.get(BudgetLimit.k_date)).replace(day=1)
         group_id = args.get(Group.k_group_id)
 
-        items = BudgetLimit.query.filter(db.and_(BudgetLimit.date == date, BudgetLimit.group_id == group_id))
+        items = BudgetLimit.query.filter(db.and_(BudgetLimit.date <= date, BudgetLimit.group_id == group_id))
         if items.count() == 0:
             budget_limit = BudgetLimit(args)
             db.session.add(budget_limit)
