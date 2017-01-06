@@ -9,7 +9,7 @@ class BudgetLimit(db.Model):
     __tablename__ = 'BUDGET_LIMIT'
     k_date = 'date'
     k_limit = 'limit'
-    k_budget_limit_id = 'budget_limit_id'
+    k_budget_limit_id = 'budgetLimitId'
 
     budget_limit_id = db.Column(db.Integer, primary_key=True)
     group_id = db.Column(db.Integer, db.ForeignKey('GROUP.group_id'))

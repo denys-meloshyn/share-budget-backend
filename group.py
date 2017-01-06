@@ -6,8 +6,8 @@ from constants import Constants
 
 class Group(db.Model):
     __tablename__ = 'GROUP'
-    k_group_id = 'group_id'
-    k_modified_user_id = 'modified_user_id'
+    k_group_id = 'groupId'
+    k_modified_user_id = 'modifiedUserId'
     k_name = 'name'
 
     group_id = db.Column(db.Integer, primary_key=True)

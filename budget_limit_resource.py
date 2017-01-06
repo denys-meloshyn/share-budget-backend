@@ -1,5 +1,4 @@
 from flask_restful import inputs
-from dateutil.parser import parse
 from flask_restful import Resource
 from flask_restful import reqparse
 
