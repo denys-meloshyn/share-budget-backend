@@ -42,12 +42,12 @@ class User(db.Model):
         if value is not None:
             self.last_name = value
 
-        value = new_value.get(self.k_first_name)
+        value = new_value.get(self.k_password)
         if value is not None:
             encrypted_password = passlib.encrypt(value, salt_length=100)
             self.password = encrypted_password
 
-        value = new_value.get(self.k_password)
+        value = new_value.get(self.k_first_name)
         if value is not None:
             self.first_name = value
 

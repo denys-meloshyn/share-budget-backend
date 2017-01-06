@@ -12,6 +12,7 @@ from login_resource import LoginResource
 from group_resource import GroupResource
 from budget_limit_resource import BudgetLimitResource
 from registration_email_resource import RegistrationEmailResource
+from budget_limit_update_resource import BudgetLimitUpdateResource
 
 from flask_passlib import LazyCryptContext
 from flask_passlib.context import werkzeug_salted_md5
@@ -64,6 +65,7 @@ add_resource(UserResource, '/user')
 add_resource(LoginResource, '/login')
 add_resource(GroupResource, '/group')
 add_resource(BudgetLimitResource, '/group/limit')
+add_resource(BudgetLimitUpdateResource, '/group/limit/updates')
 add_resource(RegistrationEmailResource, Constants.k_registration_resource_path)
 
 if __name__ == '__main__':
