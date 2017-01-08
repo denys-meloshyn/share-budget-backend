@@ -5,6 +5,7 @@ from flask_restful import reqparse
 from group import Group
 from shared_objects import db
 from constants import Constants
+from user_group import UserGroup
 from shared_objects import swagger_app
 from credentials_validator import CredentialsValidator
 
@@ -37,9 +38,19 @@ class GroupResource(Resource):
             return message
 
         group_id = args.get(Group.k_group_id)
+        # If group_id exist?
         if group_id is None:
+            # No: create new group row
             group = Group(args)
             db.session.add(group)
+            db.session.commit()
+
+            # Add user to the group
+            user_group = UserGroup()
+            user_group.user_id = user_id
+            user_group.group_id = group.group_id
+
+            db.session.add(user_group)
             db.session.commit()
         else:
             items = Group.query.filter_by(group_id=group_id).all()

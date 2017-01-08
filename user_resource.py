@@ -41,9 +41,6 @@ class UserResource(Resource):
 
         mail.send(msg)
 
-    # def get(self):
-    #     return {'test': 1}
-
     parser = swagger_app.parser()
     put_parameters(parser)
 

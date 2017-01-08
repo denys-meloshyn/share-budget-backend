@@ -2,18 +2,17 @@ from flask_restful import inputs
 from flask_restful import Resource
 from flask_restful import reqparse
 
-from group import Group
+from user import User
+from shared_objects import db
 from constants import Constants
-from budget_limit import BudgetLimit
+from user_group import UserGroup
 from shared_objects import swagger_app
 from credentials_validator import CredentialsValidator
 
 
 def get_parameters(parser):
-    parser.add_argument(Group.k_group_id, type=str, help='Group ID', location='headers', required=True)
     parser.add_argument(Constants.k_time_stamp, type=inputs.iso8601interval, help='Time stamp date (ISO 8601)',
                         location='headers', required=True)
-
     parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='headers', required=True)
     parser.add_argument(Constants.k_token, type=str, help='User token', location='headers', required=True)
 
@@ -25,7 +24,7 @@ get_parameters(get_parser)
 get_parameters(swagger_get_parser)
 
 
-class BudgetLimitUpdateResource(Resource):
+class UserUpdateResource(Resource):
     @swagger_app.doc(parser=swagger_get_parser)
     def get(self):
         args = get_parser.parse_args()
@@ -37,12 +36,14 @@ class BudgetLimitUpdateResource(Resource):
         if status is False:
             return message
 
-        group_id = args.get(Group.k_group_id)
         time_stamp = args.get(Constants.k_time_stamp)
         if type(time_stamp) is tuple:
             time_stamp = time_stamp[0]
+        else:
+            return Constants.error_reponse('wrong_time_stamp')
 
-        items = BudgetLimit.query.filter(BudgetLimit.time_stamp > time_stamp, BudgetLimit.group_id == group_id).all()
-        result = [model.to_json() for model in items]
+        subquery = db.session.query(UserGroup.group_id).filter(UserGroup.user_id == user_id).subquery()
+        query = db.session.query(User).filter(User.user_id == UserGroup.user_id, UserGroup.group_id.in_(subquery))
+        items = [model.to_json() for model in query.filter().all()]
 
-        return Constants.default_response(result)
+        return Constants.default_response(items)
