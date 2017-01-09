@@ -2,7 +2,6 @@ from flask_restful import inputs
 from flask_restful import Resource
 from flask_restful import reqparse
 
-from user import User
 from group import Group
 from shared_objects import db
 from constants import Constants
@@ -43,7 +42,7 @@ class GroupUpdateResource(Resource):
         else:
             return Constants.error_reponse('wrong_time_stamp')
 
-        query = db.session.query(Group).filter(User.user_id == user_id, User.user_id == UserGroup.user_id,
+        query = db.session.query(Group).filter(user_id == UserGroup.user_id,
                                                UserGroup.group_id == Group.group_id,
                                                Group.time_stamp >= time_stamp)
         items = [model.to_json() for model in query.filter().all()]
