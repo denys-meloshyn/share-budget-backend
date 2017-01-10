@@ -9,6 +9,7 @@ class BudgetLimit(db.Model):
     __tablename__ = 'BUDGET_LIMIT'
 
     budget_limit_id = db.Column(db.Integer, primary_key=True)
+    modified_user_id = db.Column(db.Integer, db.ForeignKey('USER.user_id'))
     group_id = db.Column(db.Integer, db.ForeignKey('GROUP.group_id'))
     limit = db.Column(db.Float)
     date = db.Column(db.Date)
@@ -26,6 +27,10 @@ class BudgetLimit(db.Model):
         self.update(input_parameters)
 
     def update(self, new_value):
+        value = new_value.get(Constants.k_user_id)
+        if value is not None:
+            self.modified_user_id = value
+
         value = new_value.get(Constants.k_group_id)
         if value is not None:
             self.group_id = value
@@ -48,6 +53,7 @@ class BudgetLimit(db.Model):
                        Constants.k_group_id: self.group_id,
                        Constants.k_limit: self.limit,
 
+                       Constants.k_modified_user_id: self.modified_user_id,
                        Constants.k_is_removed: self.is_removed
                        }
 

@@ -40,9 +40,9 @@ class Group(db.Model):
 
     def to_json(self):
         json_object = {Constants.k_group_id: self.group_id,
-                       Constants.k_modified_user_id: self.modified_user_id,
                        Constants.k_name: self.name,
 
+                       Constants.k_modified_user_id: self.modified_user_id,
                        Constants.k_is_removed: self.is_removed
                        }
 
