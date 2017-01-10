@@ -9,12 +9,6 @@ from token_serializer import TokenSerializer
 class User(db.Model):
     __tablename__ = 'USER'
 
-    k_first_name = 'firstName'
-    k_last_name = 'lastName'
-    k_email = 'email'
-    k_token = 'token'
-    k_password = 'password'
-
     user_id = db.Column(db.Integer, primary_key=True)
     is_email_approved = db.Column(db.Boolean)
     first_name = db.Column(db.Text)
@@ -58,9 +52,9 @@ class User(db.Model):
 
     def to_json(self):
         json_object = {Constants.k_user_id: self.user_id,
-                       self.k_first_name: self.first_name,
-                       self.k_last_name: self.last_name,
-                       self.k_email: self.email,
+                       Constants.k_first_name: self.first_name,
+                       Constants.k_last_name: self.last_name,
+                       Constants.k_email: self.email,
 
                        Constants.k_is_removed: self.is_removed
                        }

@@ -11,9 +11,9 @@ from credentials_validator import CredentialsValidator
 
 
 def put_parameters(parser):
-    parser.add_argument(Group.k_group_id, type=int, help='Group ID (if empty new group will be created)',
+    parser.add_argument(Constants.k_group_id, type=int, help='Group ID (if empty new group will be created)',
                         location='form')
-    parser.add_argument(Group.k_name, type=str, help='Group name', location='form', required=True)
+    parser.add_argument(Constants.k_name, type=str, help='Group name', location='form', required=True)
 
     parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='form', required=True)
     parser.add_argument(Constants.k_token, type=str, help='User token', location='form', required=True)

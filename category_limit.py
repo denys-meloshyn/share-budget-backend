@@ -1,16 +1,15 @@
 from datetime import datetime
 
-from group import Group
 from shared_objects import db
 from constants import Constants
 
 
-class BudgetLimit(db.Model):
-    __tablename__ = 'BUDGET_LIMIT'
+class CategoryLimit(db.Model):
+    __tablename__ = 'CATEGORY_LIMIT'
 
-
-    budget_limit_id = db.Column(db.Integer, primary_key=True)
-    group_id = db.Column(db.Integer, db.ForeignKey('GROUP.group_id'))
+    category_limit_id = db.Column(db.Integer, primary_key=True)
+    modified_user_id = db.Column(db.Integer, db.ForeignKey('USER.user_id'))
+    category_id = db.Column(db.Integer, db.ForeignKey('CATEGORY.category_id'))
     limit = db.Column(db.Float)
     date = db.Column(db.Date)
     is_removed = db.Column(db.Boolean)
@@ -22,9 +21,13 @@ class BudgetLimit(db.Model):
         self.update(input_parameters)
 
     def update(self, new_value):
-        value = new_value.get(Constants.k_group_id)
+        value = new_value.get(Constants.k_modified_user_id)
         if value is not None:
-            self.group_id = value
+            self.modified_user_id = value
+
+        value = new_value.get(Constants.k_category_id)
+        if value is not None:
+            self.category_id = value
 
         value = new_value.get(Constants.k_limit)
         if value is not None:
@@ -37,11 +40,13 @@ class BudgetLimit(db.Model):
         value = new_value.get(Constants.k_is_removed)
         if value is not None:
             self.is_removed = value
+
         self.time_stamp = datetime.utcnow()
 
     def to_json(self):
-        json_object = {Constants.k_budget_limit_id: self.budget_limit_id,
-                       Constants.k_group_id: self.group_id,
+        json_object = {Constants.k_category_limit_id: self.category_limit_id,
+                       Constants.k_modified_user_id: self.modified_user_id,
+                       Constants.k_category_id: self.category_id,
                        Constants.k_limit: self.limit,
 
                        Constants.k_is_removed: self.is_removed

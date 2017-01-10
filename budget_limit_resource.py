@@ -2,7 +2,6 @@ from flask_restful import inputs
 from flask_restful import Resource
 from flask_restful import reqparse
 
-from group import Group
 from shared_objects import db
 from constants import Constants
 from budget_limit import BudgetLimit
@@ -11,9 +10,9 @@ from credentials_validator import CredentialsValidator
 
 
 def put_parameters(parser):
-    parser.add_argument(Group.k_group_id, type=int, help='Group ID', location='form', required=True)
-    parser.add_argument(BudgetLimit.k_limit, type=float, help='Limit', location='form', required=True)
-    parser.add_argument(BudgetLimit.k_date, type=inputs.date, help='Limit date', location='form', required=True)
+    parser.add_argument(Constants.k_group_id, type=int, help='Group ID', location='form', required=True)
+    parser.add_argument(Constants.k_limit, type=float, help='Limit', location='form', required=True)
+    parser.add_argument(Constants.k_date, type=inputs.date, help='Limit date', location='form', required=True)
 
     parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='form', required=True)
     parser.add_argument(Constants.k_token, type=str, help='User token', location='form', required=True)
@@ -38,7 +37,7 @@ class BudgetLimitResource(Resource):
             return message
 
         date = args.get(BudgetLimit.k_date).replace(day=1)
-        group_id = args.get(Group.k_group_id)
+        group_id = args.get(Constants.k_group_id)
 
         items = BudgetLimit.query.filter(db.and_(BudgetLimit.date == date, BudgetLimit.group_id == group_id))
         if items.count() == 0:

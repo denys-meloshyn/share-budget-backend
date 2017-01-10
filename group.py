@@ -6,9 +6,6 @@ from constants import Constants
 
 class Group(db.Model):
     __tablename__ = 'GROUP'
-    k_group_id = 'groupId'
-    k_modified_user_id = 'modifiedUserId'
-    k_name = 'name'
 
     group_id = db.Column(db.Integer, primary_key=True)
     modified_user_id = db.Column(db.Integer, db.ForeignKey('USER.user_id'))
@@ -26,7 +23,7 @@ class Group(db.Model):
         if value is not None:
             self.modified_user_id = value
 
-        value = new_value.get(self.k_name)
+        value = new_value.get(Constants.k_name)
         if value is not None:
             self.name = value
 
@@ -36,9 +33,9 @@ class Group(db.Model):
         self.time_stamp = datetime.utcnow()
 
     def to_json(self):
-        json_object = {self.k_group_id: self.group_id,
-                       self.k_modified_user_id: self.modified_user_id,
-                       self.k_name: self.name,
+        json_object = {Constants.k_group_id: self.group_id,
+                       Constants.k_modified_user_id: self.modified_user_id,
+                       Constants.k_name: self.name,
 
                        Constants.k_is_removed: self.is_removed
                        }

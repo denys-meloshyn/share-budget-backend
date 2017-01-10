@@ -11,10 +11,10 @@ from shared_objects import swagger_app
 
 
 def put_parameters(parser):
-    parser.add_argument(User.k_last_name, type=str, help='Last Name', location='form')
-    parser.add_argument(User.k_email, type=str, help='User email', location='form', required=True)
-    parser.add_argument(User.k_password, type=str, help='Password', location='form', required=True)
-    parser.add_argument(User.k_first_name, type=str, help='First Name', location='form', required=True)
+    parser.add_argument(Constants.k_last_name, type=str, help='Last Name', location='form')
+    parser.add_argument(Constants.k_email, type=str, help='User email', location='form', required=True)
+    parser.add_argument(Constants.k_password, type=str, help='Password', location='form', required=True)
+    parser.add_argument(Constants.k_first_name, type=str, help='First Name', location='form', required=True)
 
     parser.add_argument(Constants.k_is_removed, type=inputs.boolean, help='Is group limit removed', location='form')
 

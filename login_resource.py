@@ -10,8 +10,8 @@ from token_serializer import TokenSerializer
 
 
 def post_parameters(parser):
-    parser.add_argument(User.k_email, type=str, help='User email', location='form', required=True)
-    parser.add_argument(User.k_password, type=str, help='User password', location='form', required=True)
+    parser.add_argument(Constants.k_email, type=str, help='User email', location='form', required=True)
+    parser.add_argument(Constants.k_password, type=str, help='User password', location='form', required=True)
 
 
 class LoginResource(Resource):
@@ -24,8 +24,8 @@ class LoginResource(Resource):
         post_parameters(parser)
         args = parser.parse_args()
 
-        email = args[User.k_email]
-        password = args[User.k_password]
+        email = args[Constants.k_email]
+        password = args[Constants.k_password]
 
         user = User.query.filter_by(email=email).first()
         if user is None:
