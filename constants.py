@@ -28,7 +28,7 @@ class Constants:
     k_registration_resource_path = '/registration'
     project_email = 'sharebudgetproject@gmail.com'
 
-    default_categories = ['Home']
+    default_categories = ['Home', 'Food', 'Transport', 'Sport']
 
     def __init__(self):
         pass
