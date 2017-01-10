@@ -1,4 +1,5 @@
 class Constants:
+    # JSON keys
     k_date = 'date'
     k_name = 'name'
     k_limit = 'limit'
@@ -17,6 +18,7 @@ class Constants:
     k_expense_id = 'expenseID'
     k_is_removed = 'isRemoved'
     k_time_stamp = 'timeStamp'
+    k_internal_id = 'internalID'
     k_category_id = 'categoryID'
     k_user_group_id = 'userGroupID'
     k_budget_limit_id = 'budgetLimitID'
@@ -25,6 +27,8 @@ class Constants:
 
     k_registration_resource_path = '/registration'
     project_email = 'sharebudgetproject@gmail.com'
+
+    default_categories = ['Home']
 
     def __init__(self):
         pass

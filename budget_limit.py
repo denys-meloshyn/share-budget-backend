@@ -1,13 +1,12 @@
 from datetime import datetime
 
-from group import Group
+from sqlalchemy import orm
 from shared_objects import db
 from constants import Constants
 
 
 class BudgetLimit(db.Model):
     __tablename__ = 'BUDGET_LIMIT'
-
 
     budget_limit_id = db.Column(db.Integer, primary_key=True)
     group_id = db.Column(db.Integer, db.ForeignKey('GROUP.group_id'))
@@ -16,7 +15,12 @@ class BudgetLimit(db.Model):
     is_removed = db.Column(db.Boolean)
     time_stamp = db.Column(db.DateTime)
 
+    @orm.reconstructor
+    def init_on_load(self):
+        self.internal_id = None
+
     def __init__(self, input_parameters):
+        self.internal_id = None
         self.is_removed = False
 
         self.update(input_parameters)

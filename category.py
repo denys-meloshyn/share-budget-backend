@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from sqlalchemy import orm
 from shared_objects import db
 from constants import Constants
 
@@ -11,10 +12,15 @@ class Category(db.Model):
     modified_user_id = db.Column(db.Integer, db.ForeignKey('USER.user_id'))
     group_id = db.Column(db.Integer, db.ForeignKey('GROUP.group_id'))
     name = db.Column(db.Text)
-    is_removed = db.Column(db.Boolean)
-    time_stamp = db.Column(db.DateTime)
+    is_removed = db.Column(db.Boolean, default=False)
+    time_stamp = db.Column(db.DateTime, default=datetime.utcnow())
+
+    @orm.reconstructor
+    def init_on_load(self):
+        self.internal_id = None
 
     def __init__(self, input_parameters):
+        self.internal_id = None
         self.is_removed = False
 
         self.update(input_parameters)

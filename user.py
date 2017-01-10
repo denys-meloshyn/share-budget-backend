@@ -1,3 +1,4 @@
+from sqlalchemy import orm
 from datetime import datetime
 
 from shared_objects import db
@@ -20,7 +21,12 @@ class User(db.Model):
     time_stamp = db.Column(db.DateTime)
     registration_email_token = db.Column(db.Text)
 
+    @orm.reconstructor
+    def init_on_load(self):
+        self.internal_id = None
+
     def __init__(self, input_parameters):
+        self.is_removed = False
         self.is_removed = False
         self.is_email_approved = False
         self.registration_email_token = TokenSerializer.generate_auth_token(self.user_id)

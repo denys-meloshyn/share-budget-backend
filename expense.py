@@ -1,3 +1,4 @@
+from sqlalchemy import orm
 from datetime import datetime
 
 from shared_objects import db
@@ -10,12 +11,18 @@ class Expense(db.Model):
     expense_id = db.Column(db.Integer, primary_key=True)
     modified_user_id = db.Column(db.Integer, db.ForeignKey('USER.user_id'))
     group_id = db.Column(db.Integer, db.ForeignKey('GROUP.group_id'))
+    category_id = db.Column(db.Integer, db.ForeignKey('CATEGORY.category_id'))
     name = db.Column(db.Text)
     price = db.Column(db.Float)
     is_removed = db.Column(db.Boolean)
     time_stamp = db.Column(db.DateTime)
 
+    @orm.reconstructor
+    def init_on_load(self):
+        self.internal_id = None
+
     def __init__(self, input_parameters):
+        self.internal_id = None
         self.is_removed = False
 
         self.update(input_parameters)

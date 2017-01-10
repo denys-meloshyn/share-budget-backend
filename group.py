@@ -1,3 +1,4 @@
+from sqlalchemy import orm
 from datetime import datetime
 
 from shared_objects import db
@@ -13,7 +14,12 @@ class Group(db.Model):
     is_removed = db.Column(db.Boolean)
     time_stamp = db.Column(db.DateTime)
 
+    @orm.reconstructor
+    def init_on_load(self):
+        self.internal_id = None
+
     def __init__(self, input_parameters):
+        self.internal_id = None
         self.is_removed = False
 
         self.update(input_parameters)
