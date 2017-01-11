@@ -1,4 +1,3 @@
-from sqlalchemy import orm
 from datetime import datetime
 
 from shared_objects import db
@@ -13,10 +12,6 @@ class UserGroup(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('USER.user_id'))
     is_removed = db.Column(db.Boolean)
     time_stamp = db.Column(db.DateTime)
-
-    @orm.reconstructor
-    def init_on_load(self):
-        self.internal_id = None
 
     def __init__(self, input_parameters):
         self.internal_id = None
@@ -36,6 +31,7 @@ class UserGroup(db.Model):
         value = new_value.get(Constants.k_is_removed)
         if value is not None:
             self.is_removed = value
+
         self.time_stamp = datetime.utcnow()
 
     def to_json(self):

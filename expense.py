@@ -48,6 +48,10 @@ class Expense(db.Model):
         if value is not None:
             self.is_removed = value
 
+        value = new_value.get(Constants.k_internal_id)
+        if value is not None:
+            self.internal_id = value
+
         self.time_stamp = datetime.utcnow()
 
     def to_json(self):
@@ -59,6 +63,9 @@ class Expense(db.Model):
                        Constants.k_modified_user_id: self.modified_user_id,
                        Constants.k_is_removed: self.is_removed
                        }
+
+        if self.internal_id is not None:
+            json_object[Constants.k_internal_id] = self.internal_id
 
         if self.time_stamp is not None:
             json_object[Constants.k_time_stamp] = self.time_stamp.isoformat()
