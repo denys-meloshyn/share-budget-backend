@@ -27,10 +27,6 @@ class CategoryLimit(db.Model):
         self.update(input_parameters)
 
     def update(self, new_value):
-        value = new_value.get(Constants.k_user_id)
-        if value is not None:
-            self.modified_user_id = value
-
         value = new_value.get(Constants.k_category_id)
         if value is not None:
             self.category_id = value
@@ -50,6 +46,10 @@ class CategoryLimit(db.Model):
         value = new_value.get(Constants.k_internal_id)
         if value is not None:
             self.internal_id = value
+
+        value = new_value.get(Constants.k_user_id)
+        if value is not None:
+            self.modified_user_id = value
 
         self.time_stamp = datetime.utcnow()
 

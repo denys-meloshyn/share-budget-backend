@@ -36,8 +36,8 @@ class GroupResource(Resource):
         token = args[Constants.k_token]
         status, message = CredentialsValidator.is_user_credentials_valid(user_id, token)
 
-        # if status is False:
-        #     return message
+        if status is False:
+            return message
 
         group_id = args.get(Constants.k_group_id)
         # If group_id exist?

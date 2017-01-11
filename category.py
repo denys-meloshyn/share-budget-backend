@@ -26,10 +26,6 @@ class Category(db.Model):
         self.update(input_parameters)
 
     def update(self, new_value):
-        value = new_value.get(Constants.k_user_id)
-        if value is not None:
-            self.modified_user_id = value
-
         value = new_value.get(Constants.k_group_id)
         if value is not None:
             self.group_id = value
@@ -41,6 +37,10 @@ class Category(db.Model):
         value = new_value.get(Constants.k_is_removed)
         if value is not None:
             self.is_removed = value
+
+        value = new_value.get(Constants.k_user_id)
+        if value is not None:
+            self.modified_user_id = value
 
         self.time_stamp = datetime.utcnow()
 
