@@ -17,8 +17,10 @@ from group_update_resource import GroupUpdateResource
 from budget_limit_resource import BudgetLimitResource
 from category_limit_resource import CategoryLimitResource
 from expense_update_resource import ExpenseUpdateResource
+from category_update_resource import CategoryUpdateResource
 from registration_email_resource import RegistrationEmailResource
 from budget_limit_update_resource import BudgetLimitUpdateResource
+from category_limit_update_resource import CategoryLimitUpdateResource
 
 from flask_passlib import LazyCryptContext
 from flask_passlib.context import werkzeug_salted_md5
@@ -77,7 +79,9 @@ add_resource(BudgetLimitResource, '/group/limit')
 add_resource(GroupUpdateResource, '/group/updates')
 add_resource(CategoryLimitResource, '/category/limit')
 add_resource(ExpenseUpdateResource, '/expense/updates')
+add_resource(CategoryUpdateResource, '/category/limit/updates')
 add_resource(BudgetLimitUpdateResource, '/group/limit/updates')
+add_resource(CategoryLimitUpdateResource, '/category/limit/updates')
 add_resource(RegistrationEmailResource, Constants.k_registration_resource_path)
 
 if __name__ == '__main__':

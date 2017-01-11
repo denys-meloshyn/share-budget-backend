@@ -1,6 +1,6 @@
+from sqlalchemy import orm
 from datetime import datetime
 
-from sqlalchemy import orm
 from shared_objects import db
 from constants import Constants
 
