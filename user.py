@@ -34,20 +34,20 @@ class User(db.Model):
         self.update(input_parameters)
 
     def update(self, new_value):
-        value = new_value.get(self.k_email)
+        value = new_value.get(Constants.k_email)
         if value is not None:
             self.email = value
 
-        value = new_value.get(self.k_last_name)
+        value = new_value.get(Constants.k_last_name)
         if value is not None:
             self.last_name = value
 
-        value = new_value.get(self.k_password)
+        value = new_value.get(Constants.k_password)
         if value is not None:
             encrypted_password = passlib.encrypt(value, salt_length=100)
             self.password = encrypted_password
 
-        value = new_value.get(self.k_first_name)
+        value = new_value.get(Constants.k_first_name)
         if value is not None:
             self.first_name = value
 

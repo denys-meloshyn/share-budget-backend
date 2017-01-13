@@ -8,16 +8,24 @@ from shared_objects import db
 from constants import Constants
 from shared_objects import mail
 from shared_objects import swagger_app
+from credentials_validator import CredentialsValidator
 
+
+def post_parameters(parser):
+    parser.add_argument(Constants.k_last_name, type=str, help='Last Name', location='headers')
+    parser.add_argument(Constants.k_email, type=str, help='User email', location='headers', required=True)
+    parser.add_argument(Constants.k_password, type=str, help='Password', location='headers', required=True)
+    parser.add_argument(Constants.k_first_name, type=str, help='First Name', location='headers', required=True)
+
+    parser.add_argument(Constants.k_is_removed, type=inputs.boolean, help='Is group limit removed', location='headers')
 
 def put_parameters(parser):
-    parser.add_argument(Constants.k_last_name, type=str, help='Last Name', location='form')
-    parser.add_argument(Constants.k_email, type=str, help='User email', location='form', required=True)
-    parser.add_argument(Constants.k_password, type=str, help='Password', location='form', required=True)
-    parser.add_argument(Constants.k_first_name, type=str, help='First Name', location='form', required=True)
+    parser.add_argument(Constants.k_last_name, type=str, help='Last Name', location='headers')
+    parser.add_argument(Constants.k_first_name, type=str, help='First Name', location='headers')
 
-    parser.add_argument(Constants.k_is_removed, type=inputs.boolean, help='Is group limit removed', location='form')
-
+    parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='headers', required=True)
+    parser.add_argument(Constants.k_token, type=str, help='User token', location='headers', required=True)
+    parser.add_argument(Constants.k_is_removed, type=inputs.boolean, help='Is removed', location='headers')
 
 class UserResource(Resource):
     def send_registration_email(self, user):
@@ -42,12 +50,12 @@ class UserResource(Resource):
         mail.send(msg)
 
     parser = swagger_app.parser()
-    put_parameters(parser)
+    post_parameters(parser)
 
     @swagger_app.doc(parser=parser)
-    def put(self):
+    def post(self):
         parser = reqparse.RequestParser()
-        put_parameters(parser)
+        post_parameters(parser)
         args = parser.parse_args()
 
         user = User(args)
@@ -60,5 +68,28 @@ class UserResource(Resource):
 
         db.session.add(user)
         db.session.commit()
+
+        return Constants.default_response(user.to_json())
+
+    parser = swagger_app.parser()
+    put_parameters(parser)
+
+    @swagger_app.doc(parser=parser)
+    def put(self):
+        parser = reqparse.RequestParser()
+        put_parameters(parser)
+        args = parser.parse_args()
+
+        user_id = args[Constants.k_user_id]
+        token = args[Constants.k_token]
+        status, message = CredentialsValidator.is_user_credentials_valid(user_id, token)
+
+        if status is False:
+            return message
+
+        user_id = args.get(User.user_id)
+        items = User.query.filter(User.user_id == user_id)
+        user = items[0]
+        user.update(args)
 
         return Constants.default_response(user.to_json())
