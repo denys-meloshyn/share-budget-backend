@@ -21,6 +21,7 @@ from category_update_resource import CategoryUpdateResource
 from registration_email_resource import RegistrationEmailResource
 from budget_limit_update_resource import BudgetLimitUpdateResource
 from category_limit_update_resource import CategoryLimitUpdateResource
+from send_registration_email_resource import SendRegistrationEmailResource
 
 from flask_passlib import LazyCryptContext
 from flask_passlib.context import werkzeug_salted_md5
@@ -82,6 +83,7 @@ add_resource(ExpenseUpdateResource, '/expense/updates')
 add_resource(CategoryUpdateResource, '/category/updates')
 add_resource(BudgetLimitUpdateResource, '/group/limit/updates')
 add_resource(CategoryLimitUpdateResource, '/category/limit/updates')
+add_resource(SendRegistrationEmailResource, '/registration/sendemail')
 add_resource(RegistrationEmailResource, Constants.k_registration_resource_path)
 
 if __name__ == '__main__':

@@ -10,8 +10,8 @@ from token_serializer import TokenSerializer
 
 
 def post_parameters(parser):
-    parser.add_argument(Constants.k_email, type=str, help='User email', location='form', required=True)
-    parser.add_argument(Constants.k_password, type=str, help='User password', location='form', required=True)
+    parser.add_argument(Constants.k_email, type=str, help='User email', location='headers', required=True)
+    parser.add_argument(Constants.k_password, type=str, help='User password', location='headers', required=True)
 
 
 class LoginResource(Resource):
@@ -29,7 +29,7 @@ class LoginResource(Resource):
 
         user = User.query.filter_by(email=email).first()
         if user is None:
-            return Constants.error_reponse('user_is_not_exist'), 401
+            return Constants.error_reponse(Constants.k_user_not_exist), 401
 
         if not user.is_email_approved:
             return Constants.error_reponse('email_not_approved'), 401
