@@ -21,10 +21,9 @@ class SendRegistrationEmailResource(Resource):
         get_parameters(parser)
         args = parser.parse_args()
 
-        user = User(args)
-
-        items = User.query.filter_by(email=user.email).all()
-        if len(items) > 0:
+        email = args[Constants.k_email]
+        user = User.query.filter_by(email=email).first()
+        if user is None:
             return Constants.error_reponse(Constants.k_user_not_exist), 401
 
         registration_email.send_registration_email(user)
