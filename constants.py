@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class Constants:
     # JSON keys
     k_date = 'date'
@@ -36,7 +38,8 @@ class Constants:
 
     @staticmethod
     def default_response(reponse):
-        result = {Constants.k_result: reponse}
+        result = {Constants.k_result: reponse,
+                  Constants.k_time_stamp: datetime.utcnow().isoformat()}
         return result
 
     @staticmethod
