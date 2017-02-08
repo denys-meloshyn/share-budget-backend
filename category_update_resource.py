@@ -13,7 +13,7 @@ from credentials_validator import CredentialsValidator
 
 def get_parameters(parser):
     parser.add_argument(Constants.k_time_stamp, type=inputs.iso8601interval, help='Time stamp date (ISO 8601)',
-                        location='headers', required=True)
+                        location='headers')
     parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='headers', required=True)
     parser.add_argument(Constants.k_token, type=str, help='User token', location='headers', required=True)
 
@@ -35,18 +35,18 @@ class CategoryUpdateResource(Resource):
         status, message = CredentialsValidator.is_user_credentials_valid(user_id, token)
 
         if status is False:
-            return message
+            return message, 401
+
+        query = db.and_(UserGroup.user_id == user_id,
+                        UserGroup.group_id == Category.group_id)
 
         time_stamp = args.get(Constants.k_time_stamp)
         if type(time_stamp) is tuple:
             time_stamp = time_stamp[0]
+            items = db.session.query(Category).filter(query, Category.time_stamp >= time_stamp).all()
         else:
-            return Constants.error_reponse('wrong_time_stamp')
+            items = db.session.query(Category).filter(query).all()
 
-        query = db.session.query(CategoryLimit).filter(UserGroup.user_id == user_id,
-                                                       CategoryLimit.time_stamp >= time_stamp,
-                                                       UserGroup.group_id == Category.group_id,
-                                                       Category.category_id == CategoryLimit.category_id)
-        items = [model.to_json() for model in query.filter().all()]
+        items = [model.to_json() for model in items]
 
         return Constants.default_response(items)

@@ -24,7 +24,7 @@ get_parameters(get_parser)
 get_parameters(swagger_get_parser)
 
 
-class UserUpdateResource(Resource):
+class UserGroupUpdateResource(Resource):
     @swagger_app.doc(parser=swagger_get_parser)
     def get(self):
         args = get_parser.parse_args()

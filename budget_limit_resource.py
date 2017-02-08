@@ -35,9 +35,9 @@ class BudgetLimitResource(Resource):
         status, message = CredentialsValidator.is_user_credentials_valid(user_id, token)
 
         if status is False:
-            return message
+            return message, 401
 
-        date = args.get(BudgetLimit.k_date).replace(day=1)
+        date = args.get(Constants.k_date).replace(day=1)
         group_id = args.get(Constants.k_group_id)
 
         items = BudgetLimit.query.filter(db.and_(BudgetLimit.date == date, BudgetLimit.group_id == group_id))
