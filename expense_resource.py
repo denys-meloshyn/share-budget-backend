@@ -11,11 +11,13 @@ from credentials_validator import CredentialsValidator
 
 def put_parameters(parser):
     parser.add_argument(Constants.k_expense_id, type=int, help='Expense ID (if empty new expense will be created)',
-                        location='form')
+                        location='headers')
     parser.add_argument(Constants.k_category_id, type=int, help='Category ID', location='headers')
     parser.add_argument(Constants.k_group_id, type=int, help='Group ID', location='headers', required=True)
     parser.add_argument(Constants.k_name, type=str, help='Expense name', location='headers', required=True)
     parser.add_argument(Constants.k_price, type=float, help='Expense price', location='headers', required=True)
+    parser.add_argument(Constants.k_creation_date, type=inputs.iso8601interval, help='Expense creation date',
+                        location='headers', required=True)
 
     parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='headers', required=True)
     parser.add_argument(Constants.k_token, type=str, help='User token', location='headers', required=True)

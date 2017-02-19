@@ -14,6 +14,7 @@ class Expense(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey('CATEGORY.category_id'))
     name = db.Column(db.Text)
     price = db.Column(db.Float)
+    creation_date = db.Column(db.DateTime)
     is_removed = db.Column(db.Boolean)
     time_stamp = db.Column(db.DateTime)
 
@@ -52,6 +53,10 @@ class Expense(db.Model):
         if value is not None:
             self.modified_user_id = value
 
+        value = new_value.get(Constants.k_creation_date)
+        if type(value) is tuple:
+            self.creation_date = value[0]
+
         self.time_stamp = datetime.utcnow()
 
     def to_json(self):
@@ -63,6 +68,9 @@ class Expense(db.Model):
                        Constants.k_modified_user_id: self.modified_user_id,
                        Constants.k_is_removed: self.is_removed
                        }
+
+        if self.creation_date is not None:
+            json_object[Constants.k_creation_date] = self.creation_date.isoformat()
 
         if self.internal_id is not None:
             json_object[Constants.k_internal_id] = self.internal_id

@@ -23,6 +23,7 @@ class Constants:
     k_internal_id = 'internalID'
     k_category_id = 'categoryID'
     k_user_group_id = 'userGroupID'
+    k_creation_date = 'creationDate'
     k_user_not_exist = 'userNotExist'
     k_budget_limit_id = 'budgetLimitID'
     k_modified_user_id = 'modifiedUserID'
