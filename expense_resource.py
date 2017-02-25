@@ -40,7 +40,7 @@ class ExpenseResource(Resource):
         status, message = CredentialsValidator.is_user_credentials_valid(user_id, token)
 
         if status is False:
-            return message
+            return message, 401
 
         expense_id = args.get(Constants.k_expense_id)
         # If expense_id exist?

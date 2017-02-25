@@ -55,7 +55,11 @@ class Expense(db.Model):
 
         value = new_value.get(Constants.k_creation_date)
         if type(value) is tuple:
-            self.creation_date = value[0]
+            self.creation_date = value[0].replace(tzinfo=None)
+
+        value = new_value.get(Constants.k_category_id)
+        if type(value) is not None:
+            self.category_id = value
 
         self.time_stamp = datetime.utcnow()
 
@@ -64,6 +68,7 @@ class Expense(db.Model):
                        Constants.k_group_id: self.group_id,
                        Constants.k_name: self.name,
                        Constants.k_price: self.price,
+                       Constants.k_category_id: self.category_id,
 
                        Constants.k_modified_user_id: self.modified_user_id,
                        Constants.k_is_removed: self.is_removed
