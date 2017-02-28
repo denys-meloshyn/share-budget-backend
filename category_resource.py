@@ -10,13 +10,13 @@ from credentials_validator import CredentialsValidator
 
 
 def put_parameters(parser):
-    parser.add_argument(Constants.k_category_id, type=int, help='Category ID', location='form')
-    parser.add_argument(Constants.k_group_id, type=int, help='Group ID', location='form', required=True)
-    parser.add_argument(Constants.k_name, type=str, help='Category name', location='form', required=True)
+    parser.add_argument(Constants.k_category_id, type=int, help='Category ID', location='headers')
+    parser.add_argument(Constants.k_group_id, type=int, help='Group ID', location='headers', required=True)
+    parser.add_argument(Constants.k_name, type=str, help='Category name', location='headers', required=True)
 
-    parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='form', required=True)
-    parser.add_argument(Constants.k_token, type=str, help='User token', location='form', required=True)
-    parser.add_argument(Constants.k_is_removed, type=inputs.boolean, help='Is group limit removed', location='form')
+    parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='headers', required=True)
+    parser.add_argument(Constants.k_token, type=str, help='User token', location='headers', required=True)
+    parser.add_argument(Constants.k_is_removed, type=inputs.boolean, help='Is group limit removed', location='headers')
     parser.add_argument(Constants.k_internal_id, type=int, help='Internal ID', location='headers')
 
 
