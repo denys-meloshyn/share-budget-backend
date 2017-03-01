@@ -41,7 +41,7 @@ class UserGroupUpdateResource(Resource):
 
         time_stamp = args.get(Constants.k_time_stamp)
         if time_stamp is not None:
-            time_stamp = time_stamp[0]
+            time_stamp = time_stamp[0].replace(tzinfo=None)
             items = db.session.query(User).filter(query, User.time_stamp >= time_stamp)
         else:
             items = db.session.query(User).filter(query)

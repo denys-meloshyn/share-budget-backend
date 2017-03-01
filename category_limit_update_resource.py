@@ -38,7 +38,7 @@ class CategoryLimitUpdateResource(Resource):
 
         time_stamp = args.get(Constants.k_time_stamp)
         if type(time_stamp) is tuple:
-            time_stamp = time_stamp[0]
+            time_stamp = time_stamp[0].replace(tzinfo=None)
         else:
             return Constants.error_reponse('wrong_time_stamp')
 

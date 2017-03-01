@@ -34,7 +34,7 @@ class CredentialsValidator:
         # Is received token correct?
         if user.token != token:
             # No: return error status
-            return False, Constants.error_reponse('toke_not_valid')
+            return False, Constants.error_reponse('token_not_valid')
 
         # If everything is Ok - return person model
         return True, Constants.default_response('Ok')
