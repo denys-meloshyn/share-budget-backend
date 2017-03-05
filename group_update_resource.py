@@ -14,7 +14,7 @@ def get_parameters(parser):
     parser.add_argument(Constants.k_time_stamp, type=inputs.iso8601interval, help='Time stamp date (ISO 8601)',
                         location='headers')
     parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='headers', required=True)
-    parser.add_argument(Constants.k_token, type=str, help='User token', location='headers', required=True)
+    parser.add_argument(Constants.k_token, help='User token', location='headers', required=True)
 
 
 get_parser = reqparse.RequestParser()

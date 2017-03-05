@@ -10,8 +10,8 @@ from token_serializer import TokenSerializer
 
 
 def post_parameters(parser):
-    parser.add_argument(Constants.k_email, type=str, help='User email', location='headers', required=True)
-    parser.add_argument(Constants.k_password, type=str, help='User password', location='headers', required=True)
+    parser.add_argument(Constants.k_email, help='User email', location='headers', required=True)
+    parser.add_argument(Constants.k_password, help='User password', location='headers', required=True)
 
 
 class LoginResource(Resource):

@@ -18,10 +18,10 @@ def post_parameters(parser):
 
 def put_parameters(parser):
     parser.add_argument(Constants.k_last_name, type=str, help='Last Name', location='headers')
-    parser.add_argument(Constants.k_first_name, type=str, help='First Name', location='headers')
+    parser.add_argument(Constants.k_first_name, help='First Name', location='headers')
 
     parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='headers', required=True)
-    parser.add_argument(Constants.k_token, type=str, help='User token', location='headers', required=True)
+    parser.add_argument(Constants.k_token, help='User token', location='headers', required=True)
     parser.add_argument(Constants.k_is_removed, type=inputs.boolean, help='Is removed', location='headers')
 
 

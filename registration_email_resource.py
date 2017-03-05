@@ -7,7 +7,7 @@ from shared_objects import swagger_app
 
 
 def add_get_parameters(parser):
-    parser.add_argument(Constants.k_token, type=str, help='Registration token', required=True)
+    parser.add_argument(Constants.k_token, help='Registration token', required=True)
 
 
 class RegistrationEmailResource(Resource):

@@ -14,10 +14,10 @@ from credentials_validator import CredentialsValidator
 def put_parameters(parser):
     parser.add_argument(Constants.k_group_id, type=int, help='Group ID (if empty new group will be created)',
                         location='headers')
-    parser.add_argument(Constants.k_name, type=str, help='Group name', location='headers', required=True)
+    parser.add_argument(Constants.k_name, help='Group name', location='form', required=True)
 
     parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='headers', required=True)
-    parser.add_argument(Constants.k_token, type=str, help='User token', location='headers', required=True)
+    parser.add_argument(Constants.k_token, help='User token', location='headers', required=True)
     parser.add_argument(Constants.k_is_removed, type=inputs.boolean, help='Is group limit removed', location='headers')
     parser.add_argument(Constants.k_internal_id, type=int, help='Internal ID', location='headers')
 
@@ -37,7 +37,7 @@ class GroupResource(Resource):
         status, message = CredentialsValidator.is_user_credentials_valid(user_id, token)
 
         if status is False:
-            return message
+            return message, 401
 
         group_id = args.get(Constants.k_group_id)
         # If group_id exist?

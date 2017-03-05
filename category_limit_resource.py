@@ -16,7 +16,7 @@ def put_parameters(parser):
     parser.add_argument(Constants.k_date, type=inputs.date, help='Category limit date', location='form', required=True)
 
     parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='form', required=True)
-    parser.add_argument(Constants.k_token, type=str, help='User token', location='form', required=True)
+    parser.add_argument(Constants.k_token, help='User token', location='form', required=True)
     parser.add_argument(Constants.k_is_removed, type=inputs.boolean, help='Is group limit removed', location='form')
     parser.add_argument(Constants.k_internal_id, type=int, help='Internal ID', location='headers')
 
