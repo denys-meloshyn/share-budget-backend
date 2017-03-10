@@ -11,18 +11,18 @@ from credentials_validator import CredentialsValidator
 
 
 def post_parameters(parser):
-    parser.add_argument(Constants.k_last_name, type=str, help='Last Name', location='headers')
-    parser.add_argument(Constants.k_email, type=str, help='User email', location='headers', required=True)
-    parser.add_argument(Constants.k_password, type=str, help='Password', location='headers', required=True)
-    parser.add_argument(Constants.k_first_name, type=str, help='First Name', location='headers', required=True)
+    parser.add_argument(Constants.k_last_name, type=str, help='Last Name', location='form')
+    parser.add_argument(Constants.k_email, type=str, help='User email', location='form', required=True)
+    parser.add_argument(Constants.k_password, type=str, help='Password', location='form', required=True)
+    parser.add_argument(Constants.k_first_name, type=str, help='First Name', location='form', required=True)
 
 def put_parameters(parser):
-    parser.add_argument(Constants.k_last_name, type=str, help='Last Name', location='headers')
-    parser.add_argument(Constants.k_first_name, help='First Name', location='headers')
+    parser.add_argument(Constants.k_last_name, type=str, help='Last Name', location='form')
+    parser.add_argument(Constants.k_first_name, help='First Name', location='form')
 
-    parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='headers', required=True)
-    parser.add_argument(Constants.k_token, help='User token', location='headers', required=True)
-    parser.add_argument(Constants.k_is_removed, type=inputs.boolean, help='Is removed', location='headers')
+    parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='form', required=True)
+    parser.add_argument(Constants.k_token, help='User token', location='form', required=True)
+    parser.add_argument(Constants.k_is_removed, type=inputs.boolean, help='Is removed', location='form')
 
 
 class UserResource(Resource):

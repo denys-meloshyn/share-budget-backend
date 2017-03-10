@@ -44,7 +44,7 @@ class CategoryLimitResource(Resource):
             db.session.add(category_limit)
             db.session.commit()
         else:
-            items = CategoryLimit.query.filter(CategoryLimit.category_limit_id == category_limit_id)
+            items = CategoryLimit.query.filter(CategoryLimit.category_limit_id == category_limit_id).all()
 
             if len(items) > 0:
                 category_limit = items[0]

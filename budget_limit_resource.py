@@ -10,14 +10,14 @@ from credentials_validator import CredentialsValidator
 
 
 def put_parameters(parser):
-    parser.add_argument(Constants.k_group_id, type=int, help='Group ID', location='headers', required=True)
-    parser.add_argument(Constants.k_limit, type=float, help='Limit', location='headers', required=True)
-    parser.add_argument(Constants.k_date, type=inputs.date, help='Limit date', location='headers', required=True)
+    parser.add_argument(Constants.k_group_id, type=int, help='Group ID', location='form', required=True)
+    parser.add_argument(Constants.k_limit, type=float, help='Limit', location='form', required=True)
+    parser.add_argument(Constants.k_date, type=inputs.date, help='Limit date', location='form', required=True)
 
-    parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='headers', required=True)
-    parser.add_argument(Constants.k_token, help='User token', location='headers', required=True)
-    parser.add_argument(Constants.k_is_removed, type=inputs.boolean, help='Is group limit removed', location='headers')
-    parser.add_argument(Constants.k_internal_id, type=int, help='Internal ID', location='headers')
+    parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='form', required=True)
+    parser.add_argument(Constants.k_token, help='User token', location='form', required=True)
+    parser.add_argument(Constants.k_is_removed, type=inputs.boolean, help='Is group limit removed', location='form')
+    parser.add_argument(Constants.k_internal_id, type=int, help='Internal ID', location='form')
 
 
 class BudgetLimitResource(Resource):
