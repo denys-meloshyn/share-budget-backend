@@ -11,7 +11,7 @@ from credentials_validator import CredentialsValidator
 
 def put_parameters(parser):
     parser.add_argument(Constants.k_expense_id, type=int, help='Expense ID (if empty new expense will be created)',
-                        location='headers')
+                        location='form')
     parser.add_argument(Constants.k_category_id, type=int, help='Category ID', location='form')
     parser.add_argument(Constants.k_group_id, type=int, help='Group ID', location='form', required=True)
     parser.add_argument(Constants.k_name, help='Expense name', location='form', required=True)

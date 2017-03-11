@@ -55,7 +55,7 @@ class Expense(db.Model):
 
         value = new_value.get(Constants.k_creation_date)
         if type(value) is tuple:
-            self.creation_date = value[0].replace(tzinfo=None)
+            self.creation_date = value[0]
 
         value = new_value.get(Constants.k_category_id)
         if type(value) is not None:
