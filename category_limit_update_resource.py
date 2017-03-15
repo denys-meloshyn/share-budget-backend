@@ -7,6 +7,7 @@ from category import Category
 from constants import Constants
 from user_group import UserGroup
 from shared_objects import swagger_app
+from category_limit import CategoryLimit
 from credentials_validator import CredentialsValidator
 
 
@@ -43,7 +44,7 @@ class CategoryLimitUpdateResource(Resource):
             return Constants.error_reponse('wrong_time_stamp')
 
         query = db.session.query(Category).filter(UserGroup.user_id == user_id,
-                                                  Category.time_stamp >= time_stamp,
+                                                  CategoryLimit.time_stamp >= time_stamp,
                                                   UserGroup.group_id == Category.group_id)
         items = [model.to_json() for model in query.filter().all()]
 
