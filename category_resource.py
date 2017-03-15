@@ -35,7 +35,7 @@ class CategoryResource(Resource):
         status, message = CredentialsValidator.is_user_credentials_valid(user_id, token)
 
         if status is False:
-            return message
+            return message, 401
 
         category_id = args.get(Constants.k_category_id)
         if category_id is None:
