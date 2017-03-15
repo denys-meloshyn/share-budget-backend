@@ -38,9 +38,9 @@ class Constants:
         pass
 
     @staticmethod
-    def default_response(reponse):
+    def default_response(reponse, time_stamp = datetime.utcnow()):
         result = {Constants.k_result: reponse,
-                  Constants.k_time_stamp: datetime.utcnow().isoformat()}
+                  Constants.k_time_stamp: time_stamp.isoformat()}
         return result
 
     @staticmethod

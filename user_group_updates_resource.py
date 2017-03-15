@@ -42,9 +42,11 @@ class UserGroupUpdateResource(Resource):
         time_stamp = args.get(Constants.k_time_stamp)
         if time_stamp is not None:
             time_stamp = time_stamp[0].replace(tzinfo=None)
-            items = db.session.query(User).filter(query, User.time_stamp >= time_stamp)
+            items = db.session.query(User).filter(query, User.time_stamp >= time_stamp).filter().all()
         else:
-            items = db.session.query(User).filter(query)
-        result = [model.to_json() for model in items.filter().all()]
+            items = db.session.query(User).filter(query).filter().all()
 
-        return Constants.default_response(result)
+        time_stamp = max(item.time_stamp for item in items)
+        items = [model.to_json() for model in items]
+
+        return Constants.default_response(items, time_stamp)

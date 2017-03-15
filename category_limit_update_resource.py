@@ -43,9 +43,11 @@ class CategoryLimitUpdateResource(Resource):
         else:
             return Constants.error_reponse('wrong_time_stamp')
 
-        query = db.session.query(Category).filter(UserGroup.user_id == user_id,
+        items = db.session.query(Category).filter(UserGroup.user_id == user_id,
                                                   CategoryLimit.time_stamp >= time_stamp,
-                                                  UserGroup.group_id == Category.group_id)
-        items = [model.to_json() for model in query.filter().all()]
+                                                  UserGroup.group_id == Category.group_id).filter().all()
 
-        return Constants.default_response(items)
+        time_stamp = max(item.time_stamp for item in items)
+        items = [model.to_json() for model in items]
+
+        return Constants.default_response(items, time_stamp)

@@ -46,6 +46,7 @@ class GroupUpdateResource(Resource):
         else:
             items = db.session.query(Group).filter(query).all()
 
+        time_stamp = max(item.time_stamp for item in items)
         items = [model.to_json() for model in items]
 
-        return Constants.default_response(items)
+        return Constants.default_response(items, time_stamp)
