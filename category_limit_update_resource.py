@@ -35,7 +35,7 @@ class CategoryLimitUpdateResource(Resource):
         status, message = CredentialsValidator.is_user_credentials_valid(user_id, token)
 
         if status is False:
-            return message
+            return message, 401
 
         time_stamp = args.get(Constants.k_time_stamp)
         if type(time_stamp) is tuple:
