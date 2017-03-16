@@ -23,7 +23,6 @@ swagger_get_parser = swagger_app.parser()
 get_parameters(get_parser)
 get_parameters(swagger_get_parser)
 
-
 class ExpenseUpdateResource(Resource):
     @swagger_app.doc(parser=swagger_get_parser)
     def get(self):
@@ -48,5 +47,8 @@ class ExpenseUpdateResource(Resource):
 
         time_stamp = max(item.time_stamp for item in items)
         items = [model.to_json() for model in items]
+
+        if len(items) > 0:
+            time_stamp = max(item.time_stamp for item in items)
 
         return Constants.default_response(items, time_stamp)
