@@ -45,7 +45,6 @@ class ExpenseUpdateResource(Resource):
         else:
             items = db.session.query(Expense).filter(query).all()
 
-        time_stamp = max(item.time_stamp for item in items)
         items = [model.to_json() for model in items]
 
         if len(items) > 0:

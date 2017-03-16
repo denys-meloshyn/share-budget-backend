@@ -47,7 +47,6 @@ class CategoryLimitUpdateResource(Resource):
                                                   CategoryLimit.time_stamp >= time_stamp,
                                                   UserGroup.group_id == Category.group_id).filter().all()
 
-        time_stamp = max(item.time_stamp for item in items)
         items = [model.to_json() for model in items]
 
         if len(items) > 0:
