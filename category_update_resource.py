@@ -47,9 +47,9 @@ class CategoryUpdateResource(Resource):
         else:
             items = db.session.query(Category).filter(query).all()
 
-        items = [model.to_json() for model in items]
-
         if len(items) > 0:
             time_stamp = max(item.time_stamp for item in items)
+
+        items = [model.to_json() for model in items]
 
         return Constants.default_response(items, time_stamp)
