@@ -21,7 +21,6 @@ class Constants:
     k_expense_id = 'expenseID'
     k_is_removed = 'isRemoved'
     k_time_stamp = 'timeStamp'
-    k_pagination = 'pagination'
     k_internal_id = 'internalID'
     k_category_id = 'categoryID'
     k_user_group_id = 'userGroupID'
@@ -31,6 +30,7 @@ class Constants:
     k_modified_user_id = 'modifiedUserID'
     k_category_limit_id = 'categoryLimitID'
 
+    k_pagination = 'pagination'
     k_pagination_start = 'start'
     k_pagination_total = 'total'
     k_pagination_page_size = 'pageSize'

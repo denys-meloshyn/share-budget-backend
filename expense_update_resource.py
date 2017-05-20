@@ -23,6 +23,7 @@ swagger_get_parser = swagger_app.parser()
 get_parameters(get_parser)
 get_parameters(swagger_get_parser)
 
+
 class ExpenseUpdateResource(Resource):
     @swagger_app.doc(parser=swagger_get_parser)
     def get(self):
@@ -41,9 +42,11 @@ class ExpenseUpdateResource(Resource):
         if type(time_stamp) is tuple:
             time_stamp = time_stamp[0].replace(tzinfo=None)
             query = query.from_self().filter(Expense.time_stamp >= time_stamp)
+        query = query.order_by(Expense.time_stamp.asc())
 
         start_page = args[Constants.k_pagination_start]
         page_size = args[Constants.k_pagination_page_size]
+        pagination = None
         if start_page is not None and page_size is not None:
             pagination = query.paginate(start_page, page_size, True)
             items = pagination.items
