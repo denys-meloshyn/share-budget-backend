@@ -3,7 +3,6 @@ from flask_restful import Resource
 from flask_restful import reqparse
 
 from user import User
-from shared_objects import db
 from constants import Constants
 from user_group import UserGroup
 from shared_objects import swagger_app
@@ -15,6 +14,8 @@ def get_parameters(parser):
                         location='headers')
     parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='headers', required=True)
     parser.add_argument(Constants.k_token, help='User token', location='headers', required=True)
+    parser.add_argument(Constants.k_pagination_start, help='Start page', type=int)
+    parser.add_argument(Constants.k_pagination_page_size, help='Pagination size page', type=int)
 
 
 get_parser = reqparse.RequestParser()
@@ -36,19 +37,27 @@ class UserUpdateResource(Resource):
         if status is False:
             return message, 401
 
-        subquery = db.session.query(UserGroup.group_id).filter(UserGroup.user_id == user_id).subquery()
-        query = db.and_(User.user_id == UserGroup.user_id, UserGroup.group_id.in_(subquery))
+        subquery = User.query.filter(user_id == UserGroup.user_id)
+        query = subquery.from_self().filter(User.user_id == UserGroup.user_id)
 
         time_stamp = args.get(Constants.k_time_stamp)
-        if time_stamp is not None:
+        if type(time_stamp) is tuple:
             time_stamp = time_stamp[0].replace(tzinfo=None)
-            items = db.session.query(User).filter(query, User.time_stamp >= time_stamp).filter().all()
+            query = query.from_self().filter(User.time_stamp >= time_stamp)
+        query = query.order_by(User.time_stamp.asc())
+
+        start_page = args[Constants.k_pagination_start]
+        page_size = args[Constants.k_pagination_page_size]
+        pagination = None
+        if start_page is not None and page_size is not None:
+            pagination = query.paginate(start_page, page_size, True)
+            items = pagination.items
         else:
-            items = db.session.query(User).filter(query).filter().all()
+            items = query.all()
 
         if len(items) > 0:
             time_stamp = max(item.time_stamp for item in items)
 
         items = [model.to_json() for model in items]
 
-        return Constants.default_response(items, time_stamp)
+        return Constants.default_response(items, time_stamp, pagination)

@@ -2,7 +2,6 @@ from flask_restful import inputs
 from flask_restful import Resource
 from flask_restful import reqparse
 
-from shared_objects import db
 from category import Category
 from constants import Constants
 from user_group import UserGroup
@@ -16,6 +15,8 @@ def get_parameters(parser):
                         location='headers', required=True)
     parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='headers', required=True)
     parser.add_argument(Constants.k_token, help='User token', location='headers', required=True)
+    parser.add_argument(Constants.k_pagination_start, help='Start page', type=int)
+    parser.add_argument(Constants.k_pagination_page_size, help='Pagination size page', type=int)
 
 
 get_parser = reqparse.RequestParser()
@@ -37,18 +38,27 @@ class CategoryLimitUpdateResource(Resource):
         if status is False:
             return message, 401
 
-        time_stamp = args.get(Constants.k_time_stamp)
-        if type(time_stamp) is tuple:
-            time_stamp = time_stamp[0].replace(tzinfo=None)
-        else:
-            return Constants.error_reponse('wrong_time_stamp')
+        query = Category.query.filter(user_id == UserGroup.user_id,
+                                      UserGroup.group_id == Category.group_id)
 
-        items = db.session.query(Category).filter(UserGroup.user_id == user_id,
-                                                  CategoryLimit.time_stamp >= time_stamp,
-                                                  UserGroup.group_id == Category.group_id).filter().all()
+        time_stamp = args.get(Constants.k_time_stamp)
+        if time_stamp is not None:
+            time_stamp = time_stamp[0].replace(tzinfo=None)
+            query = query.from_self().filter(Category.time_stamp >= time_stamp)
+        query = query.order_by(Category.time_stamp.asc())
+
+        start_page = args[Constants.k_pagination_start]
+        page_size = args[Constants.k_pagination_page_size]
+        pagination = None
+        if start_page is not None and page_size is not None:
+            pagination = query.paginate(start_page, page_size, True)
+            items = pagination.items
+        else:
+            items = query.all()
+
         if len(items) > 0:
             time_stamp = max(item.time_stamp for item in items)
 
         items = [model.to_json() for model in items]
 
-        return Constants.default_response(items, time_stamp)
+        return Constants.default_response(items, time_stamp, pagination)
