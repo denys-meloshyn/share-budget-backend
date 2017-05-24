@@ -1,9 +1,11 @@
+from datetime import datetime
 from flask_restful import inputs
 from flask_restful import Resource
 from flask_restful import reqparse
 
 
 from constants import Constants
+from response_formatter import ResponseFormatter
 from user_group import UserGroup
 from budget_limit import BudgetLimit
 from shared_objects import swagger_app
@@ -49,16 +51,5 @@ class BudgetLimitUpdateResource(Resource):
 
         start_page = args[Constants.k_pagination_start]
         page_size = args[Constants.k_pagination_page_size]
-        pagination = None
-        if start_page is not None and page_size is not None:
-            pagination = query.paginate(start_page, page_size, True)
-            items = pagination.items
-        else:
-            items = query.all()
 
-        if len(items) > 0:
-            time_stamp = max(item.time_stamp for item in items)
-
-        items = [model.to_json() for model in items]
-
-        return Constants.default_response(items, time_stamp, pagination)
+        return ResponseFormatter.format_response(query=query, start_page=start_page, page_size=page_size)
