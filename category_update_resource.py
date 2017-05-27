@@ -38,7 +38,7 @@ class CategoryUpdateResource(Resource):
         if status is False:
             return message, 401
 
-        query = UserGroup.query.filter(user_id == UserGroup.user_id,
+        query = Category.query.filter(user_id == UserGroup.user_id,
                                       UserGroup.group_id == Category.group_id)
 
         time_stamp = args.get(Constants.k_time_stamp)
