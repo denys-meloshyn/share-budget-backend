@@ -39,8 +39,8 @@ class UserResource(Resource):
 
         items = User.query.filter_by(email=user.email).all()
         if len(items) > 0:
-            user.update(args)
-            db.session.add(user)
+            items[0].update(args)
+            db.session.add(items[0])
             db.session.commit()
             return 200
             # return Constants.error_reponse('user_is_already_exist'), 401
