@@ -29,6 +29,7 @@ class Constants:
     k_budget_limit_id = 'budgetLimitID'
     k_modified_user_id = 'modifiedUserID'
     k_category_limit_id = 'categoryLimitID'
+    k_user_is_already_exist = 'user_is_already_exist'
 
     k_pagination = 'pagination'
     k_pagination_start = 'start'

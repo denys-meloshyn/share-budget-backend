@@ -39,7 +39,7 @@ class UserResource(Resource):
 
         items = User.query.filter_by(email=user.email).all()
         if len(items) > 0:
-            return Constants.error_reponse('user_is_already_exist'), 401
+            return Constants.error_reponse(Constants.k_user_is_already_exist), 401
 
         registration_email.send_registration_email(user)
 
@@ -62,9 +62,9 @@ class UserResource(Resource):
         status, message = CredentialsValidator.is_user_credentials_valid(user_id, token)
 
         if status is False:
-            return message
+            return message, 401
 
-        user_id = args.get(User.user_id)
+        user_id = args.get(Constants.k_user_id)
         items = User.query.filter(User.user_id == user_id)
         user = items[0]
         user.update(args)
