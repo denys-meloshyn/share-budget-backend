@@ -41,7 +41,7 @@ flask_app.config.SWAGGER_UI_DOC_EXPANSION = 'list'
 flask_app.config['BUNDLE_ERRORS'] = True
 flask_app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 flask_app.config.update(dict(
-    DEBUG=True,
+    DEBUG=False,
     MAIL_SERVER='smtp.gmail.com',
     MAIL_PORT=587,
     MAIL_USE_TLS=True,
