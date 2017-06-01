@@ -3,7 +3,7 @@ gunicorn==0.17.2
 Flask==0.10.1
 Flask-SQLAlchemy==2.0
 flask-restplus
-psycopg2==2.6.1
+psycopg2==2.7.1
 Flask-Passlib
 python-dateutil
 pytz

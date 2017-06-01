@@ -3,10 +3,10 @@ from flask_restful import Resource
 from flask_restful import reqparse
 
 from user import User
-import registration_email
 from shared_objects import db
 from constants import Constants
 from shared_objects import swagger_app
+from registration_email import SendRegistrationEmail
 from credentials_validator import CredentialsValidator
 
 
@@ -41,7 +41,7 @@ class UserResource(Resource):
         if len(items) > 0:
             return Constants.error_reponse(Constants.k_user_is_already_exist), 401
 
-        registration_email.send_registration_email(user)
+        self.send_email(user)
 
         db.session.add(user)
         db.session.commit()
@@ -71,3 +71,6 @@ class UserResource(Resource):
         db.session.commit()
 
         return Constants.default_response(user.to_json())
+
+    def send_email(self, user):
+        SendRegistrationEmail.send_registration_email(user)
