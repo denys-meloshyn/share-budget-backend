@@ -44,8 +44,8 @@ class CategoryUpdateResource(Resource):
         time_stamp = args.get(Constants.k_time_stamp)
         if type(time_stamp) is tuple:
             time_stamp = time_stamp[0].replace(tzinfo=None)
-            query = query.from_self().filter(UserGroup.time_stamp >= time_stamp)
-        query = query.order_by(UserGroup.time_stamp.asc())
+            query = query.from_self().filter(Category.time_stamp >= time_stamp)
+        query = query.order_by(Category.time_stamp.asc())
 
         start_page = args[Constants.k_pagination_start]
         page_size = args[Constants.k_pagination_page_size]
