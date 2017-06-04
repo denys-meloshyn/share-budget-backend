@@ -39,14 +39,14 @@ class CategoryLimitUpdateResource(Resource):
         if status is False:
             return message, 401
 
-        query = Category.query.filter(user_id == UserGroup.user_id,
-                                      UserGroup.group_id == Category.group_id)
+        query = CategoryLimit.query.filter(user_id == UserGroup.user_id,
+                                           UserGroup.group_id == Category.group_id)
 
         time_stamp = args.get(Constants.k_time_stamp)
         if time_stamp is not None:
             time_stamp = time_stamp[0].replace(tzinfo=None)
-            query = query.from_self().filter(Category.time_stamp >= time_stamp)
-        query = query.order_by(Category.time_stamp.asc())
+            query = query.from_self().filter(CategoryLimit.time_stamp >= time_stamp)
+        query = query.order_by(CategoryLimit.time_stamp.asc())
 
         start_page = args[Constants.k_pagination_start]
         page_size = args[Constants.k_pagination_page_size]
