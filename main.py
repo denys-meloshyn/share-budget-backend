@@ -7,6 +7,7 @@ from shared_objects import passlib
 from shared_objects import swagger_app
 from flask_restful import Api as FlaskApi
 
+from user_group_update_resource import UserGroupUpdateResource
 from user_resource import UserResource
 from login_resource import LoginResource
 from group_resource import GroupResource
@@ -81,6 +82,7 @@ add_resource(GroupUpdateResource, '/group/updates')
 add_resource(CategoryLimitResource, '/category/limit')
 add_resource(ExpenseUpdateResource, '/expense/updates')
 add_resource(CategoryUpdateResource, '/category/updates')
+add_resource(UserGroupUpdateResource, '/user/group/updates')
 add_resource(BudgetLimitUpdateResource, '/group/limit/updates')
 add_resource(CategoryLimitUpdateResource, '/category/limit/updates')
 add_resource(SendRegistrationEmailResource, '/registration/sendemail')
