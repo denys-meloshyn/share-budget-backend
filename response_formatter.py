@@ -13,7 +13,7 @@ class ResponseFormatter:
     @staticmethod
     def format_response(query, start_page, page_size):
         pagination = None
-        if query is Query:
+        if type(query) is Query:
             pagination = paginate(query, start_page, page_size)
             items = pagination.items
         else:

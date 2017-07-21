@@ -6,6 +6,9 @@ __version__ = '0.0.1'
 class Page(object):
 
     def __init__(self, items, page, page_size, total):
+        self.page = page
+        self.per_page = page_size
+
         self.items = items
         self.previous_page = None
         self.next_page = None

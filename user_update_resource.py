@@ -6,7 +6,7 @@ from response_formatter import ResponseFormatter
 from user import User
 from constants import Constants
 from user_group import UserGroup
-from shared_objects import swagger_app
+from shared_objects import swagger_app, db
 from credentials_validator import CredentialsValidator
 
 
@@ -38,13 +38,15 @@ class UserUpdateResource(Resource):
         if status is False:
             return message, 401
 
-        subquery = User.query.filter(user_id == UserGroup.user_id)
-        query = subquery.from_self().filter(User.user_id == UserGroup.user_id)
+        subquery = db.session.query(UserGroup.group_id).filter(UserGroup.user_id == user_id).subquery()
+        query = db.and_(User.user_id == UserGroup.user_id, UserGroup.group_id.in_(subquery))
 
         time_stamp = args.get(Constants.k_time_stamp)
         if type(time_stamp) is tuple:
             time_stamp = time_stamp[0].replace(tzinfo=None)
-            query = query.from_self().filter(User.time_stamp >= time_stamp)
+            query = db.session.query(User).filter(query, User.time_stamp >= time_stamp)
+        else:
+            query = db.session.query(User).filter(query)
         query = query.order_by(User.time_stamp.asc())
 
         start_page = args[Constants.k_pagination_start]
