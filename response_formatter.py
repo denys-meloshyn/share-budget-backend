@@ -14,8 +14,11 @@ class ResponseFormatter:
     def format_response(query, start_page, page_size):
         pagination = None
         if type(query) is Query:
-            pagination = paginate(query, start_page, page_size)
-            items = pagination.items
+            if start_page is not None and page_size is not None:
+                pagination = paginate(query, start_page, page_size)
+                items = pagination.items
+            else:
+                items = query.all()
         else:
             if start_page is not None and page_size is not None:
                 pagination = query.paginate(start_page, page_size, True)

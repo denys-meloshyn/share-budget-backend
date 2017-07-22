@@ -19,7 +19,35 @@ class UserGroup(db.Model):
 
         self.update(input_parameters)
 
+    def __eq__(self, other):
+        if type(self) is not type(other):
+            return False
+
+        if self.user_group_id != other.user_group_id:
+            return False
+
+        if self.user_id != other.user_id:
+            return False
+
+        if self.group_id != other.group_id:
+            return False
+
+        if self.is_removed != other.is_removed:
+            return False
+
+        return True
+
+    def __repr__(self):
+        return '(user_group_id={}, user_id={}, group_id={}, is_removed={})'.format(self.user_group_id,
+                                                                                   self.user_id,
+                                                                                   self.group_id,
+                                                                                   self.is_removed)
+
     def update(self, new_value):
+        value = new_value.get(Constants.k_user_group_id)
+        if value is not None:
+            self.user_group_id = value
+
         value = new_value.get(Constants.k_user_id)
         if value is not None:
             self.user_id = value

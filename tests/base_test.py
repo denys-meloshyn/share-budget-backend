@@ -1,4 +1,7 @@
 from unittest import TestCase
+
+from flask import json
+
 from main import flask_app
 from shared_objects import db
 from users import User
@@ -39,10 +42,15 @@ class BaseTestCase(TestCase):
     def default_user(self):
         json_attr = self.default_user_json()
         email = json_attr[Constants.k_email]
-        items = User.query.filter(User.user_id == email)
+        items = User.query.filter(User.email == email)
         user = items[0]
 
         return user
+
+    @staticmethod
+    def result(response):
+        data = json.loads(response.data)
+        return data[Constants.k_result]
 
     @staticmethod
     def add_and_safe(model):
@@ -50,8 +58,13 @@ class BaseTestCase(TestCase):
         db.session.commit()
 
     @staticmethod
-    def default_user_json():
-        return {Constants.k_first_name: 'test_first_name',
-                Constants.k_last_name: 'test_last_name',
-                Constants.k_email: 'test_email',
-                Constants.k_password: 'test_password'}
+    def default_user_json(user=None):
+        json_attr = {Constants.k_first_name: 'test_first_name',
+                     Constants.k_last_name: 'test_last_name',
+                     Constants.k_email: 'test_email',
+                     Constants.k_password: 'test_password'}
+        if user is not None:
+            json_attr[Constants.k_user_id] = user.user_id
+            json_attr[Constants.k_token] = user.token
+
+        return json_attr

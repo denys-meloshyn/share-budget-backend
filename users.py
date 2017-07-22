@@ -27,11 +27,38 @@ class User(db.Model):
 
     def __init__(self, input_parameters):
         self.is_removed = False
-        self.is_removed = False
         self.is_email_approved = False
         self.registration_email_token = TokenSerializer.generate_auth_token(self.user_id)
 
         self.update(input_parameters)
+
+    def __eq__(self, other):
+        if type(self) is not type(other):
+            return False
+
+        if self.user_id != other.user_id:
+            return False
+
+        if self.first_name != other.first_name:
+            return False
+
+        if self.last_name != other.last_name:
+            return False
+
+        if self.email != other.email:
+            return False
+
+        if self.is_removed != other.is_removed:
+            return False
+
+        return True
+
+    def __repr__(self):
+        return '(user_id={}, first_name={}, last_name={}, email={}, is_removed={})'.format(self.user_id,
+                                                                                           self.first_name,
+                                                                                           self.last_name,
+                                                                                           self.email,
+                                                                                           self.is_removed)
 
     def update(self, new_value):
         value = new_value.get(Constants.k_email)
