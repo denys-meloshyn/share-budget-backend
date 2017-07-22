@@ -54,9 +54,8 @@ flask_app.config.update(dict(
 flask_resource_api = FlaskApi(flask_app)
 
 db.init_app(flask_app)
-with flask_app.app_context():
-    # Extensions like Flask-SQLAlchemy now know what the "current" app
-    db.create_all()
+flask_app.app_context().push()
+db.create_all()
 
 swagger_app.init_app(flask_app)
 

@@ -1,41 +1,53 @@
 from unittest import TestCase
-
-from users import User
 from main import flask_app
 from shared_objects import db
+from users import User
 from constants import Constants
 
 
 class BaseTestCase(TestCase):
-    def setUp(self):
-        self.app = flask_app.test_client()
-        self.app.testing = True
+    @staticmethod
+    def configure_app():
+        flask_app.testing = True
         flask_app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/postgres_test'
-        self.db = db
 
-        self.db.init_app(flask_app)
-        with flask_app.app_context():
-            # Extensions like FlaskSQLAlchemy now know what the "current" app
-            self.db.create_all()
-
-            self.app = flask_app.test_client()
-            self.app.testing = True
+    def setUp(self):
+        self.configure_app()
+        self.test_client = flask_app.test_client()
+        db.drop_all()
+        db.create_all()
 
     def tearDown(self):
-        with flask_app.app_context():
-            self.db.session.remove()
-            self.db.drop_all()
+        db.session.remove()
+        db.drop_all()
 
-    def create_account(self, is_email_approved=True, json=None):
-        if json is None:
-            json = self.default_user_json()
+    def login(self):
+        self.create_account()
+        self.test_client.post('/login', headers=self.default_user_json())
 
-        user = User(json)
+    def create_account(self, is_email_approved=True, json_attr=None):
+        if json_attr is None:
+            json_attr = self.default_user_json()
+
+        user = User(json_attr)
         user.is_email_approved = is_email_approved
 
-        with flask_app.app_context():
-            db.session.add(user)
-            db.session.commit()
+        db.session.add(user)
+        db.session.commit()
+        return user
+
+    def default_user(self):
+        json_attr = self.default_user_json()
+        email = json_attr[Constants.k_email]
+        items = User.query.filter(User.user_id == email)
+        user = items[0]
+
+        return user
+
+    @staticmethod
+    def add_and_safe(model):
+        db.session.add(model)
+        db.session.commit()
 
     @staticmethod
     def default_user_json():

@@ -69,3 +69,8 @@ class User(db.Model):
             json_object[Constants.k_time_stamp] = self.time_stamp.isoformat()
 
         return json_object
+
+    @staticmethod
+    def find(email):
+        items = User.query.filter_by(email=email).all()
+        return items[0]

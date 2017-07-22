@@ -8,7 +8,7 @@ class TestUserResource(BaseTestCase):
     def test_create_existed_user(self):
         self.create_account()
 
-        response = self.app.post('/user', content_type='multipart/form-data', data=self.default_user_json())
+        response = self.test_client.post('/user', content_type='multipart/form-data', data=self.default_user_json())
         data = json.loads(response.data)
 
         assert response.status_code == 401

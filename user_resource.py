@@ -16,6 +16,7 @@ def post_parameters(parser):
     parser.add_argument(Constants.k_password, help='Password', location='form', required=True)
     parser.add_argument(Constants.k_first_name, help='First Name', location='form', required=True)
 
+
 def put_parameters(parser):
     parser.add_argument(Constants.k_last_name, help='Last Name', location='form')
     parser.add_argument(Constants.k_first_name, help='First Name', location='form')
