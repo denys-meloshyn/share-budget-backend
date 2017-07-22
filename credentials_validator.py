@@ -1,6 +1,6 @@
 from itsdangerous import BadSignature, SignatureExpired
 
-from user import User
+from users import User
 from constants import Constants
 from token_serializer import TokenSerializer
 

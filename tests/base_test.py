@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from user import User
+from users import User
 from main import flask_app
 from shared_objects import db
 from constants import Constants
@@ -26,9 +26,9 @@ class BaseTestCase(TestCase):
             self.db.session.remove()
             self.db.drop_all()
 
-    def create_account(self, is_email_approved = True, json = None):
+    def create_account(self, is_email_approved=True, json=None):
         if json is None:
-            json = self.defaultUserJSON()
+            json = self.default_user_json()
 
         user = User(json)
         user.is_email_approved = is_email_approved
@@ -37,7 +37,8 @@ class BaseTestCase(TestCase):
             db.session.add(user)
             db.session.commit()
 
-    def defaultUserJSON(self):
+    @staticmethod
+    def default_user_json():
         return {Constants.k_first_name: 'test_first_name',
                 Constants.k_last_name: 'test_last_name',
                 Constants.k_email: 'test_email',

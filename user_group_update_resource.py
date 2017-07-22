@@ -4,7 +4,7 @@ from constants import Constants
 from credentials_validator import CredentialsValidator
 from response_formatter import ResponseFormatter
 from shared_objects import swagger_app, db
-from user import User
+from users import User
 from user_group import UserGroup
 
 

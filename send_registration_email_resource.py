@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from flask_restful import reqparse
 
-from user import User
+from users import User
 import registration_email
 from constants import Constants
 from shared_objects import swagger_app

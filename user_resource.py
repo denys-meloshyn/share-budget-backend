@@ -2,7 +2,7 @@ from flask_restful import inputs
 from flask_restful import Resource
 from flask_restful import reqparse
 
-from user import User
+from users import User
 from shared_objects import db
 from constants import Constants
 from shared_objects import swagger_app

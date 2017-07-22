@@ -9,6 +9,7 @@ class Group(db.Model):
     __tablename__ = 'GROUP'
 
     group_id = db.Column(db.Integer, primary_key=True)
+    creator_user_id = db.Column(db.Integer, db.ForeignKey('USER.user_id'))
     modified_user_id = db.Column(db.Integer, db.ForeignKey('USER.user_id'))
     name = db.Column(db.Text)
     is_removed = db.Column(db.Boolean)

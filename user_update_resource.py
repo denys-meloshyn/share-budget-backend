@@ -3,7 +3,7 @@ from flask_restful import Resource
 from flask_restful import reqparse
 
 from response_formatter import ResponseFormatter
-from user import User
+from users import User
 from constants import Constants
 from user_group import UserGroup
 from shared_objects import swagger_app, db

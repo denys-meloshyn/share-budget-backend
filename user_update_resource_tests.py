@@ -3,7 +3,7 @@ import unittest
 import json
 
 from constants import Constants
-from user import User
+from users import User
 from main import flask_app
 from shared_objects import db
 
