@@ -321,10 +321,7 @@ class TestUserUpdateResource(BaseTestCase):
         user.first_name = "USER_3"
         self.add_and_safe(user)
 
-        user_group = UserGroup({})
-        user_group.user_id = user.user_id
-        user_group.group_id = group_4.group_id
-        self.add_and_safe(user_group)
+        self.create_user_group(user=user, group=group_4)
 
         # ----------------
 
