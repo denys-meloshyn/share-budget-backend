@@ -1,10 +1,10 @@
 from flask_restful import Resource
 from flask_restful import reqparse
 
-from shared_objects import db
-from shared_objects import swagger_app
-from users import User
+from model.users import User
 from utility.constants import Constants
+from utility.shared_objects import db
+from utility.shared_objects import swagger_app
 
 
 def add_get_parameters(parser):

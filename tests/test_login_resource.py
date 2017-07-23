@@ -1,7 +1,7 @@
 import json
 
+from model.users import User
 from tests.base_test import BaseTestCase
-from users import User
 from utility.constants import Constants
 
 

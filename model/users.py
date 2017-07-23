@@ -2,9 +2,9 @@ from datetime import datetime
 
 from sqlalchemy import orm
 
-from shared_objects import db
-from shared_objects import passlib
 from utility.constants import Constants
+from utility.shared_objects import db
+from utility.shared_objects import passlib
 from utility.token_serializer import TokenSerializer
 
 

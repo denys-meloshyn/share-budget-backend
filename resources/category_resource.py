@@ -1,12 +1,12 @@
 from flask_restful import Resource
 from flask_restful import reqparse
 
-from category import Category
-from shared_objects import db
-from shared_objects import swagger_app
+from model.category import Category
 from utility.constants import Constants
 from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
+from utility.shared_objects import db
+from utility.shared_objects import swagger_app
 
 
 def put_parameters(parser):

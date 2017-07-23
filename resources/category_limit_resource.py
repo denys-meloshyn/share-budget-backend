@@ -2,12 +2,12 @@ from flask_restful import Resource
 from flask_restful import inputs
 from flask_restful import reqparse
 
-from category_limit import CategoryLimit
-from shared_objects import db
-from shared_objects import swagger_app
+from model.category_limit import CategoryLimit
 from utility.constants import Constants
 from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
+from utility.shared_objects import db
+from utility.shared_objects import swagger_app
 
 
 def put_parameters(parser):

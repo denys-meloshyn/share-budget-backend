@@ -1,13 +1,14 @@
+from category import Category
 from flask_restful import Resource
 from flask_restful import reqparse
 
-from category import Category
-from shared_objects import swagger_app
-from user_group import UserGroup
+from model.category_limit import CategoryLimit
+from model.user_group import UserGroup
 from utility.constants import Constants
 from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
 from utility.response_formatter import ResponseFormatter
+from utility.shared_objects import swagger_app
 
 
 def get_parameters(parser):
@@ -21,7 +22,7 @@ get_parameters(get_parser)
 get_parameters(swagger_get_parser)
 
 
-class CategoryUpdateResource(Resource):
+class CategoryLimitUpdateResource(Resource):
     @swagger_app.doc(parser=swagger_get_parser)
     def get(self):
         args = get_parser.parse_args()
@@ -33,14 +34,14 @@ class CategoryUpdateResource(Resource):
         if status is False:
             return message, 401
 
-        query = Category.query.filter(user_id == UserGroup.user_id,
-                                      UserGroup.group_id == Category.group_id)
+        query = CategoryLimit.query.filter(user_id == UserGroup.user_id,
+                                           UserGroup.group_id == Category.group_id)
 
         time_stamp = args.get(Constants.k_time_stamp)
-        if type(time_stamp) is tuple:
+        if time_stamp is not None:
             time_stamp = time_stamp[0].replace(tzinfo=None)
-            query = query.from_self().filter(Category.time_stamp >= time_stamp)
-        query = query.order_by(Category.time_stamp.asc())
+            query = query.from_self().filter(CategoryLimit.time_stamp >= time_stamp)
+        query = query.order_by(CategoryLimit.time_stamp.asc())
 
         start_page = args[Constants.k_pagination_start]
         page_size = args[Constants.k_pagination_page_size]

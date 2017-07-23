@@ -1,10 +1,10 @@
 from flask_restful import Resource
 from flask_restful import reqparse
 
-import registration_email
-from shared_objects import swagger_app
-from users import User
+from model.users import User
+from utility import registration_email
 from utility.constants import Constants
+from utility.shared_objects import swagger_app
 
 
 def get_parameters(parser):

@@ -1,18 +1,19 @@
-from flask_restful import Resource
-from flask_restful import reqparse
-
-from budget_limit import BudgetLimit
-from shared_objects import swagger_app
+from flask_restful import inputs, reqparse, Resource
 from user_group import UserGroup
+
+from model.users import User
 from utility.constants import Constants
 from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
 from utility.response_formatter import ResponseFormatter
+from utility.shared_objects import swagger_app, db
 
 
 def get_parameters(parser):
-    ResourceParser.add_default_update_parameters(parser)
+    parser.add_argument(Constants.k_time_stamp, type=inputs.iso8601interval, help='Time stamp date (ISO 8601)',
+                        location='headers')
 
+    ResourceParser.add_default_update_parameters(parser)
 
 get_parser = reqparse.RequestParser()
 swagger_get_parser = swagger_app.parser()
@@ -21,7 +22,7 @@ get_parameters(get_parser)
 get_parameters(swagger_get_parser)
 
 
-class BudgetLimitUpdateResource(Resource):
+class UserGroupUpdateResource(Resource):
     @swagger_app.doc(parser=swagger_get_parser)
     def get(self):
         args = get_parser.parse_args()
@@ -33,13 +34,16 @@ class BudgetLimitUpdateResource(Resource):
         if status is False:
             return message, 401
 
-        query = BudgetLimit.query.filter(user_id == UserGroup.user_id, UserGroup.group_id == BudgetLimit.group_id)
+        subquery = db.session.query(UserGroup.group_id).filter(UserGroup.user_id == user_id).subquery()
+        query = db.and_(User.user_id == UserGroup.user_id, UserGroup.group_id.in_(subquery))
 
         time_stamp = args.get(Constants.k_time_stamp)
-        if time_stamp is not None:
+        if type(time_stamp) is tuple:
             time_stamp = time_stamp[0].replace(tzinfo=None)
-            query = query.from_self().filter(BudgetLimit.time_stamp >= time_stamp)
-        query = query.order_by(BudgetLimit.time_stamp.asc())
+            query = db.session.query(UserGroup).filter(query, UserGroup.time_stamp >= time_stamp)
+        else:
+            query = db.session.query(UserGroup).filter(query)
+        query = query.order_by(UserGroup.time_stamp.asc())
 
         start_page = args[Constants.k_pagination_start]
         page_size = args[Constants.k_pagination_page_size]

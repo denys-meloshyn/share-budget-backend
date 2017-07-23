@@ -2,19 +2,19 @@ from datetime import datetime
 
 from sqlalchemy import orm
 
-from shared_objects import db
 from utility.constants import Constants
+from utility.shared_objects import db
 
 
-class Group(db.Model):
-    __tablename__ = 'GROUP'
+class Category(db.Model):
+    __tablename__ = 'CATEGORY'
 
-    group_id = db.Column(db.Integer, primary_key=True)
-    creator_user_id = db.Column(db.Integer, db.ForeignKey('USER.user_id'))
+    category_id = db.Column(db.Integer, primary_key=True)
     modified_user_id = db.Column(db.Integer, db.ForeignKey('USER.user_id'))
+    group_id = db.Column(db.Integer, db.ForeignKey('GROUP.group_id'))
     name = db.Column(db.Text)
-    is_removed = db.Column(db.Boolean)
-    time_stamp = db.Column(db.DateTime)
+    is_removed = db.Column(db.Boolean, default=False)
+    time_stamp = db.Column(db.DateTime, default=datetime.utcnow())
 
     @orm.reconstructor
     def init_on_load(self):
@@ -27,6 +27,10 @@ class Group(db.Model):
         self.update(input_parameters)
 
     def update(self, new_value):
+        value = new_value.get(Constants.k_group_id)
+        if value is not None:
+            self.group_id = value
+
         value = new_value.get(Constants.k_name)
         if value is not None:
             self.name = value
@@ -35,10 +39,6 @@ class Group(db.Model):
         if value is not None:
             self.is_removed = value
 
-        value = new_value.get(Constants.k_internal_id)
-        if value is not None:
-            self.internal_id = value
-
         value = new_value.get(Constants.k_user_id)
         if value is not None:
             self.modified_user_id = value
@@ -46,15 +46,13 @@ class Group(db.Model):
         self.time_stamp = datetime.utcnow()
 
     def to_json(self):
-        json_object = {Constants.k_group_id: self.group_id,
+        json_object = {Constants.k_category_id: self.category_id,
+                       Constants.k_group_id: self.group_id,
                        Constants.k_name: self.name,
 
                        Constants.k_modified_user_id: self.modified_user_id,
                        Constants.k_is_removed: self.is_removed
                        }
-
-        if self.internal_id is not None:
-            json_object[Constants.k_internal_id] = self.internal_id
 
         if self.time_stamp is not None:
             json_object[Constants.k_time_stamp] = self.time_stamp.isoformat()

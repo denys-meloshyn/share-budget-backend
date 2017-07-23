@@ -3,9 +3,9 @@ from unittest import TestCase
 from flask import json
 
 from main import flask_app
-from shared_objects import db
-from users import User
+from model.users import User
 from utility.constants import Constants
+from utility.shared_objects import db
 
 
 class BaseTestCase(TestCase):

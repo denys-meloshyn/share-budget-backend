@@ -1,7 +1,8 @@
 from group import Group
-from tests.base_test import BaseTestCase
 from user_group import UserGroup
-from users import User
+
+from model.users import User
+from tests.base_test import BaseTestCase
 
 
 class TestUserUpdateResource(BaseTestCase):
