@@ -7,6 +7,7 @@ from constants import Constants
 from budget_limit import BudgetLimit
 from shared_objects import swagger_app
 from credentials_validator import CredentialsValidator
+from utility.resource_parser import ResourceParser
 
 
 def put_parameters(parser):
@@ -14,10 +15,7 @@ def put_parameters(parser):
     parser.add_argument(Constants.k_limit, type=float, help='Limit', location='form', required=True)
     parser.add_argument(Constants.k_date, type=inputs.date, help='Limit date', location='form', required=True)
 
-    parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='form', required=True)
-    parser.add_argument(Constants.k_token, help='User token', location='form', required=True)
-    parser.add_argument(Constants.k_is_removed, type=inputs.boolean, help='Is group limit removed', location='form')
-    parser.add_argument(Constants.k_internal_id, type=int, help='Internal ID', location='form')
+    ResourceParser.add_default_parameters(parser)
 
 
 class BudgetLimitResource(Resource):

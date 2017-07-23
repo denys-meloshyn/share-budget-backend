@@ -7,6 +7,7 @@ from category import Category
 from constants import Constants
 from shared_objects import swagger_app
 from credentials_validator import CredentialsValidator
+from utility.resource_parser import ResourceParser
 
 
 def put_parameters(parser):
@@ -14,10 +15,7 @@ def put_parameters(parser):
     parser.add_argument(Constants.k_group_id, type=int, help='Group ID', location='form', required=True)
     parser.add_argument(Constants.k_name, help='Category name', location='form', required=True)
 
-    parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='form', required=True)
-    parser.add_argument(Constants.k_token, help='User token', location='form', required=True)
-    parser.add_argument(Constants.k_is_removed, type=inputs.boolean, help='Is group limit removed', location='form')
-    parser.add_argument(Constants.k_internal_id, type=int, help='Internal ID', location='form')
+    ResourceParser.add_default_parameters(parser)
 
 
 class CategoryResource(Resource):
