@@ -2,12 +2,12 @@ from flask_restful import Resource
 from flask_restful import reqparse
 
 from category import Category
-from constants import Constants
-from response_formatter import ResponseFormatter
-from user_group import UserGroup
-from shared_objects import swagger_app
 from category_limit import CategoryLimit
-from credentials_validator import CredentialsValidator
+from response_formatter import ResponseFormatter
+from shared_objects import swagger_app
+from user_group import UserGroup
+from utility.constants import Constants
+from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
 
 

@@ -1,34 +1,34 @@
 import os
+
 from flask import Flask
-from shared_objects import db
-from constants import Constants
-from shared_objects import mail
-from shared_objects import passlib
-from shared_objects import swagger_app
-from flask_restful import Api as FlaskApi
-
-from user_group_update_resource import UserGroupUpdateResource
-from user_resource import UserResource
-from login_resource import LoginResource
-from group_resource import GroupResource
-from expense_resource import ExpenseResource
-from category_resource import CategoryResource
-from user_update_resource import UserUpdateResource
-from group_update_resource import GroupUpdateResource
-from budget_limit_resource import BudgetLimitResource
-from category_limit_resource import CategoryLimitResource
-from expense_update_resource import ExpenseUpdateResource
-from category_update_resource import CategoryUpdateResource
-from registration_email_resource import RegistrationEmailResource
-from budget_limit_update_resource import BudgetLimitUpdateResource
-from category_limit_update_resource import CategoryLimitUpdateResource
-from send_registration_email_resource import SendRegistrationEmailResource
-
 from flask_passlib import LazyCryptContext
 from flask_passlib.context import werkzeug_salted_md5
 from flask_passlib.context import werkzeug_salted_sha1
 from flask_passlib.context import werkzeug_salted_sha256
 from flask_passlib.context import werkzeug_salted_sha512
+from flask_restful import Api as FlaskApi
+
+from budget_limit_resource import BudgetLimitResource
+from budget_limit_update_resource import BudgetLimitUpdateResource
+from category_limit_resource import CategoryLimitResource
+from category_limit_update_resource import CategoryLimitUpdateResource
+from category_resource import CategoryResource
+from category_update_resource import CategoryUpdateResource
+from expense_resource import ExpenseResource
+from expense_update_resource import ExpenseUpdateResource
+from group_resource import GroupResource
+from group_update_resource import GroupUpdateResource
+from login_resource import LoginResource
+from registration_email_resource import RegistrationEmailResource
+from send_registration_email_resource import SendRegistrationEmailResource
+from shared_objects import db
+from shared_objects import mail
+from shared_objects import passlib
+from shared_objects import swagger_app
+from user_group_update_resource import UserGroupUpdateResource
+from user_resource import UserResource
+from user_update_resource import UserUpdateResource
+from utility.constants import Constants
 
 
 def add_resource(obj, path):

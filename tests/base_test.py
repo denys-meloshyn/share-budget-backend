@@ -5,7 +5,7 @@ from flask import json
 from main import flask_app
 from shared_objects import db
 from users import User
-from constants import Constants
+from utility.constants import Constants
 
 
 class BaseTestCase(TestCase):

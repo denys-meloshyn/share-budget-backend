@@ -1,10 +1,10 @@
 from flask_restful import Resource
 from flask_restful import reqparse
 
-from users import User
 import registration_email
-from constants import Constants
 from shared_objects import swagger_app
+from users import User
+from utility.constants import Constants
 
 
 def get_parameters(parser):
@@ -26,6 +26,6 @@ class SendRegistrationEmailResource(Resource):
         if user is None:
             return Constants.error_reponse(Constants.k_user_not_exist), 401
 
-        registration_email.send_registration_email(user)
+        registration_email.SendRegistrationEmail.send_registration_email(user)
 
         return {}

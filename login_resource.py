@@ -1,12 +1,12 @@
 from flask_restful import Resource
 from flask_restful import reqparse
 
-from users import User
 from shared_objects import db
-from constants import Constants
 from shared_objects import passlib
 from shared_objects import swagger_app
-from token_serializer import TokenSerializer
+from users import User
+from utility.constants import Constants
+from utility.token_serializer import TokenSerializer
 
 
 def post_parameters(parser):

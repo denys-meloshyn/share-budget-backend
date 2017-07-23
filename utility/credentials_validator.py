@@ -1,8 +1,8 @@
 from itsdangerous import BadSignature, SignatureExpired
 
 from users import User
-from constants import Constants
-from token_serializer import TokenSerializer
+from utility.constants import Constants
+from utility.token_serializer import TokenSerializer
 
 
 class CredentialsValidator:
@@ -29,7 +29,7 @@ class CredentialsValidator:
         # Do we have user with received ID?
         if user is None:
             # No we haven't: return error status
-            return False, Constants.error_reponse('user_doesn\'t_exist')
+            return False, Constants.error_reponse('user_does_not_exist')
 
         # Is received token correct?
         if user.token != token:

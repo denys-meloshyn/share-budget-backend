@@ -2,8 +2,8 @@ from datetime import datetime
 
 from sqlalchemy.orm import Query
 
-from constants import Constants
-from sqlalchemy_pagination import Page, paginate
+from sqlalchemy_pagination import paginate
+from utility.constants import Constants
 
 
 class ResponseFormatter:

@@ -1,7 +1,7 @@
 import json
 
-from constants import Constants
 from tests.base_test import BaseTestCase
+from utility.constants import Constants
 
 
 class TestUserResource(BaseTestCase):

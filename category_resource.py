@@ -1,12 +1,11 @@
-from flask_restful import inputs
 from flask_restful import Resource
 from flask_restful import reqparse
 
-from shared_objects import db
 from category import Category
-from constants import Constants
+from shared_objects import db
 from shared_objects import swagger_app
-from credentials_validator import CredentialsValidator
+from utility.constants import Constants
+from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
 
 

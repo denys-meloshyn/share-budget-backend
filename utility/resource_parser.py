@@ -1,6 +1,6 @@
 from flask_restful import inputs
 
-from constants import Constants
+from utility.constants import Constants
 
 
 class ResourceParser:

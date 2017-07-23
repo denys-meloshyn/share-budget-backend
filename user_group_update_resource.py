@@ -1,20 +1,19 @@
 from flask_restful import inputs, reqparse, Resource
 
-from constants import Constants
-from credentials_validator import CredentialsValidator
 from response_formatter import ResponseFormatter
 from shared_objects import swagger_app, db
-from users import User
 from user_group import UserGroup
+from users import User
+from utility.constants import Constants
+from utility.credentials_validator import CredentialsValidator
+from utility.resource_parser import ResourceParser
 
 
 def get_parameters(parser):
     parser.add_argument(Constants.k_time_stamp, type=inputs.iso8601interval, help='Time stamp date (ISO 8601)',
                         location='headers')
-    parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='headers', required=True)
-    parser.add_argument(Constants.k_token, help='User token', location='headers', required=True)
-    parser.add_argument(Constants.k_pagination_start, help='Start page', type=int)
-    parser.add_argument(Constants.k_pagination_page_size, help='Pagination size page', type=int)
+
+    ResourceParser.add_default_update_parameters(parser)
 
 get_parser = reqparse.RequestParser()
 swagger_get_parser = swagger_app.parser()

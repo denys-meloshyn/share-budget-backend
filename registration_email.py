@@ -1,9 +1,13 @@
 from flask_mail import Message
 
-from constants import Constants
 from shared_objects import mail
+from utility.constants import Constants
+
 
 class SendRegistrationEmail:
+    def __init__(self):
+        pass
+
     @staticmethod
     def send_registration_email(user):
         msg = Message()

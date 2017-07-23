@@ -1,12 +1,12 @@
 from flask_restful import Resource
 from flask_restful import reqparse
 
-from users import User
-from shared_objects import db
-from constants import Constants
-from shared_objects import swagger_app
 from registration_email import SendRegistrationEmail
-from credentials_validator import CredentialsValidator
+from shared_objects import db
+from shared_objects import swagger_app
+from users import User
+from utility.constants import Constants
+from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
 
 

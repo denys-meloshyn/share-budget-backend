@@ -1,10 +1,11 @@
-from sqlalchemy import orm
 from datetime import datetime
 
+from sqlalchemy import orm
+
 from shared_objects import db
-from constants import Constants
 from shared_objects import passlib
-from token_serializer import TokenSerializer
+from utility.constants import Constants
+from utility.token_serializer import TokenSerializer
 
 
 class User(db.Model):
@@ -26,6 +27,7 @@ class User(db.Model):
         self.internal_id = None
 
     def __init__(self, input_parameters):
+        self.internal_id = None
         self.is_removed = False
         self.is_email_approved = False
         self.registration_email_token = TokenSerializer.generate_auth_token(self.user_id)

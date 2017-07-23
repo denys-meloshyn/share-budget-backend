@@ -1,7 +1,8 @@
 import json
-from users import User
-from constants import Constants
+
 from tests.base_test import BaseTestCase
+from users import User
+from utility.constants import Constants
 
 
 class TestLoginResource(BaseTestCase):
