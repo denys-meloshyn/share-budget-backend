@@ -1,12 +1,12 @@
 from flask_restful import inputs, reqparse, Resource
 
-from response_formatter import ResponseFormatter
 from shared_objects import swagger_app, db
 from user_group import UserGroup
 from users import User
 from utility.constants import Constants
 from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
+from utility.response_formatter import ResponseFormatter
 
 
 def get_parameters(parser):

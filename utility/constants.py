@@ -46,8 +46,8 @@ class Constants:
         pass
 
     @staticmethod
-    def default_response(reponse, time_stamp=datetime.utcnow(), pagination=None):
-        result = {Constants.k_result: reponse,
+    def default_response(response, time_stamp=datetime.utcnow(), pagination=None):
+        result = {Constants.k_result: response,
                   Constants.k_time_stamp: time_stamp.isoformat()}
 
         if pagination is not None:
