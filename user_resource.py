@@ -1,4 +1,3 @@
-from flask_restful import inputs
 from flask_restful import Resource
 from flask_restful import reqparse
 
@@ -8,6 +7,7 @@ from constants import Constants
 from shared_objects import swagger_app
 from registration_email import SendRegistrationEmail
 from credentials_validator import CredentialsValidator
+from utility.resource_parser import ResourceParser
 
 
 def post_parameters(parser):
@@ -21,9 +21,7 @@ def put_parameters(parser):
     parser.add_argument(Constants.k_last_name, help='Last Name', location='form')
     parser.add_argument(Constants.k_first_name, help='First Name', location='form')
 
-    parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='form', required=True)
-    parser.add_argument(Constants.k_token, help='User token', location='form', required=True)
-    parser.add_argument(Constants.k_is_removed, type=inputs.boolean, help='Is removed', location='form')
+    ResourceParser.add_default_parameters(parser)
 
 
 class UserResource(Resource):
@@ -73,5 +71,6 @@ class UserResource(Resource):
 
         return Constants.default_response(user.to_json())
 
-    def send_email(self, user):
+    @staticmethod
+    def send_email(user):
         SendRegistrationEmail.send_registration_email(user)
