@@ -1,8 +1,8 @@
 from flask_restful import Resource
 from flask_restful import reqparse
-from user_group import UserGroup
 
 from model.group import Group
+from model.user_group import UserGroup
 from utility.constants import Constants
 from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
@@ -32,8 +32,7 @@ class GroupUpdateResource(Resource):
         if status is False:
             return message, 401
 
-        query = Group.query.filter(user_id == UserGroup.user_id,
-                                   UserGroup.group_id == Group.group_id)
+        query = Group.query.filter(user_id == UserGroup.user_id, UserGroup.group_id == Group.group_id)
 
         time_stamp = args.get(Constants.k_time_stamp)
         if time_stamp is not None:

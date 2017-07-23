@@ -1,8 +1,8 @@
 from flask_restful import Resource
 from flask_restful import inputs
 from flask_restful import reqparse
-from user_group import UserGroup
 
+from model.user_group import UserGroup
 from model.users import User
 from utility.constants import Constants
 from utility.credentials_validator import CredentialsValidator

@@ -1,7 +1,7 @@
-from category import Category
 from flask_restful import Resource
 from flask_restful import reqparse
 
+from model.category import Category
 from model.category_limit import CategoryLimit
 from model.user_group import UserGroup
 from utility.constants import Constants

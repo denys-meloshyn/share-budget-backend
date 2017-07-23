@@ -1,9 +1,9 @@
 from flask_restful import Resource
 from flask_restful import reqparse
-from user_group import UserGroup
 
 from model.category import Category
 from model.group import Group
+from model.user_group import UserGroup
 from utility.constants import Constants
 from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser

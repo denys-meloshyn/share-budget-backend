@@ -1,6 +1,6 @@
-from flask_restful import inputs, reqparse, Resource
-from user_group import UserGroup
+from flask_restful import reqparse, Resource
 
+from model.user_group import UserGroup
 from model.users import User
 from utility.constants import Constants
 from utility.credentials_validator import CredentialsValidator
@@ -10,9 +10,6 @@ from utility.shared_objects import swagger_app, db
 
 
 def get_parameters(parser):
-    parser.add_argument(Constants.k_time_stamp, type=inputs.iso8601interval, help='Time stamp date (ISO 8601)',
-                        location='headers')
-
     ResourceParser.add_default_update_parameters(parser)
 
 get_parser = reqparse.RequestParser()

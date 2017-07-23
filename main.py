@@ -1,12 +1,5 @@
 import os
 
-from budget_limit_update_resource import BudgetLimitUpdateResource
-from category_limit_resource import CategoryLimitResource
-from category_limit_update_resource import CategoryLimitUpdateResource
-from category_resource import CategoryResource
-from category_update_resource import CategoryUpdateResource
-from expense_resource import ExpenseResource
-from expense_update_resource import ExpenseUpdateResource
 from flask import Flask
 from flask_passlib import LazyCryptContext
 from flask_passlib.context import werkzeug_salted_md5
@@ -14,15 +7,22 @@ from flask_passlib.context import werkzeug_salted_sha1
 from flask_passlib.context import werkzeug_salted_sha256
 from flask_passlib.context import werkzeug_salted_sha512
 from flask_restful import Api as FlaskApi
-from group_resource import GroupResource
-from group_update_resource import GroupUpdateResource
-from login_resource import LoginResource
-from registration_email_resource import RegistrationEmailResource
-from send_registration_email_resource import SendRegistrationEmailResource
-from user_group_update_resource import UserGroupUpdateResource
-from user_resource import UserResource
 
 from resources.budget_limit_resource import BudgetLimitResource
+from resources.budget_limit_update_resource import BudgetLimitUpdateResource
+from resources.category_limit_resource import CategoryLimitResource
+from resources.category_limit_update_resource import CategoryLimitUpdateResource
+from resources.category_resource import CategoryResource
+from resources.category_update_resource import CategoryUpdateResource
+from resources.expense_resource import ExpenseResource
+from resources.expense_update_resource import ExpenseUpdateResource
+from resources.group_resource import GroupResource
+from resources.group_update_resource import GroupUpdateResource
+from resources.login_resource import LoginResource
+from resources.registration_email_resource import RegistrationEmailResource
+from resources.send_registration_email_resource import SendRegistrationEmailResource
+from resources.user_group_update_resource import UserGroupUpdateResource
+from resources.user_resource import UserResource
 from resources.user_update_resource import UserUpdateResource
 from utility.constants import Constants
 from utility.shared_objects import db
