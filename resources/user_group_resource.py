@@ -8,9 +8,7 @@ from utility.shared_objects import swagger_app, db
 
 
 def put_parameters(parser):
-    parser.add_argument(Constants.k_user_group_id, type=int, help='User group ID',
-                        location='form')
-    parser.add_argument(Constants.k_user_id, type=int, help='User ID', location='form')
+    parser.add_argument(Constants.k_user_group_id, type=int, help='User group ID', location='form', required=True)
     parser.add_argument(Constants.k_group_id, type=int, help='Group ID', location='form', required=True)
 
     ResourceParser.add_default_parameters(parser)
@@ -34,7 +32,7 @@ class UserGroupResource(Resource):
             return message, 401
 
         user_group_id = args.get(Constants.k_user_group_id)
-        items = UserGroup.query.filter_by(user_group=user_group_id).all()
+        items = UserGroup.query.filter_by(user_group_id=user_group_id).all()
 
         if len(items) == 0:
             return Constants.error_reponse('user_group_is_not_exist'), 401

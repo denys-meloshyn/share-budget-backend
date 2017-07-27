@@ -21,6 +21,7 @@ from resources.group_update_resource import GroupUpdateResource
 from resources.login_resource import LoginResource
 from resources.registration_email_resource import RegistrationEmailResource
 from resources.send_registration_email_resource import SendRegistrationEmailResource
+from resources.user_group_resource import UserGroupResource
 from resources.user_group_update_resource import UserGroupUpdateResource
 from resources.user_resource import UserResource
 from resources.user_update_resource import UserUpdateResource
@@ -75,6 +76,7 @@ add_resource(LoginResource, '/login')
 add_resource(GroupResource, '/group')
 add_resource(ExpenseResource, '/expense')
 add_resource(CategoryResource, '/category')
+add_resource(UserGroupResource, '/user/group')
 add_resource(UserUpdateResource, '/user/updates')
 add_resource(BudgetLimitResource, '/group/limit')
 add_resource(GroupUpdateResource, '/group/updates')
