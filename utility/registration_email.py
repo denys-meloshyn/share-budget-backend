@@ -29,7 +29,7 @@ class SendRegistrationEmail:
         msg.html += user.registration_email_token
         msg.html += '">Complete registration</a></p>'
         msg.html += '<p>If you did not register for Share Budget, just ignore this message.</p>'
-        msg.html += '<p>With any quetions contact <a href="mailto:sharebudgetproject@gmail.com?Subject=Remarks' \
+        msg.html += '<p>With any questions contact <a href="mailto:sharebudgetproject@gmail.com?Subject=Remarks' \
                     ' and offers">sharebudgetproject@gmail.com</a>.</p>'
         msg.html += '<p>Best regards, <br>Share Budget Team</p>'
         msg.html += '</body>'
