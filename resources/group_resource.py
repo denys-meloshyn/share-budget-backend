@@ -12,9 +12,9 @@ from utility.shared_objects import swagger_app
 
 
 def put_parameters(parser):
-    parser.add_argument(Constants.k_group_id, type=int, help='Group ID (if empty new group will be created)',
+    parser.add_argument(Constants.JSON.group_id, type=int, help='Group ID (if empty new group will be created)',
                         location='form')
-    parser.add_argument(Constants.k_name, help='Group name', location='form', required=True)
+    parser.add_argument(Constants.JSON.name, help='Group name', location='form', required=True)
 
     ResourceParser.add_default_parameters(parser)
 
@@ -29,14 +29,14 @@ class GroupResource(Resource):
         put_parameters(parser)
         args = parser.parse_args()
 
-        user_id = args[Constants.k_user_id]
-        token = args[Constants.k_token]
+        user_id = args[Constants.JSON.user_id]
+        token = args[Constants.JSON.token]
         status, message = CredentialsValidator.is_user_credentials_valid(user_id, token)
 
         if status is False:
             return message, 401
 
-        group_id = args.get(Constants.k_group_id)
+        group_id = args.get(Constants.JSON.group_id)
         # If group_id exist?
         if group_id is None:
             # No: create new group row

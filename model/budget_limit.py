@@ -28,48 +28,48 @@ class BudgetLimit(db.Model):
         self.update(input_parameters)
 
     def update(self, new_value):
-        value = new_value.get(Constants.k_group_id)
+        value = new_value.get(Constants.JSON.group_id)
         if value is not None:
             self.group_id = value
 
-        value = new_value.get(Constants.k_limit)
+        value = new_value.get(Constants.JSON.limit)
         if value is not None:
             self.limit = value
 
-        value = new_value.get(Constants.k_date)
+        value = new_value.get(Constants.JSON.date)
         if value is not None:
             self.date = value.replace(day=1)
 
-        value = new_value.get(Constants.k_internal_id)
+        value = new_value.get(Constants.JSON.internal_id)
         if value is not None:
             self.internal_id = value
 
-        value = new_value.get(Constants.k_is_removed)
+        value = new_value.get(Constants.JSON.is_removed)
         if value is not None:
             self.is_removed = value
 
-        value = new_value.get(Constants.k_user_id)
+        value = new_value.get(Constants.JSON.user_id)
         if value is not None:
             self.modified_user_id = value
 
         self.time_stamp = datetime.utcnow()
 
     def to_json(self):
-        json_object = {Constants.k_budget_limit_id: self.budget_limit_id,
-                       Constants.k_group_id: self.group_id,
-                       Constants.k_limit: self.limit,
+        json_object = {Constants.JSON.budget_limit_id: self.budget_limit_id,
+                       Constants.JSON.group_id: self.group_id,
+                       Constants.JSON.limit: self.limit,
 
-                       Constants.k_modified_user_id: self.modified_user_id,
-                       Constants.k_is_removed: self.is_removed
+                       Constants.JSON.modified_user_id: self.modified_user_id,
+                       Constants.JSON.is_removed: self.is_removed
                        }
 
         if self.internal_id is not None:
-            json_object[Constants.k_internal_id] = self.internal_id
+            json_object[Constants.JSON.internal_id] = self.internal_id
 
         if self.date is not None:
-            json_object[Constants.k_date] = self.date.strftime(Constants.k_date_format)
+            json_object[Constants.JSON.date] = self.date.strftime(Constants.JSON.date_format)
 
         if self.time_stamp is not None:
-            json_object[Constants.k_time_stamp] = self.time_stamp.isoformat()
+            json_object[Constants.JSON.time_stamp] = self.time_stamp.isoformat()
 
         return json_object

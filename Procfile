@@ -1,3 +1,2 @@
 heroku ps:scale web=1
-web: gunicorn main:flask_app --log-file -
-
+web: gunicorn app:flask_app --log-file -

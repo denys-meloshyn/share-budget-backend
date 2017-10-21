@@ -10,9 +10,9 @@ from utility.shared_objects import swagger_app
 
 
 def put_parameters(parser):
-    parser.add_argument(Constants.k_category_id, type=int, help='Category ID', location='form')
-    parser.add_argument(Constants.k_group_id, type=int, help='Group ID', location='form', required=True)
-    parser.add_argument(Constants.k_name, help='Category name', location='form', required=True)
+    parser.add_argument(Constants.JSON.category_id, type=int, help='Category ID', location='form')
+    parser.add_argument(Constants.JSON.group_id, type=int, help='Group ID', location='form', required=True)
+    parser.add_argument(Constants.JSON.name, help='Category name', location='form', required=True)
 
     ResourceParser.add_default_parameters(parser)
 
@@ -27,14 +27,14 @@ class CategoryResource(Resource):
         put_parameters(parser)
         args = parser.parse_args()
 
-        user_id = args[Constants.k_user_id]
-        token = args[Constants.k_token]
+        user_id = args[Constants.JSON.user_id]
+        token = args[Constants.JSON.token]
         status, message = CredentialsValidator.is_user_credentials_valid(user_id, token)
 
         if status is False:
             return message, 401
 
-        category_id = args.get(Constants.k_category_id)
+        category_id = args.get(Constants.JSON.category_id)
         if category_id is None:
             category = Category(args)
             db.session.add(category)

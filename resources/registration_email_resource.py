@@ -8,7 +8,7 @@ from utility.shared_objects import swagger_app
 
 
 def add_get_parameters(parser):
-    parser.add_argument(Constants.k_token, help='Registration token', required=True)
+    parser.add_argument(Constants.JSON.token, help='Registration token', required=True)
 
 
 class RegistrationEmailResource(Resource):
@@ -21,7 +21,7 @@ class RegistrationEmailResource(Resource):
         add_get_parameters(parser)
         args = parser.parse_args()
 
-        users = User.query.filter_by(registration_email_token=args[Constants.k_token]).all()
+        users = User.query.filter_by(registration_email_token=args[Constants.JSON.token]).all()
         if len(users) == 0:
             return Constants.error_reponse('user_doesnt_exist'), 401
 
@@ -30,4 +30,4 @@ class RegistrationEmailResource(Resource):
 
         db.session.commit()
 
-        return {Constants.k_message: 'email_registered'}
+        return {Constants.JSON.message: 'email_registered'}

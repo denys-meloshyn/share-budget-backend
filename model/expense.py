@@ -30,58 +30,58 @@ class Expense(db.Model):
         self.update(input_parameters)
 
     def update(self, new_value):
-        value = new_value.get(Constants.k_group_id)
+        value = new_value.get(Constants.JSON.group_id)
         if value is not None:
             self.group_id = value
 
-        value = new_value.get(Constants.k_name)
+        value = new_value.get(Constants.JSON.name)
         if value is not None:
             self.name = value
 
-        value = new_value.get(Constants.k_price)
+        value = new_value.get(Constants.JSON.price)
         if value is not None:
             self.price = value
 
-        value = new_value.get(Constants.k_is_removed)
+        value = new_value.get(Constants.JSON.is_removed)
         if value is not None:
             self.is_removed = value
 
-        value = new_value.get(Constants.k_internal_id)
+        value = new_value.get(Constants.JSON.internal_id)
         if value is not None:
             self.internal_id = value
 
-        value = new_value.get(Constants.k_user_id)
+        value = new_value.get(Constants.JSON.user_id)
         if value is not None:
             self.modified_user_id = value
 
-        value = new_value.get(Constants.k_creation_date)
+        value = new_value.get(Constants.JSON.creation_date)
         if type(value) is tuple:
             self.creation_date = value[0].replace(tzinfo=None)
 
-        value = new_value.get(Constants.k_category_id)
+        value = new_value.get(Constants.JSON.category_id)
         if type(value) is not None:
             self.category_id = value
 
         self.time_stamp = datetime.utcnow()
 
     def to_json(self):
-        json_object = {Constants.k_expense_id: self.expense_id,
-                       Constants.k_group_id: self.group_id,
-                       Constants.k_name: self.name,
-                       Constants.k_price: self.price,
-                       Constants.k_category_id: self.category_id,
+        json_object = {Constants.JSON.expense_id: self.expense_id,
+                       Constants.JSON.group_id: self.group_id,
+                       Constants.JSON.name: self.name,
+                       Constants.JSON.price: self.price,
+                       Constants.JSON.category_id: self.category_id,
 
-                       Constants.k_modified_user_id: self.modified_user_id,
-                       Constants.k_is_removed: self.is_removed
+                       Constants.JSON.modified_user_id: self.modified_user_id,
+                       Constants.JSON.is_removed: self.is_removed
                        }
 
         if self.creation_date is not None:
-            json_object[Constants.k_creation_date] = self.creation_date.isoformat()
+            json_object[Constants.JSON.creation_date] = self.creation_date.isoformat()
 
         if self.internal_id is not None:
-            json_object[Constants.k_internal_id] = self.internal_id
+            json_object[Constants.JSON.internal_id] = self.internal_id
 
         if self.time_stamp is not None:
-            json_object[Constants.k_time_stamp] = self.time_stamp.isoformat()
+            json_object[Constants.JSON.time_stamp] = self.time_stamp.isoformat()
 
         return json_object

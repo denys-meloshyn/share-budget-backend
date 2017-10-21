@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask
+from flask import Flask, Blueprint
 from flask_passlib import LazyCryptContext
 from flask_passlib.context import werkzeug_salted_md5
 from flask_passlib.context import werkzeug_salted_sha1
@@ -52,7 +52,8 @@ flask_app.config.update(dict(
     MAIL_PASSWORD='ShareBudgetTS',
 ))
 
-flask_resource_api = FlaskApi(flask_app)
+flask_api_blueprint = Blueprint('api', __name__)
+flask_resource_api = FlaskApi(flask_api_blueprint)
 
 db.init_app(flask_app)
 flask_app.app_context().push()
@@ -87,7 +88,9 @@ add_resource(UserGroupUpdateResource, '/user/group/updates')
 add_resource(BudgetLimitUpdateResource, '/group/limit/updates')
 add_resource(CategoryLimitUpdateResource, '/category/limit/updates')
 add_resource(SendRegistrationEmailResource, '/registration/sendemail')
-add_resource(RegistrationEmailResource, Constants.k_registration_resource_path)
+add_resource(RegistrationEmailResource, Constants.registration_resource_path)
+
+flask_app.register_blueprint(flask_api_blueprint)
 
 if __name__ == '__main__':
     flask_app.run(debug=True)

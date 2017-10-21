@@ -44,33 +44,33 @@ class UserGroup(db.Model):
                                                                                    self.is_removed)
 
     def update(self, new_value):
-        value = new_value.get(Constants.k_user_group_id)
+        value = new_value.get(Constants.JSON.user_group_id)
         if value is not None:
             self.user_group_id = value
 
-        value = new_value.get(Constants.k_user_id)
+        value = new_value.get(Constants.JSON.user_id)
         if value is not None:
             self.user_id = value
 
-        value = new_value.get(Constants.k_group_id)
+        value = new_value.get(Constants.JSON.group_id)
         if value is not None:
             self.group_id = value
 
-        value = new_value.get(Constants.k_is_removed)
+        value = new_value.get(Constants.JSON.is_removed)
         if value is not None:
             self.is_removed = value
 
         self.time_stamp = datetime.utcnow()
 
     def to_json(self):
-        json_object = {Constants.k_user_group_id: self.user_group_id,
-                       Constants.k_user_id: self.user_id,
-                       Constants.k_group_id: self.group_id,
+        json_object = {Constants.JSON.user_group_id: self.user_group_id,
+                       Constants.JSON.user_id: self.user_id,
+                       Constants.JSON.group_id: self.group_id,
 
-                       Constants.k_is_removed: self.is_removed
+                       Constants.JSON.is_removed: self.is_removed
                        }
 
         if self.time_stamp is not None:
-            json_object[Constants.k_time_stamp] = self.time_stamp.isoformat()
+            json_object[Constants.JSON.time_stamp] = self.time_stamp.isoformat()
 
         return json_object

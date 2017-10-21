@@ -10,8 +10,8 @@ from utility.token_serializer import TokenSerializer
 
 
 def post_parameters(parser):
-    parser.add_argument(Constants.k_email, help='User email', location='headers', required=True)
-    parser.add_argument(Constants.k_password, help='User password', location='headers', required=True)
+    parser.add_argument(Constants.JSON.email, help='User email', location='headers', required=True)
+    parser.add_argument(Constants.JSON.password, help='User password', location='headers', required=True)
 
 
 class LoginResource(Resource):
@@ -24,12 +24,12 @@ class LoginResource(Resource):
         post_parameters(parser)
         args = parser.parse_args()
 
-        email = args[Constants.k_email]
-        password = args[Constants.k_password]
+        email = args[Constants.JSON.email]
+        password = args[Constants.JSON.password]
 
         user = User.query.filter_by(email=email).first()
         if user is None:
-            return Constants.error_reponse(Constants.k_user_not_exist), 401
+            return Constants.error_reponse(Constants.JSON.user_not_exist), 401
 
         if not user.is_email_approved:
             return Constants.error_reponse('email_not_approved'), 401
@@ -41,6 +41,6 @@ class LoginResource(Resource):
         db.session.commit()
 
         user_json = user.to_json()
-        user_json[Constants.k_token] = user.token
+        user_json[Constants.JSON.token] = user.token
 
         return Constants.default_response(user_json)

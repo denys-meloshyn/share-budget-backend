@@ -8,7 +8,7 @@ from utility.shared_objects import swagger_app
 
 
 def get_parameters(parser):
-    parser.add_argument(Constants.k_email, help='User email', location='headers', required=True)
+    parser.add_argument(Constants.JSON.email, help='User email', location='headers', required=True)
 
 
 class SendRegistrationEmailResource(Resource):
@@ -21,10 +21,10 @@ class SendRegistrationEmailResource(Resource):
         get_parameters(parser)
         args = parser.parse_args()
 
-        email = args[Constants.k_email]
+        email = args[Constants.JSON.email]
         user = User.query.filter_by(email=email).first()
         if user is None:
-            return Constants.error_reponse(Constants.k_user_not_exist), 401
+            return Constants.error_reponse(Constants.JSON.user_not_exist), 401
 
         registration_email.SendRegistrationEmail.send_registration_email(user)
 

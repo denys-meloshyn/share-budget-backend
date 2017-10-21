@@ -11,10 +11,10 @@ from utility.shared_objects import swagger_app
 
 
 def put_parameters(parser):
-    parser.add_argument(Constants.k_category_limit_id, type=int, help='Category limit ID', location='form')
-    parser.add_argument(Constants.k_category_id, type=int, help='Category ID', location='form', required=True)
-    parser.add_argument(Constants.k_limit, type=float, help='Category limit', location='form', required=True)
-    parser.add_argument(Constants.k_date, type=inputs.date, help='Category limit date', location='form', required=True)
+    parser.add_argument(Constants.JSON.category_limit_id, type=int, help='Category limit ID', location='form')
+    parser.add_argument(Constants.JSON.category_id, type=int, help='Category ID', location='form', required=True)
+    parser.add_argument(Constants.JSON.limit, type=float, help='Category limit', location='form', required=True)
+    parser.add_argument(Constants.JSON.date, type=inputs.date, help='Category limit date', location='form', required=True)
 
     ResourceParser.add_default_parameters(parser)
 
@@ -29,14 +29,14 @@ class CategoryLimitResource(Resource):
         put_parameters(parser)
         args = parser.parse_args()
 
-        user_id = args[Constants.k_user_id]
-        token = args[Constants.k_token]
+        user_id = args[Constants.JSON.user_id]
+        token = args[Constants.JSON.token]
         status, message = CredentialsValidator.is_user_credentials_valid(user_id, token)
 
         if status is False:
             return message, 401
 
-        category_limit_id = args.get(Constants.k_category_id)
+        category_limit_id = args.get(Constants.JSON.category_id)
         if category_limit_id is None:
             category_limit = CategoryLimit(args)
             db.session.add(category_limit)

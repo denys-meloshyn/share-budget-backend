@@ -12,4 +12,4 @@ class TestUserResource(BaseTestCase):
         data = json.loads(response.data)
 
         assert response.status_code == 401
-        assert data[Constants.k_message] == Constants.k_user_is_already_exist
+        assert data[Constants.JSON.message] == Constants.JSON.user_is_already_exist
