@@ -1,5 +1,4 @@
-from flask_restplus import Resource
-from flask_restful import reqparse
+from flask_restplus import Resource, reqparse
 
 from model.category import Category
 from model.user_group import UserGroup

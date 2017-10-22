@@ -1,6 +1,4 @@
-from flask_restplus import Resource
-from flask_restful import inputs
-from flask_restful import reqparse
+from flask_restplus import Resource, inputs, reqparse
 
 from model.expense import Expense
 from utility.constants import Constants
