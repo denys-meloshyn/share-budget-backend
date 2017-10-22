@@ -1,4 +1,4 @@
-from flask_restful import reqparse, Resource
+from flask_restplus import reqparse, Resource
 
 from model.user_group import UserGroup
 from model.users import User

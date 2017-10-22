@@ -53,7 +53,7 @@ class TestUserUpdateResource(BaseTestCase):
         user_group = self.create_user_group(user=user, group=group)
         self.expected_result.append(user_group)
 
-        response = self.test_client.get('/user/group/updates', headers=self.default_user_json(current_user))
+        response = self.test_client.get('/v1/user/group/updates', headers=self.default_user_json(current_user))
 
         actual_result = self.parse_result(response)
         assert self.expected_result == actual_result
@@ -80,7 +80,7 @@ class TestUserUpdateResource(BaseTestCase):
         user.first_name = "USER_C"
         self.add_and_safe(user)
 
-        response = self.test_client.get('/user/group/updates', headers=self.default_user_json(current_user))
+        response = self.test_client.get('/v1/user/group/updates', headers=self.default_user_json(current_user))
 
         result = self.result(response)
         assert len(result) == 0
@@ -111,7 +111,7 @@ class TestUserUpdateResource(BaseTestCase):
         user.first_name = "USER_3"
         self.add_and_safe(user)
 
-        response = self.test_client.get('/user/group/updates', headers=self.default_user_json(current_user))
+        response = self.test_client.get('/v1/user/group/updates', headers=self.default_user_json(current_user))
 
         result = self.result(response)
         assert len(result) == 0
@@ -148,7 +148,7 @@ class TestUserUpdateResource(BaseTestCase):
         user.first_name = "USER_3"
         self.add_and_safe(user)
 
-        response = self.test_client.get('/user/group/updates',
+        response = self.test_client.get('/v1/user/group/updates',
                                         headers=self.default_user_json(current_user))
 
         actual_result = self.parse_result(response)
@@ -194,7 +194,7 @@ class TestUserUpdateResource(BaseTestCase):
 
         # ----------------
 
-        response = self.test_client.get('/user/group/updates', headers=self.default_user_json(current_user))
+        response = self.test_client.get('/v1/user/group/updates', headers=self.default_user_json(current_user))
 
         actual_result = self.parse_result(response)
         assert self.expected_result == actual_result
@@ -260,7 +260,7 @@ class TestUserUpdateResource(BaseTestCase):
 
         # ----------------
 
-        response = self.test_client.get('/user/group/updates', headers=self.default_user_json(current_user))
+        response = self.test_client.get('/v1/user/group/updates', headers=self.default_user_json(current_user))
 
         actual_result = self.parse_result(response)
         assert self.expected_result == actual_result
@@ -325,7 +325,7 @@ class TestUserUpdateResource(BaseTestCase):
 
         # ----------------
 
-        response = self.test_client.get('/user/group/updates', headers=self.default_user_json(current_user))
+        response = self.test_client.get('/v1/user/group/updates', headers=self.default_user_json(current_user))
 
         actual_result = self.parse_result(response)
         assert self.expected_result == actual_result

@@ -9,7 +9,7 @@ class TestLoginResource(BaseTestCase):
     def test_login_with_correct_credentials(self):
         self.create_account()
         input_json = self.default_user_json()
-        result = self.test_client.post('/login', headers=input_json)
+        result = self.test_client.post('/v1/login', headers=input_json)
         data = json.loads(result.data)
         response_json = data['result']
 
@@ -23,7 +23,7 @@ class TestLoginResource(BaseTestCase):
         self.create_account()
         input_json = self.default_user_json()
         input_json[Constants.JSON.email] = 'wrong_email'
-        result = self.test_client.post('/login', headers=input_json)
+        result = self.test_client.post('/v1/login', headers=input_json)
 
         assert result.status_code == 401
 
@@ -31,7 +31,7 @@ class TestLoginResource(BaseTestCase):
         self.create_account()
         input_json = self.default_user_json()
         input_json[Constants.JSON.password] = 'wrong_password'
-        result = self.test_client.post('/login', headers=input_json)
+        result = self.test_client.post('/v1/login', headers=input_json)
 
         assert result.status_code == 401
 
@@ -39,7 +39,7 @@ class TestLoginResource(BaseTestCase):
         self.create_account()
         input_json = self.default_user_json()
         input_json[Constants.JSON.email] = ''
-        result = self.test_client.post('/login', headers=input_json)
+        result = self.test_client.post('/v1/login', headers=input_json)
 
         assert result.status_code == 401
 
@@ -47,13 +47,13 @@ class TestLoginResource(BaseTestCase):
         self.create_account()
         input_json = self.default_user_json()
         input_json[Constants.JSON.password] = ''
-        result = self.test_client.post('/login', headers=input_json)
+        result = self.test_client.post('/v1/login', headers=input_json)
 
         assert result.status_code == 401
 
     def test_login_email_not_approved(self):
         self.create_account(is_email_approved=False)
         input_json = self.default_user_json()
-        result = self.test_client.post('/login', headers=input_json)
+        result = self.test_client.post('/v1/login', headers=input_json)
 
         assert result.status_code == 401

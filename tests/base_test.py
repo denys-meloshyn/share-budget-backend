@@ -26,7 +26,7 @@ class BaseTestCase(TestCase):
 
     def login(self):
         self.create_account()
-        self.test_client.post('/login', headers=self.default_user_json())
+        self.test_client.post('/v1/login', headers=self.default_user_json())
 
     def create_account(self, is_email_approved=True, json_attr=None):
         if json_attr is None:
