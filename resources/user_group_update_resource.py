@@ -6,21 +6,21 @@ from utility.constants import Constants
 from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
 from utility.response_formatter import ResponseFormatter
-from utility.shared_objects import swagger_app, db
+from utility.shared_objects import api, db
 
 
 def get_parameters(parser):
     ResourceParser.add_default_update_parameters(parser)
 
 get_parser = reqparse.RequestParser()
-swagger_get_parser = swagger_app.parser()
+swagger_get_parser = api.parser()
 
 get_parameters(get_parser)
 get_parameters(swagger_get_parser)
 
 
 class UserGroupUpdateResource(Resource):
-    @swagger_app.doc(parser=swagger_get_parser)
+    @api.doc(parser=swagger_get_parser)
     def get(self):
         args = get_parser.parse_args()
 

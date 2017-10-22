@@ -1,10 +1,10 @@
-from flask_restful import Resource
+from flask_restplus import Resource
 from flask_restful import reqparse
 
 from model.users import User
 from utility import registration_email
 from utility.constants import Constants
-from utility.shared_objects import swagger_app
+from utility.shared_objects import api
 
 
 def get_parameters(parser):
@@ -12,10 +12,10 @@ def get_parameters(parser):
 
 
 class SendRegistrationEmailResource(Resource):
-    parser = swagger_app.parser()
+    parser = api.parser()
     get_parameters(parser)
 
-    @swagger_app.doc(parser=parser)
+    @api.doc(parser=parser)
     def get(self):
         parser = reqparse.RequestParser()
         get_parameters(parser)

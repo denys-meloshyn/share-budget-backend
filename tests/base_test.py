@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from flask import json
 
-from app import flask_app
+from app import app
 from model.users import User
 from utility.constants import Constants
 from utility.shared_objects import db
@@ -11,12 +11,12 @@ from utility.shared_objects import db
 class BaseTestCase(TestCase):
     @staticmethod
     def configure_app():
-        flask_app.testing = True
-        flask_app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/postgres_test'
+        app.testing = True
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/postgres_test'
 
     def setUp(self):
         self.configure_app()
-        self.test_client = flask_app.test_client()
+        self.test_client = app.test_client()
         db.drop_all()
         db.create_all()
 

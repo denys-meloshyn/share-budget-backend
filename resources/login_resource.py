@@ -1,11 +1,10 @@
-from flask_restful import Resource
-from flask_restful import reqparse
+from flask_restplus import Resource, reqparse
 
 from model.users import User
 from utility.constants import Constants
 from utility.shared_objects import db
 from utility.shared_objects import passlib
-from utility.shared_objects import swagger_app
+from utility.shared_objects import api
 from utility.token_serializer import TokenSerializer
 
 
@@ -15,10 +14,10 @@ def post_parameters(parser):
 
 
 class LoginResource(Resource):
-    parser = swagger_app.parser()
+    parser = api.parser()
     post_parameters(parser)
 
-    @swagger_app.doc(parser=parser)
+    @api.doc(parser=parser)
     def post(self):
         parser = reqparse.RequestParser()
         post_parameters(parser)

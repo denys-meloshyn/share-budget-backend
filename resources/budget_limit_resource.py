@@ -1,13 +1,11 @@
-from flask_restful import Resource
-from flask_restful import inputs
-from flask_restful import reqparse
+from flask_restplus import Resource, reqparse, inputs
 
 from model.budget_limit import BudgetLimit
 from utility.constants import Constants
 from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
 from utility.shared_objects import db
-from utility.shared_objects import swagger_app
+from utility.shared_objects import api
 
 
 def put_parameters(parser):
@@ -19,10 +17,10 @@ def put_parameters(parser):
 
 
 class BudgetLimitResource(Resource):
-    parser = swagger_app.parser()
+    parser = api.parser()
     put_parameters(parser)
 
-    @swagger_app.doc(parser=parser)
+    @api.doc(parser=parser)
     def put(self):
         parser = reqparse.RequestParser()
         put_parameters(parser)
