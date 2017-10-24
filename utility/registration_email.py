@@ -22,9 +22,9 @@ class SendRegistrationEmail:
                     'link to approve your email:</p>'
         msg.html += '<p> <a href = "'
         msg.html += 'https://sharebudget.herokuapp.com'
-        msg.html += Constants.k_registration_resource_path
+        msg.html += Constants.registration_resource_path
         msg.html += '?'
-        msg.html += Constants.k_token
+        msg.html += Constants.JSON.token
         msg.html += '='
         msg.html += user.registration_email_token
         msg.html += '">Complete registration</a></p>'

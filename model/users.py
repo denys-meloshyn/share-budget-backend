@@ -63,39 +63,39 @@ class User(db.Model):
                                                                                            self.is_removed)
 
     def update(self, new_value):
-        value = new_value.get(Constants.k_email)
+        value = new_value.get(Constants.JSON.email)
         if value is not None:
             self.email = value
 
-        value = new_value.get(Constants.k_last_name)
+        value = new_value.get(Constants.JSON.last_name)
         if value is not None:
             self.last_name = value
 
-        value = new_value.get(Constants.k_password)
+        value = new_value.get(Constants.JSON.password)
         if value is not None:
             encrypted_password = passlib.encrypt(value, salt_length=100)
             self.password = encrypted_password
 
-        value = new_value.get(Constants.k_first_name)
+        value = new_value.get(Constants.JSON.first_name)
         if value is not None:
             self.first_name = value
 
-        value = new_value.get(Constants.k_is_removed)
+        value = new_value.get(Constants.JSON.is_removed)
         if value is not None:
             self.is_removed = value
         self.time_stamp = datetime.utcnow()
 
     def to_json(self):
-        json_object = {Constants.k_user_id: self.user_id,
-                       Constants.k_first_name: self.first_name,
-                       Constants.k_last_name: self.last_name,
-                       Constants.k_email: self.email,
+        json_object = {Constants.JSON.user_id: self.user_id,
+                       Constants.JSON.first_name: self.first_name,
+                       Constants.JSON.last_name: self.last_name,
+                       Constants.JSON.email: self.email,
 
-                       Constants.k_is_removed: self.is_removed
+                       Constants.JSON.is_removed: self.is_removed
                        }
 
         if self.time_stamp is not None:
-            json_object[Constants.k_time_stamp] = self.time_stamp.isoformat()
+            json_object[Constants.JSON.time_stamp] = self.time_stamp.isoformat()
 
         return json_object
 

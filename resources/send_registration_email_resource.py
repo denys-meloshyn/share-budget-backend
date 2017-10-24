@@ -1,30 +1,29 @@
-from flask_restful import Resource
-from flask_restful import reqparse
+from flask_restplus import Resource, reqparse
 
 from model.users import User
 from utility import registration_email
 from utility.constants import Constants
-from utility.shared_objects import swagger_app
+from utility.shared_objects import api
 
 
 def get_parameters(parser):
-    parser.add_argument(Constants.k_email, help='User email', location='headers', required=True)
+    parser.add_argument(Constants.JSON.email, help='User email', location='headers', required=True)
 
 
 class SendRegistrationEmailResource(Resource):
-    parser = swagger_app.parser()
+    parser = api.parser()
     get_parameters(parser)
 
-    @swagger_app.doc(parser=parser)
+    @api.doc(parser=parser)
     def get(self):
         parser = reqparse.RequestParser()
         get_parameters(parser)
         args = parser.parse_args()
 
-        email = args[Constants.k_email]
+        email = args[Constants.JSON.email]
         user = User.query.filter_by(email=email).first()
         if user is None:
-            return Constants.error_reponse(Constants.k_user_not_exist), 401
+            return Constants.error_reponse(Constants.JSON.user_not_exist), 401
 
         registration_email.SendRegistrationEmail.send_registration_email(user)
 
