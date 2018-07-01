@@ -12,6 +12,7 @@ from utility.shared_objects import api, db
 def get_parameters(parser):
     ResourceParser.add_default_update_parameters(parser)
 
+
 get_parser = reqparse.RequestParser()
 swagger_get_parser = api.parser()
 

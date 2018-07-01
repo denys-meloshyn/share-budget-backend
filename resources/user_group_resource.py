@@ -18,6 +18,9 @@ class UserGroupResource(Resource):
     parser = api.parser()
     put_parameters(parser)
 
+    def can_modify_user_group(self, sender_user_id, user_group_to_modify):
+        return user_group_to_modify.user_id == sender_user_id
+
     @api.doc(parser=parser)
     def put(self):
         parser = reqparse.RequestParser()

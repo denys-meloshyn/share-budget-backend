@@ -34,9 +34,12 @@ class Constants:
         user_not_exist = 'userNotExist'
         pagination_page_size = 'pageSize'
         budget_limit_id = 'budgetLimitID'
+        creator_user_id = 'creatorUserID'
         modified_user_id = 'modifiedUserID'
         category_limit_id = 'categoryLimitID'
+
         user_is_already_exist = 'user_is_already_exist'
+        user_is_not_creator_of_entity = 'userIsNotCreatorOfEntity'
 
     registration_resource_path = '/registration'
     project_email = 'sharebudgetproject@gmail.com'

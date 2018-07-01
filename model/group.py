@@ -48,10 +48,12 @@ class Group(db.Model):
     def to_json(self):
         json_object = {Constants.JSON.group_id: self.group_id,
                        Constants.JSON.name: self.name,
-
                        Constants.JSON.modified_user_id: self.modified_user_id,
                        Constants.JSON.is_removed: self.is_removed
                        }
+
+        if self.creator_user_id is not None:
+            json_object[Constants.JSON.creator_user_id] = self.creator_user_id
 
         if self.internal_id is not None:
             json_object[Constants.JSON.internal_id] = self.internal_id

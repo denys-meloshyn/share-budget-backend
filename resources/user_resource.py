@@ -29,6 +29,9 @@ class UserResource(Resource):
 
     a = Constants.JSON.date
 
+    def can_modify_user(self, sender_user_id, user_to_modify):
+        return user_to_modify.user_id == sender_user_id
+
     @api.doc(parser=parser)
     def post(self):
         parser = reqparse.RequestParser()
@@ -64,9 +67,14 @@ class UserResource(Resource):
         if status is False:
             return message, 401
 
-        user_id = args.get(Constants.JSON.user_id)
         items = User.query.filter(User.user_id == user_id)
+        if len(items) == 0:
+            return Constants.error_reponse(Constants.JSON.user_not_exist), 401
+
         user = items[0]
+        if not self.can_modify_user(user_id, user):
+            return Constants.error_reponse(Constants.JSON.user_is_not_creator_of_entity), 401
+
         user.update(args)
         db.session.commit()
 

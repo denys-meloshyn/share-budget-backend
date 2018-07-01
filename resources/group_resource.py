@@ -22,6 +22,9 @@ class GroupResource(Resource):
     parser = api.parser()
     put_parameters(parser)
 
+    def can_modify_group(self, sender_user_id, group_to_modify):
+        return group_to_modify.creator_user_id == sender_user_id
+
     @api.doc(parser=parser)
     def put(self):
         parser = reqparse.RequestParser()
@@ -40,6 +43,7 @@ class GroupResource(Resource):
         if group_id is None:
             # No: create new group row
             group = Group(args)
+            group.creator_user_id = user_id
             db.session.add(group)
             db.session.commit()
 
@@ -66,6 +70,9 @@ class GroupResource(Resource):
                 return Constants.error_reponse('group_is_not_exist'), 401
 
             group = items[0]
+            if not self.can_modify_group(user_id, group):
+                return Constants.error_reponse(Constants.JSON.user_is_not_creator_of_entity), 401
+
             group.update(args)
             db.session.commit()
 
