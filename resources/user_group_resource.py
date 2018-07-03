@@ -1,6 +1,8 @@
 from flask_restplus import Resource, reqparse
 
+from model.group import Group
 from model.user_group import UserGroup
+from resources.group_resource import GroupResource
 from utility.constants import Constants
 from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
@@ -18,7 +20,8 @@ class UserGroupResource(Resource):
     parser = api.parser()
     put_parameters(parser)
 
-    def can_modify_user_group(self, sender_user_id, user_group_to_modify):
+    @staticmethod
+    def can_modify_user_group(sender_user_id, user_group_to_modify):
         return user_group_to_modify.user_id == sender_user_id
 
     @api.doc(parser=parser)
@@ -41,6 +44,14 @@ class UserGroupResource(Resource):
             return Constants.error_reponse('user_group_is_not_exist'), 401
 
         user_group = items[0]
+
+        groups = Group.query.filter_by(group_id=user_group.group_id).all()
+        if len(groups) == 0:
+            return Constants.error_reponse(Constants.JSON.group_is_not_exist), 401
+
+        if not GroupResource.can_modify_group(user_id, groups[0]):
+            return Constants.error_reponse(Constants.JSON.user_is_not_creator_of_entity), 401
+
         user_group.update(args)
         db.session.commit()
 

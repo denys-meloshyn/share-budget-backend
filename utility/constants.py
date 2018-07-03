@@ -38,8 +38,9 @@ class Constants:
         modified_user_id = 'modifiedUserID'
         category_limit_id = 'categoryLimitID'
 
+        group_is_not_exist = 'group_is_not_exist'
         user_is_already_exist = 'user_is_already_exist'
-        user_is_not_creator_of_entity = 'userIsNotCreatorOfEntity'
+        user_is_not_creator_of_entity = 'user_is_not_creator_of_entity'
 
     registration_resource_path = '/registration'
     project_email = 'sharebudgetproject@gmail.com'
