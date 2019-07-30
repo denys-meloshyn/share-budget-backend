@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask, Blueprint
+from flask_jwt_extended import JWTManager
 from flask_mail import Mail
 from flask_passlib import Passlib
 from flask_passlib.handlers import werkzeug_salted_md5, werkzeug_salted_sha1, werkzeug_salted_sha256, \
@@ -15,6 +16,7 @@ flask_app = Flask(__name__)
 flask_app.config.SWAGGER_UI_DOC_EXPANSION = 'list'
 flask_app.config['BUNDLE_ERRORS'] = True
 flask_app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql://localhost/postgres')
+flask_app.config['JWT_SECRET_KEY'] = 'super-secret'
 flask_app.config.update(dict(
     DEBUG=False,
     MAIL_SERVER='smtp.gmail.com',
@@ -29,6 +31,8 @@ blueprint = Blueprint('api', __name__)
 api = Api(blueprint)
 
 mail = Mail(flask_app)
+
+jwt = JWTManager(app=flask_app)
 
 db.init_app(app=flask_app)
 flask_app.app_context().push()

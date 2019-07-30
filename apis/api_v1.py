@@ -10,6 +10,7 @@ from resources.expense_resource import ExpenseResource
 from resources.expense_update_resource import ExpenseUpdateResource
 from resources.group_resource import GroupResource
 from resources.group_update_resource import GroupUpdateResource
+from resources.jwt_refresh_resource import JWTRefreshResource
 from resources.login_jwt_resource import LoginJWTResource
 from resources.login_resource import LoginResource
 from resources.registration_email_resource import RegistrationEmailResource
@@ -31,6 +32,7 @@ namespace.add_resource(UserGroupResource, '/user/group')
 namespace.add_resource(UserUpdateResource, '/user/updates')
 namespace.add_resource(BudgetLimitResource, '/group/limit')
 namespace.add_resource(GroupUpdateResource, '/group/updates')
+namespace.add_resource(JWTRefreshResource, '/login/jwt/refresh')
 namespace.add_resource(CategoryLimitResource, '/category/limit')
 namespace.add_resource(ExpenseUpdateResource, '/expense/updates')
 namespace.add_resource(CategoryUpdateResource, '/category/updates')
