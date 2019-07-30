@@ -1,10 +1,10 @@
 from flask_restplus import Resource, reqparse, inputs
 
+from model import db
 from model.budget_limit import BudgetLimit
 from utility.constants import Constants
 from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
-from utility.shared_objects import db
 from utility.shared_objects import api
 
 

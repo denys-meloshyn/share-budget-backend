@@ -1,13 +1,14 @@
 import os
+
 from flask import Flask, Blueprint
 from flask_mail import Mail
 from flask_passlib import Passlib
 from flask_passlib.handlers import werkzeug_salted_md5, werkzeug_salted_sha1, werkzeug_salted_sha256, \
     werkzeug_salted_sha512
-from flask_sqlalchemy import SQLAlchemy
 from flask_restplus import Api
 from passlib.context import LazyCryptContext
 
+from model import db
 from utility.constants import Constants
 
 app = Flask(__name__)
@@ -29,9 +30,9 @@ api = Api(blueprint)
 
 mail = Mail(app)
 
-db = SQLAlchemy(app)
+db.init_app(app=app)
 app.app_context().push()
-db.create_all()
+# db.create_all()
 
 passlib = Passlib(app, context=LazyCryptContext(
     schemes=[
@@ -40,4 +41,4 @@ passlib = Passlib(app, context=LazyCryptContext(
         werkzeug_salted_sha256,
         werkzeug_salted_sha512,
     ],
-    default='werkzeug_salted_sha512',))
+    default='werkzeug_salted_sha512', ))

@@ -10,3 +10,4 @@ pytz
 watchdog
 flask_cors
 Flask-Mail
+Flask-JWT-Extended==3.2.0

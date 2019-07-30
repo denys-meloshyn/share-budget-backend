@@ -5,7 +5,6 @@ from utility.constants import Constants
 from utility.credentials_validator import CredentialsValidator
 from utility.registration_email import SendRegistrationEmail
 from utility.resource_parser import ResourceParser
-from utility.shared_objects import db
 from utility.shared_objects import api
 
 

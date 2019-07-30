@@ -10,6 +10,7 @@ from resources.expense_resource import ExpenseResource
 from resources.expense_update_resource import ExpenseUpdateResource
 from resources.group_resource import GroupResource
 from resources.group_update_resource import GroupUpdateResource
+from resources.login_jwt_resource import LoginJWTResource
 from resources.login_resource import LoginResource
 from resources.registration_email_resource import RegistrationEmailResource
 from resources.send_registration_email_resource import SendRegistrationEmailResource
@@ -25,6 +26,7 @@ namespace.add_resource(LoginResource, '/login')
 namespace.add_resource(GroupResource, '/group')
 namespace.add_resource(ExpenseResource, '/expense')
 namespace.add_resource(CategoryResource, '/category')
+namespace.add_resource(LoginJWTResource, '/login/jwt')
 namespace.add_resource(UserGroupResource, '/user/group')
 namespace.add_resource(UserUpdateResource, '/user/updates')
 namespace.add_resource(BudgetLimitResource, '/group/limit')
@@ -37,4 +39,3 @@ namespace.add_resource(BudgetLimitUpdateResource, '/group/limit/updates')
 namespace.add_resource(CategoryLimitUpdateResource, '/category/limit/updates')
 namespace.add_resource(SendRegistrationEmailResource, '/registration/sendemail')
 namespace.add_resource(RegistrationEmailResource, Constants.registration_resource_path)
-

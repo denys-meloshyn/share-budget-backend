@@ -4,7 +4,6 @@ from model.category_limit import CategoryLimit
 from utility.constants import Constants
 from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
-from utility.shared_objects import db
 from utility.shared_objects import api
 
 
@@ -12,7 +11,8 @@ def put_parameters(parser):
     parser.add_argument(Constants.JSON.category_limit_id, type=int, help='Category limit ID', location='form')
     parser.add_argument(Constants.JSON.category_id, type=int, help='Category ID', location='form', required=True)
     parser.add_argument(Constants.JSON.limit, type=float, help='Category limit', location='form', required=True)
-    parser.add_argument(Constants.JSON.date, type=inputs.date, help='Category limit date', location='form', required=True)
+    parser.add_argument(Constants.JSON.date, type=inputs.date, help='Category limit date', location='form',
+                        required=True)
 
     ResourceParser.add_default_parameters(parser)
 
