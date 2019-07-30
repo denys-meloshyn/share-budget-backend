@@ -4,7 +4,6 @@ from sqlalchemy import orm
 
 from model import db
 from utility.constants import Constants
-from utility.shared_objects import passlib
 from utility.token_serializer import TokenSerializer
 
 

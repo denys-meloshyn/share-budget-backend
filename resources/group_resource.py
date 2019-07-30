@@ -1,12 +1,13 @@
 from flask_restplus import Resource, reqparse
 
+from application import api
+from model import db
 from model.category import Category
 from model.group import Group
 from model.user_group import UserGroup
 from utility.constants import Constants
 from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
-from utility.shared_objects import api
 
 
 def put_parameters(parser):

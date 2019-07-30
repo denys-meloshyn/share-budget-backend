@@ -1,8 +1,9 @@
 from flask_restplus import Resource, reqparse
 
+from application import api
+from model import db
 from model.users import User
 from utility.constants import Constants
-from utility.shared_objects import api
 
 
 def add_get_parameters(parser):

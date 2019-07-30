@@ -4,9 +4,9 @@ from flask_jwt_extended import (
 )
 from flask_restplus import Resource, reqparse
 
+from application import api
 from model.users import User
 from utility.constants import Constants
-from utility.shared_objects import api, passlib
 
 
 def post_parameters(parser):

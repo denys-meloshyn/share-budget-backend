@@ -1,5 +1,6 @@
 from flask_restplus import Resource, reqparse
 
+from application import api
 from model.category import Category
 from model.category_limit import CategoryLimit
 from model.user_group import UserGroup
@@ -7,7 +8,6 @@ from utility.constants import Constants
 from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
 from utility.response_formatter import ResponseFormatter
-from utility.shared_objects import api
 
 
 def get_parameters(parser):

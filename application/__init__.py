@@ -11,11 +11,11 @@ from passlib.context import LazyCryptContext
 from model import db
 from utility.constants import Constants
 
-app = Flask(__name__)
-app.config.SWAGGER_UI_DOC_EXPANSION = 'list'
-app.config['BUNDLE_ERRORS'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql://localhost/postgres')
-app.config.update(dict(
+flask_app = Flask(__name__)
+flask_app.config.SWAGGER_UI_DOC_EXPANSION = 'list'
+flask_app.config['BUNDLE_ERRORS'] = True
+flask_app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql://localhost/postgres')
+flask_app.config.update(dict(
     DEBUG=False,
     MAIL_SERVER='smtp.gmail.com',
     MAIL_PORT=587,
@@ -28,13 +28,12 @@ app.config.update(dict(
 blueprint = Blueprint('api', __name__)
 api = Api(blueprint)
 
-mail = Mail(app)
+mail = Mail(flask_app)
 
-db.init_app(app=app)
-app.app_context().push()
-# db.create_all()
+db.init_app(app=flask_app)
+flask_app.app_context().push()
 
-passlib = Passlib(app, context=LazyCryptContext(
+passlib = Passlib(flask_app, context=LazyCryptContext(
     schemes=[
         werkzeug_salted_md5,
         werkzeug_salted_sha1,
