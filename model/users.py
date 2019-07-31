@@ -2,6 +2,7 @@ from datetime import datetime
 
 from sqlalchemy import orm
 
+from application import passlib
 from model import db
 from utility.constants import Constants
 from utility.token_serializer import TokenSerializer
@@ -20,6 +21,7 @@ class User(db.Model):
     is_removed = db.Column(db.Boolean)
     time_stamp = db.Column(db.DateTime)
     registration_email_token = db.Column(db.Text)
+    apple_sign_in_id = db.Column(db.Text)
 
     @orm.reconstructor
     def init_on_load(self):
@@ -89,9 +91,7 @@ class User(db.Model):
                        Constants.JSON.first_name: self.first_name,
                        Constants.JSON.last_name: self.last_name,
                        Constants.JSON.email: self.email,
-
-                       Constants.JSON.is_removed: self.is_removed
-                       }
+                       Constants.JSON.is_removed: self.is_removed}
 
         if self.time_stamp is not None:
             json_object[Constants.JSON.time_stamp] = self.time_stamp.isoformat()

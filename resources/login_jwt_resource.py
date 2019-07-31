@@ -32,7 +32,7 @@ class LoginJWTResource(Resource):
         # if not passlib.verify(password, user.password):
         #     return Constants.error_reponse('user_password_is_wrong'), 401
 
-        access_token = create_access_token(identity=1, fresh=True)
-        refresh_token = create_refresh_token(1)
+        access_token = create_access_token(identity=email, fresh=True)
+        refresh_token = create_refresh_token(email)
 
         return {'access_token': access_token, 'refresh_token': refresh_token}, 200
