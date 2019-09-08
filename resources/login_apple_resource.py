@@ -1,7 +1,7 @@
 import json
 
 import requests as requests
-from authlib.jose import jwk
+from authlib.jose import jwk, jwt
 from flask_jwt_extended import (
     create_access_token,
     create_refresh_token
@@ -52,6 +52,25 @@ class LoginAppleResource(Resource):
         #
         # if not passlib.verify(password, user.password):
         #     return Constants.error_reponse('user_password_is_wrong'), 401
+
+        try:
+            jwt_claims = jwt.decode(s=identity_token, key=key)
+
+            jwt_sub = jwt_claims['sub']
+            if jwt_sub is None or jwt_sub != user_id:
+                return Constants.error_reponse('wrong user')
+
+            jwt_kid = jwt_claims.header['kid']
+            apple_kid = auth_key['kid']
+            if jwt_kid is None or apple_kid is None or jwt_kid != apple_kid:
+                return Constants.error_reponse('kid is wrong'), 401
+
+            jwt_aud = jwt_claims['aud']
+            if jwt_aud is None or jwt_aud != 'denys.meloshyn.share-budget':
+                return Constants.error_reponse('aud is wrong'), 401
+
+        except ValueError:
+            return Constants.error_reponse('not valid JWT'), 401
 
         access_token = create_access_token(identity=1, fresh=True)
         refresh_token = create_refresh_token(1)
