@@ -19,4 +19,4 @@ class JWTRefreshResource(Resource):
         current_user = get_jwt_identity()
         # return a non-fresh token for the user
         new_token = create_access_token(identity=current_user, fresh=False)
-        return {'access_token': new_token, 'user': current_user}, 200
+        return {'access_token': new_token}, 200

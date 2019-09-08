@@ -75,6 +75,5 @@ class LoginAppleResource(Resource):
             refresh_token = create_refresh_token(user_id)
 
             return {'access_token': access_token, 'refresh_token': refresh_token}, 200
-
         except ExpiredTokenError:
             return Constants.error_reponse('expired JWT'), 401
