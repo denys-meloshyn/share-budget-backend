@@ -1,6 +1,7 @@
 from flask_restplus import Resource, reqparse
 
 from application import api
+from model import db
 from model.group import Group
 from model.user_group import UserGroup
 from resources.group_resource import GroupResource
