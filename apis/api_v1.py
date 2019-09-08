@@ -11,7 +11,7 @@ from resources.expense_update_resource import ExpenseUpdateResource
 from resources.group_resource import GroupResource
 from resources.group_update_resource import GroupUpdateResource
 from resources.jwt_refresh_resource import JWTRefreshResource
-from resources.login_jwt_resource import LoginJWTResource
+from resources.login_apple_resource import LoginAppleResource
 from resources.login_resource import LoginResource
 from resources.registration_email_resource import RegistrationEmailResource
 from resources.send_registration_email_resource import SendRegistrationEmailResource
@@ -27,8 +27,8 @@ namespace.add_resource(LoginResource, '/login')
 namespace.add_resource(GroupResource, '/group')
 namespace.add_resource(ExpenseResource, '/expense')
 namespace.add_resource(CategoryResource, '/category')
-namespace.add_resource(LoginJWTResource, '/login/jwt')
 namespace.add_resource(UserGroupResource, '/user/group')
+namespace.add_resource(LoginAppleResource, '/login/apple')
 namespace.add_resource(UserUpdateResource, '/user/updates')
 namespace.add_resource(BudgetLimitResource, '/group/limit')
 namespace.add_resource(GroupUpdateResource, '/group/updates')
