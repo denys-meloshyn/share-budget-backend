@@ -16,8 +16,10 @@ from utility.constants import Constants
 
 
 def post_parameters(parser):
-    parser.add_argument('userID', type=str, required=True, help="Apple sign in ID")
-    parser.add_argument('identityToken', type=str, required=True)
+    parser.add_argument('userID', type=str, required=True, help="Apple sign in ID", location='form')
+    parser.add_argument('identityToken', type=str, required=True, location='form')
+    parser.add_argument(Constants.JSON.last_name, help='Last Name', location='form')
+    parser.add_argument(Constants.JSON.first_name, help='First Name', location='form')
 
 
 class LoginAppleResource(Resource):
@@ -71,9 +73,11 @@ class LoginAppleResource(Resource):
                 db.session.add(user)
                 db.session.commit()
 
-            access_token = create_access_token(identity=user_id, fresh=True)
-            refresh_token = create_refresh_token(user_id)
+            user.update(new_value=args)
+            user_json = user.to_json()
+            user_json['accessToken'] = create_access_token(identity=user_id, fresh=True)
+            user_json['refreshToken'] = create_refresh_token(user_id)
 
-            return {'access_token': access_token, 'refresh_token': refresh_token}, 200
+            return user_json
         except ExpiredTokenError:
             return Constants.error_reponse('expired JWT'), 401
