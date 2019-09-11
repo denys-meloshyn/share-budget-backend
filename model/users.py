@@ -5,7 +5,6 @@ from sqlalchemy import orm
 from application import passlib
 from model import db
 from utility.constants import Constants
-from utility.token_serializer import TokenSerializer
 
 
 class User(db.Model):
@@ -17,10 +16,9 @@ class User(db.Model):
     last_name = db.Column(db.Text)
     password = db.Column(db.Text)
     email = db.Column(db.Text)
-    token = db.Column(db.Text)
     is_removed = db.Column(db.Boolean)
     time_stamp = db.Column(db.DateTime)
-    registration_email_token = db.Column(db.Text)
+    refresh_token = db.Column(db.Text)
     apple_sign_in_id = db.Column(db.Text)
 
     @orm.reconstructor
@@ -31,8 +29,6 @@ class User(db.Model):
         self.internal_id = None
         self.is_removed = False
         self.is_email_approved = False
-        self.registration_email_token = TokenSerializer.generate_auth_token(self.user_id)
-
         self.update(input_parameters)
 
     def __eq__(self, other):
