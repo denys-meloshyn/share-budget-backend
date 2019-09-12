@@ -1,7 +1,13 @@
-from flask_jwt_extended import jwt_refresh_token_required, get_jwt_identity, create_access_token
+from flask_jwt_extended import (
+    create_access_token,
+    create_refresh_token
+)
+from flask_jwt_extended import jwt_refresh_token_required, get_jwt_identity
 from flask_restplus import Resource
 
 from application import api
+from model import db
+from model.users import User
 
 
 def post_parameters(parser):
@@ -15,8 +21,15 @@ class JWTRefreshResource(Resource):
     @jwt_refresh_token_required
     @api.doc(parser=parser)
     def post(self):
-        # Retrieve the user's identity from the refresh token using a Flask-JWT-Extended built-in method
-        current_user = get_jwt_identity()
-        # return a non-fresh token for the user
-        new_token = create_access_token(identity=current_user, fresh=True)
-        return {'access_token': new_token}, 200
+        user_id = get_jwt_identity()
+
+        user = User.query.filter_by(user_id=user_id).first()
+        user.refresh_token = create_refresh_token(user_id)
+
+        db.session.commit()
+
+        result = dict()
+        result['accessToken'] = create_access_token(identity=user_id, fresh=True)
+        result['refreshToken'] = user.refresh_token
+
+        return result, 200
