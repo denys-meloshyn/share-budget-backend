@@ -18,6 +18,7 @@ flask_app.config['BUNDLE_ERRORS'] = True
 flask_app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 flask_app.config['JWT_SECRET_KEY'] = 'super-secret'
 flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+flask_app.config['PROPAGATE_EXCEPTIONS'] = True
 flask_app.config.update(dict(
     DEBUG=False,
     MAIL_SERVER='smtp.gmail.com',
@@ -34,6 +35,7 @@ api = Api(blueprint)
 mail = Mail(flask_app)
 
 jwt = JWTManager(app=flask_app)
+jwt._set_error_handler_callbacks(api)
 
 db.init_app(app=flask_app)
 flask_app.app_context().push()

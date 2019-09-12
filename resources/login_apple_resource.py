@@ -71,13 +71,14 @@ class LoginAppleResource(Resource):
                 user.is_email_approved = True
                 user.apple_sign_in_id = user_id
                 db.session.add(user)
+                db.session.commit()
             else:
                 user.update(new_value=args)
 
-            user.refresh_token = create_refresh_token(user_id)
+            user.refresh_token = create_refresh_token(user.user_id)
             db.session.commit()
             user_json = user.to_json()
-            user_json['accessToken'] = create_access_token(identity=user_id, fresh=True)
+            user_json['accessToken'] = create_access_token(identity=user.user_id, fresh=True)
             user_json['refreshToken'] = user.refresh_token
 
             return user_json

@@ -18,5 +18,5 @@ class JWTRefreshResource(Resource):
         # Retrieve the user's identity from the refresh token using a Flask-JWT-Extended built-in method
         current_user = get_jwt_identity()
         # return a non-fresh token for the user
-        new_token = create_access_token(identity=current_user, fresh=False)
+        new_token = create_access_token(identity=current_user, fresh=True)
         return {'access_token': new_token}, 200
