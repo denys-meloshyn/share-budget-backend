@@ -27,7 +27,6 @@ class BudgetLimitUpdateResource(Resource):
     @api.doc(parser=swagger_get_parser)
     def get(self):
         args = get_parser.parse_args()
-
         user_id = get_jwt_identity()
 
         query = BudgetLimit.query.filter(user_id == UserGroup.user_id, UserGroup.group_id == BudgetLimit.group_id)

@@ -1,10 +1,12 @@
+from flask_jwt_extended import (
+    jwt_required
+)
 from flask_restplus import Resource, reqparse, inputs
 
 from application import api
 from model import db
 from model.budget_limit import BudgetLimit
 from utility.constants import Constants
-from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
 
 
@@ -20,19 +22,13 @@ class BudgetLimitResource(Resource):
     parser = api.parser()
     put_parameters(parser)
 
+    @jwt_required
     @api.doc(parser=parser)
     def put(self):
         parser = reqparse.RequestParser()
         put_parameters(parser)
         args = parser.parse_args()
-
-        user_id = args[Constants.JSON.user_id]
-        token = args[Constants.JSON.token]
-        status, message = CredentialsValidator.is_user_credentials_valid(user_id, token)
-
-        if status is False:
-            return message, 401
-
+        
         date = args.get(Constants.JSON.date).replace(day=1)
         group_id = args.get(Constants.JSON.group_id)
 
