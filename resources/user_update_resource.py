@@ -5,8 +5,8 @@ from flask_restplus import Resource, inputs, reqparse
 
 from application import api
 from model import db
+from model.user import User
 from model.user_group import UserGroup
-from model.users import User
 from utility.constants import Constants
 from utility.resource_parser import ResourceParser
 from utility.response_formatter import ResponseFormatter

@@ -2,7 +2,7 @@ from flask_restplus import Resource, reqparse
 
 from application import api, passlib
 from model import db
-from model.users import User
+from model.user import User
 from utility.constants import Constants
 from utility.token_serializer import TokenSerializer
 

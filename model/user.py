@@ -2,7 +2,6 @@ from datetime import datetime
 
 from sqlalchemy import orm
 
-from application import passlib
 from model import db
 from utility.constants import Constants
 
@@ -11,14 +10,11 @@ class User(db.Model):
     __tablename__ = 'USER'
 
     user_id = db.Column(db.Integer, primary_key=True)
-    is_email_approved = db.Column(db.Boolean)
     first_name = db.Column(db.Text)
     last_name = db.Column(db.Text)
-    password = db.Column(db.Text)
     email = db.Column(db.Text)
     is_removed = db.Column(db.Boolean)
     time_stamp = db.Column(db.DateTime)
-    refresh_token = db.Column(db.Text)
     apple_sign_in_id = db.Column(db.Text)
 
     @orm.reconstructor
@@ -28,7 +24,6 @@ class User(db.Model):
     def __init__(self, input_parameters):
         self.internal_id = None
         self.is_removed = False
-        self.is_email_approved = False
         self.update(input_parameters)
 
     def __eq__(self, other):
@@ -68,11 +63,6 @@ class User(db.Model):
         if value is not None:
             self.last_name = value
 
-        value = new_value.get(Constants.JSON.password)
-        if value is not None:
-            encrypted_password = passlib.encrypt(value, salt_length=100)
-            self.password = encrypted_password
-
         value = new_value.get(Constants.JSON.first_name)
         if value is not None:
             self.first_name = value
@@ -96,5 +86,4 @@ class User(db.Model):
 
     @staticmethod
     def find(email):
-        items = User.query.filter_by(email=email).all()
-        return items[0]
+        return User.query.filter_by(email=email).first()

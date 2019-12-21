@@ -3,7 +3,7 @@ from unittest import TestCase
 from flask import json
 
 from app import app
-from model.users import User
+from model.user import User
 from utility.constants import Constants
 
 

@@ -1,6 +1,6 @@
 from model.group import Group
+from model.user import User
 from model.user_group import UserGroup
-from model.users import User
 from resources.user_group_resource import UserGroupResource
 from tests.base_test import BaseTestCase
 

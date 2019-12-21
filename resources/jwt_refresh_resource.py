@@ -1,13 +1,15 @@
+from datetime import datetime
+
 from flask_jwt_extended import (
     create_access_token,
     create_refresh_token
 )
 from flask_jwt_extended import jwt_refresh_token_required, get_jwt_identity
-from flask_restplus import Resource
+from flask_restplus import Resource, reqparse
 
 from application import api
 from model import db
-from model.users import User
+from model.refresh_token import RefreshToken
 
 
 def post_parameters(parser):
@@ -23,13 +25,22 @@ class JWTRefreshResource(Resource):
     def post(self):
         user_id = get_jwt_identity()
 
-        user = User.query.filter_by(user_id=user_id).first()
-        user.refresh_token = create_refresh_token(user_id)
+        parser = reqparse.RequestParser()
+        post_parameters(parser)
+        args = parser.parse_args()
 
+        refresh_token = args['Authorization'].split()[1]
+        refresh_token_entity = RefreshToken.find(refresh_token=refresh_token)
+
+        refresh_token = create_refresh_token(user_id)
+        access_token = create_access_token(identity=user_id, fresh=True)
+
+        refresh_token_entity.refresh_token = refresh_token
+        refresh_token_entity.time_stamp = datetime.utcnow()
         db.session.commit()
 
         result = dict()
-        result['accessToken'] = create_access_token(identity=user_id, fresh=True)
-        result['refreshToken'] = user.refresh_token
+        result['accessToken'] = access_token
+        result['refreshToken'] = refresh_token
 
         return result, 200

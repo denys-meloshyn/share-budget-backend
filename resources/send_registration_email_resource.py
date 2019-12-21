@@ -1,7 +1,7 @@
 from flask_restplus import Resource, reqparse
 
 from application import api
-from model.users import User
+from model.user import User
 from utility import registration_email
 from utility.constants import Constants
 

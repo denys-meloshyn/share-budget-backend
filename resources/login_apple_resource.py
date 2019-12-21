@@ -11,12 +11,13 @@ from flask_restplus import Resource, reqparse
 
 from application import api
 from model import db
-from model.users import User
+from model.refresh_token import RefreshToken
+from model.user import User
 from utility.constants import Constants
 
 
 def post_parameters(parser):
-    parser.add_argument('userID', type=str, required=True, help="Apple sign in ID", location='form')
+    parser.add_argument('appleID', type=str, required=True, help="Apple sign in ID", location='form')
     parser.add_argument('identityToken', type=str, required=True, location='form')
     parser.add_argument(Constants.JSON.last_name, help='Last Name', location='form')
     parser.add_argument(Constants.JSON.first_name, help='First Name', location='form')
@@ -45,7 +46,7 @@ class LoginAppleResource(Resource):
         post_parameters(parser)
         args = parser.parse_args()
 
-        user_id = args['userID']
+        user_id = args['appleID']
         identity_token = args['identityToken']
 
         try:
@@ -68,18 +69,20 @@ class LoginAppleResource(Resource):
             user = User.query.filter_by(apple_sign_in_id=user_id).first()
             if user is None:
                 user = User(input_parameters=args)
-                user.is_email_approved = True
                 user.apple_sign_in_id = user_id
                 db.session.add(user)
-                db.session.commit()
             else:
                 user.update(new_value=args)
-
-            user.refresh_token = create_refresh_token(user.user_id)
             db.session.commit()
+
+            refresh_token = create_refresh_token(user.user_id)
+            access_token = create_access_token(identity=user.user_id, fresh=True)
+            refresh_token_entry = RefreshToken(refresh_token=refresh_token, user_id=user_id)
+            db.session.commit()
+
             user_json = user.to_json()
-            user_json['accessToken'] = create_access_token(identity=user.user_id, fresh=True)
-            user_json['refreshToken'] = user.refresh_token
+            user_json['accessToken'] = access_token
+            user_json['refreshToken'] = refresh_token_entry.refresh_token
 
             return user_json
         except ExpiredTokenError:
