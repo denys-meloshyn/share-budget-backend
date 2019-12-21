@@ -77,7 +77,8 @@ class LoginAppleResource(Resource):
 
             refresh_token = create_refresh_token(user.user_id)
             access_token = create_access_token(identity=user.user_id, fresh=True)
-            refresh_token_entry = RefreshToken(refresh_token=refresh_token, user_id=user_id)
+            refresh_token_entry = RefreshToken(refresh_token=refresh_token, user_id=user.user_id)
+            db.session.add(refresh_token_entry)
             db.session.commit()
 
             user_json = user.to_json()
