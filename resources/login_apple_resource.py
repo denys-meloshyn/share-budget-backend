@@ -9,7 +9,7 @@ from flask_jwt_extended import (
 )
 from flask_restplus import Resource, reqparse
 
-from application import api
+from application import api, pwd_context
 from model import db
 from model.refresh_token import RefreshToken
 from model.user import User
@@ -77,13 +77,15 @@ class LoginAppleResource(Resource):
 
             refresh_token = create_refresh_token(user.user_id)
             access_token = create_access_token(identity=user.user_id, fresh=True)
-            refresh_token_entry = RefreshToken(refresh_token=refresh_token, user_id=user.user_id)
+
+            encrypted_refresh_token = pwd_context.encrypt(refresh_token)
+            refresh_token_entry = RefreshToken(refresh_token=encrypted_refresh_token, user_id=user.user_id)
             db.session.add(refresh_token_entry)
             db.session.commit()
 
             user_json = user.to_json()
             user_json['accessToken'] = access_token
-            user_json['refreshToken'] = refresh_token_entry.refresh_token
+            user_json['refreshToken'] = refresh_token
 
             return user_json
         except ExpiredTokenError:
