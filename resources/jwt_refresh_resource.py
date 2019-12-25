@@ -10,6 +10,7 @@ from flask_restplus import Resource, reqparse
 from application import api, pwd_context
 from model import db
 from model.refresh_token import RefreshToken
+from utility.constants import Constants
 
 
 def post_parameters(parser):
@@ -35,6 +36,9 @@ class JWTRefreshResource(Resource):
         for refresh_token_entity in refresh_token_entities:
             if pwd_context.verify(refresh_token, refresh_token_entity.refresh_token):
                 current_refresh_token_entity = refresh_token_entity
+
+        if current_refresh_token_entity is None:
+            return Constants.error_reponse('refresh token not registered')
 
         refresh_token = create_refresh_token(user_id)
         access_token = create_access_token(identity=user_id, fresh=True)
