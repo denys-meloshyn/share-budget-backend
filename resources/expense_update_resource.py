@@ -34,7 +34,7 @@ class ExpenseUpdateResource(Resource):
         time_stamp = args.get(Constants.JSON.time_stamp)
         if type(time_stamp) is tuple:
             time_stamp = time_stamp[0].replace(tzinfo=None)
-            query = query.from_self().filter(Expense.time_stamp >= time_stamp)
+            query = query.from_self().filter(Expense.time_stamp > time_stamp)
         query = query.order_by(Expense.time_stamp.asc())
 
         start_page = args[Constants.JSON.pagination_start]

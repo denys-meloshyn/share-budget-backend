@@ -36,7 +36,7 @@ class UserGroupUpdateResource(Resource):
         time_stamp = args.get(Constants.JSON.time_stamp)
         if type(time_stamp) is tuple:
             time_stamp = time_stamp[0].replace(tzinfo=None)
-            query = db.session.query(UserGroup).filter(query, UserGroup.time_stamp >= time_stamp)
+            query = db.session.query(UserGroup).filter(query, UserGroup.time_stamp > time_stamp)
         else:
             query = db.session.query(UserGroup).filter(query)
         query = query.order_by(UserGroup.time_stamp.asc())

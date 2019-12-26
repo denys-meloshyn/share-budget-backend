@@ -34,7 +34,7 @@ class BudgetLimitUpdateResource(Resource):
         time_stamp = args.get(Constants.JSON.time_stamp)
         if time_stamp is not None:
             time_stamp = time_stamp[0].replace(tzinfo=None)
-            query = query.from_self().filter(BudgetLimit.time_stamp >= time_stamp)
+            query = query.from_self().filter(BudgetLimit.time_stamp > time_stamp)
         query = query.order_by(BudgetLimit.time_stamp.asc())
 
         start_page = args[Constants.JSON.pagination_start]
