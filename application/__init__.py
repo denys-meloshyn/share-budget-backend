@@ -41,10 +41,10 @@ def create_app():
 
     db.init_app(app=flask_app)
     jwt.init_app(app=flask_app)
-    jwt._set_error_handler_callbacks(api)
 
     from apis.api_v1 import namespace
     api.add_namespace(namespace)
+    jwt._set_error_handler_callbacks(api)
     flask_app.register_blueprint(blueprint)
 
     init(os.environ['SENTRY'])
