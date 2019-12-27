@@ -1,7 +1,7 @@
 from flask_jwt_extended import (
     jwt_required, get_jwt_identity
 )
-from flask_restplus import Resource, inputs, reqparse
+from flask_restplus import Resource, reqparse
 
 from application import api
 from model import db
@@ -13,25 +13,19 @@ from utility.response_formatter import ResponseFormatter
 
 
 def get_parameters(parser):
-    parser.add_argument(Constants.JSON.time_stamp,
-                        type=inputs.iso8601interval,
-                        help='Time stamp date (ISO 8601)',
-                        location='headers')
     ResourceParser.add_default_update_parameters(parser)
 
 
-get_parser = reqparse.RequestParser()
-swagger_get_parser = api.parser()
-
-get_parameters(get_parser)
-get_parameters(swagger_get_parser)
-
-
 class UserUpdateResource(Resource):
+    parser = api.parser()
+    get_parameters(parser)
+
     @jwt_required
-    @api.doc(parser=swagger_get_parser)
+    @api.doc(parser=parser)
     def get(self):
-        args = get_parser.parse_args()
+        parser = reqparse.RequestParser()
+        get_parameters(parser)
+        args = parser.parse_args()
         user_id = get_jwt_identity()
 
         subquery = db.session.query(UserGroup.group_id).filter(UserGroup.user_id == user_id).subquery()
