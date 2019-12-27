@@ -1,3 +1,6 @@
+from flask_jwt_extended import (
+    jwt_required, get_jwt_identity
+)
 from flask_restplus import Resource, reqparse
 
 from application import api
@@ -5,7 +8,6 @@ from model.category import Category
 from model.category_limit import CategoryLimit
 from model.user_group import UserGroup
 from utility.constants import Constants
-from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
 from utility.response_formatter import ResponseFormatter
 
@@ -22,16 +24,11 @@ get_parameters(swagger_get_parser)
 
 
 class CategoryLimitUpdateResource(Resource):
+    @jwt_required
     @api.doc(parser=swagger_get_parser)
     def get(self):
         args = get_parser.parse_args()
-
-        user_id = args[Constants.JSON.user_id]
-        token = args[Constants.JSON.token]
-        status, message = CredentialsValidator.is_user_credentials_valid(user_id, token)
-
-        if status is False:
-            return message, 401
+        user_id = get_jwt_identity()
 
         query = CategoryLimit.query.filter(user_id == UserGroup.user_id,
                                            UserGroup.group_id == Category.group_id)
