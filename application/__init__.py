@@ -41,6 +41,7 @@ def create_app():
 
     db.init_app(app=flask_app)
     jwt.init_app(app=flask_app)
+    jwt._set_error_handler_callbacks(api)
 
     from apis.api_v1 import namespace
     api.add_namespace(namespace)
@@ -49,5 +50,3 @@ def create_app():
     init(os.environ['SENTRY'])
 
     return flask_app
-
-# jwt._set_error_handler_callbacks(api)
