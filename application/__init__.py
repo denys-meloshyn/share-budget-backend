@@ -2,52 +2,14 @@ import os
 
 from flask import Flask, Blueprint
 from flask_jwt_extended import JWTManager
-from flask_mail import Mail
-from flask_passlib import Passlib
-from flask_passlib.handlers import werkzeug_salted_md5, werkzeug_salted_sha1, werkzeug_salted_sha256, \
-    werkzeug_salted_sha512
 from flask_restplus import Api
-from passlib.context import LazyCryptContext, CryptContext
+from passlib.context import CryptContext
 
 from model import db
-from utility.constants import Constants
 
-flask_app = Flask(__name__)
-flask_app.config.SWAGGER_UI_DOC_EXPANSION = 'list'
-flask_app.config['BUNDLE_ERRORS'] = True
-flask_app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
-flask_app.config['JWT_SECRET_KEY'] = os.environ['JWT_SECRET_KEY']
-flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-flask_app.config['PROPAGATE_EXCEPTIONS'] = True
-flask_app.config.update(dict(
-    DEBUG=False,
-    MAIL_SERVER='smtp.gmail.com',
-    MAIL_PORT=587,
-    MAIL_USE_TLS=True,
-    MAIL_USE_SSL=False,
-    MAIL_USERNAME=Constants.project_email,
-    MAIL_PASSWORD='ShareBudgetTS',
-))
-
+jwt = JWTManager()
 blueprint = Blueprint('api', __name__)
 api = Api(blueprint)
-
-mail = Mail(flask_app)
-
-jwt = JWTManager(app=flask_app)
-jwt._set_error_handler_callbacks(api)
-
-db.init_app(app=flask_app)
-flask_app.app_context().push()
-
-passlib = Passlib(flask_app, context=LazyCryptContext(
-    schemes=[
-        werkzeug_salted_md5,
-        werkzeug_salted_sha1,
-        werkzeug_salted_sha256,
-        werkzeug_salted_sha512,
-    ],
-    default='werkzeug_salted_sha512', ))
 
 pwd_context = CryptContext(
     # Replace this list with the hash(es) you wish to support.
@@ -65,3 +27,24 @@ pwd_context = CryptContext(
     # Leaving this alone is usually safe, and will use passlib's defaults.
     ## pbkdf2_sha256__rounds = 29000,
 )
+
+
+def create_app():
+    flask_app = Flask(__name__)
+    flask_app.config.SWAGGER_UI_DOC_EXPANSION = 'list'
+    flask_app.config['BUNDLE_ERRORS'] = True
+    flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    flask_app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL',
+                                                                 'postgresql://localhost/voltage_counter')
+    flask_app.config['JWT_SECRET_KEY'] = os.environ.get('SECRET_KEY', 'super-secret-debug')
+
+    db.init_app(app=flask_app)
+    jwt.init_app(app=flask_app)
+
+    from apis.api_v1 import namespace
+    api.add_namespace(namespace)
+    flask_app.register_blueprint(blueprint)
+
+    return flask_app
+
+# jwt._set_error_handler_callbacks(api)
