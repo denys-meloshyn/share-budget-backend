@@ -4,6 +4,7 @@ from flask import Flask, Blueprint
 from flask_jwt_extended import JWTManager
 from flask_restplus import Api
 from passlib.context import CryptContext
+from sentry_sdk import init
 
 from model import db
 
@@ -36,7 +37,7 @@ def create_app():
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL',
                                                                  'postgresql://localhost/voltage_counter')
-    flask_app.config['JWT_SECRET_KEY'] = os.environ.get('SECRET_KEY', 'super-secret-debug')
+    flask_app.config['JWT_SECRET_KEY'] = os.environ['JWT_SECRET_KEY']
 
     db.init_app(app=flask_app)
     jwt.init_app(app=flask_app)
@@ -44,6 +45,8 @@ def create_app():
     from apis.api_v1 import namespace
     api.add_namespace(namespace)
     flask_app.register_blueprint(blueprint)
+
+    init(os.environ['SENTRY'])
 
     return flask_app
 
