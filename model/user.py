@@ -2,25 +2,20 @@ from datetime import datetime
 
 from sqlalchemy import orm
 
+from model import db
 from utility.constants import Constants
-from utility.shared_objects import db
-from utility.shared_objects import passlib
-from utility.token_serializer import TokenSerializer
 
 
 class User(db.Model):
     __tablename__ = 'USER'
 
     user_id = db.Column(db.Integer, primary_key=True)
-    is_email_approved = db.Column(db.Boolean)
     first_name = db.Column(db.Text)
     last_name = db.Column(db.Text)
-    password = db.Column(db.Text)
     email = db.Column(db.Text)
-    token = db.Column(db.Text)
     is_removed = db.Column(db.Boolean)
     time_stamp = db.Column(db.DateTime)
-    registration_email_token = db.Column(db.Text)
+    apple_sign_in_id = db.Column(db.Text)
 
     @orm.reconstructor
     def init_on_load(self):
@@ -29,9 +24,6 @@ class User(db.Model):
     def __init__(self, input_parameters):
         self.internal_id = None
         self.is_removed = False
-        self.is_email_approved = False
-        self.registration_email_token = TokenSerializer.generate_auth_token(self.user_id)
-
         self.update(input_parameters)
 
     def __eq__(self, other):
@@ -71,11 +63,6 @@ class User(db.Model):
         if value is not None:
             self.last_name = value
 
-        value = new_value.get(Constants.JSON.password)
-        if value is not None:
-            encrypted_password = passlib.encrypt(value, salt_length=100)
-            self.password = encrypted_password
-
         value = new_value.get(Constants.JSON.first_name)
         if value is not None:
             self.first_name = value
@@ -90,9 +77,7 @@ class User(db.Model):
                        Constants.JSON.first_name: self.first_name,
                        Constants.JSON.last_name: self.last_name,
                        Constants.JSON.email: self.email,
-
-                       Constants.JSON.is_removed: self.is_removed
-                       }
+                       Constants.JSON.is_removed: self.is_removed}
 
         if self.time_stamp is not None:
             json_object[Constants.JSON.time_stamp] = self.time_stamp.isoformat()
@@ -101,5 +86,4 @@ class User(db.Model):
 
     @staticmethod
     def find(email):
-        items = User.query.filter_by(email=email).all()
-        return items[0]
+        return User.query.filter_by(email=email).first()

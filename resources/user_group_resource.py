@@ -1,12 +1,15 @@
+from flask_jwt_extended import (
+    jwt_required, get_jwt_identity
+)
 from flask_restplus import Resource, reqparse
 
+from application import api
+from model import db
 from model.group import Group
 from model.user_group import UserGroup
 from resources.group_resource import GroupResource
 from utility.constants import Constants
-from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
-from utility.shared_objects import api, db
 
 
 def put_parameters(parser):
@@ -24,18 +27,13 @@ class UserGroupResource(Resource):
     def can_modify_user_group(sender_user_id, user_group_to_modify):
         return user_group_to_modify.user_id == sender_user_id
 
+    @jwt_required
     @api.doc(parser=parser)
     def put(self):
         parser = reqparse.RequestParser()
         put_parameters(parser)
         args = parser.parse_args()
-
-        user_id = args[Constants.JSON.user_id]
-        token = args[Constants.JSON.token]
-        status, message = CredentialsValidator.is_user_credentials_valid(user_id, token)
-
-        if status is False:
-            return message, 401
+        user_id = get_jwt_identity()
 
         user_group_id = args.get(Constants.JSON.user_group_id)
         items = UserGroup.query.filter_by(user_group_id=user_group_id).all()

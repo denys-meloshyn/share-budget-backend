@@ -1,16 +1,19 @@
+from flask_jwt_extended import (
+    jwt_required, get_jwt_identity
+)
 from flask_restplus import Resource, reqparse
 
+from application import api
 from model.group import Group
 from model.user_group import UserGroup
 from utility.constants import Constants
-from utility.credentials_validator import CredentialsValidator
 from utility.resource_parser import ResourceParser
 from utility.response_formatter import ResponseFormatter
-from utility.shared_objects import api
 
 
 def get_parameters(parser):
     ResourceParser.add_default_update_parameters(parser)
+
 
 get_parser = reqparse.RequestParser()
 swagger_get_parser = api.parser()
@@ -20,23 +23,18 @@ get_parameters(swagger_get_parser)
 
 
 class GroupUpdateResource(Resource):
+    @jwt_required
     @api.doc(parser=swagger_get_parser)
     def get(self):
         args = get_parser.parse_args()
-
-        user_id = args[Constants.JSON.user_id]
-        token = args[Constants.JSON.token]
-        status, message = CredentialsValidator.is_user_credentials_valid(user_id, token)
-
-        if status is False:
-            return message, 401
+        user_id = get_jwt_identity()
 
         query = Group.query.filter(user_id == UserGroup.user_id, UserGroup.group_id == Group.group_id)
 
         time_stamp = args.get(Constants.JSON.time_stamp)
         if time_stamp is not None:
             time_stamp = time_stamp[0].replace(tzinfo=None)
-            query = query.from_self().filter(Group.time_stamp >= time_stamp)
+            query = query.from_self().filter(Group.time_stamp > time_stamp)
         query = query.order_by(Group.time_stamp.asc())
 
         start_page = args[Constants.JSON.pagination_start]

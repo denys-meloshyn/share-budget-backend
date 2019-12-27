@@ -1,7 +1,7 @@
 from datetime import datetime
 
+from model import db
 from utility.constants import Constants
-from utility.shared_objects import db
 
 
 class UserGroup(db.Model):

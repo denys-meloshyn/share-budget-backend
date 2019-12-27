@@ -1,8 +1,8 @@
 import os
+
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 
-
-token_secret_key = os.environ.get('TOKEN_SECRET_KEY', 'debug_token_key')
+token_secret_key = os.environ['TOKEN_SECRET_KEY']
 
 
 class TokenSerializer:

@@ -1,10 +1,9 @@
 from flask_restplus import Resource, reqparse
 
-from model.users import User
+from application import api, passlib
+from model import db
+from model.user import User
 from utility.constants import Constants
-from utility.shared_objects import db
-from utility.shared_objects import passlib
-from utility.shared_objects import api
 from utility.token_serializer import TokenSerializer
 
 
