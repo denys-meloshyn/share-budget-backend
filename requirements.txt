@@ -1,5 +1,4 @@
 sqlalchemy
-passlib
 pip==19.2.1
 gunicorn==19.9.0
 Flask==1.1.1
@@ -14,5 +13,5 @@ flask_cors
 Flask-Mail
 Flask-JWT-Extended==3.2.0
 authlib==0.12
-requests=2.22.0
-passlib=1.7.2
+requests==2.22.0
+passlib==1.7.2
