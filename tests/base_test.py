@@ -3,6 +3,7 @@ from unittest import TestCase
 from flask import json
 
 import app
+from application import create_app
 from model import db
 from model.user import User
 from utility.constants import Constants
@@ -10,10 +11,13 @@ from utility.token_serializer import TokenSerializer
 
 
 class BaseTestCase(TestCase):
+    def create_app(self):
+        return create_app()
+
     @staticmethod
     def configure_app():
         app.flask_app.testing = True
-        app.flask_app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/postgres_test'
+        app.flask_app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
 
     def setUp(self):
         self.configure_app()

@@ -4,8 +4,7 @@ gunicorn==19.9.0
 Flask==1.1.1
 Flask-SQLAlchemy==2.4.0
 flask-restplus==0.12.1
-psycopg2==2.8.3
-Flask-Passlib
+psycopg2==2.8.4
 python-dateutil
 pytz
 watchdog
