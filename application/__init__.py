@@ -35,8 +35,7 @@ def create_app():
     flask_app.config.SWAGGER_UI_DOC_EXPANSION = 'list'
     flask_app.config['BUNDLE_ERRORS'] = True
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    flask_app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL',
-                                                                 'postgresql://localhost/voltage_counter')
+    flask_app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
     flask_app.config['JWT_SECRET_KEY'] = os.environ['JWT_SECRET_KEY']
 
     db.init_app(app=flask_app)
