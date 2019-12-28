@@ -2,11 +2,12 @@ from model.group import Group
 from model.user import User
 from model.user_group import UserGroup
 from tests.base_test import BaseTestCase
+from utility.token_serializer import TokenSerializer
 
 
 class TestUserUpdateResource(BaseTestCase):
     def parse_result(self, response):
-        result = self.result(response)
+        result = BaseTestCase.result(response)
 
         return [UserGroup(item) for item in result]
 
@@ -23,8 +24,8 @@ class TestUserUpdateResource(BaseTestCase):
         self.expected_result = []
 
     def test_all_users_in_one_group(self):
-        self.login()
-        current_user = self.default_user()
+        user = BaseTestCase.create_user()
+        access_token, refresh_token = TokenSerializer.access_refresh_token(user.user_id)
 
         # ----------------
 
@@ -32,35 +33,37 @@ class TestUserUpdateResource(BaseTestCase):
         group.name = "GROUP_A"
         self.add_and_safe(group)
 
-        user_group = self.create_user_group(user=current_user, group=group)
-        self.expected_result.append(user_group)
-
-        # ----------------
-
-        user = User({})
-        user.first_name = "USER_A"
-        self.add_and_safe(user)
-
         user_group = self.create_user_group(user=user, group=group)
         self.expected_result.append(user_group)
 
         # ----------------
 
-        user = User({})
-        user.first_name = "USER_B"
-        self.add_and_safe(user)
+        user_a = User({})
+        user_a.first_name = "USER_A"
+        self.add_and_safe(user_a)
 
-        user_group = self.create_user_group(user=user, group=group)
+        user_group = self.create_user_group(user=user_a, group=group)
         self.expected_result.append(user_group)
 
-        response = self.test_client.get('/v1/user/group/updates', headers=self.default_user_json(current_user))
+        # ----------------
+
+        user_b = User({})
+        user_b.first_name = "USER_B"
+        self.add_and_safe(user_b)
+
+        user_group = self.create_user_group(user=user_b, group=group)
+        self.expected_result.append(user_group)
+
+        headers = BaseTestCase.default_user_json(user)
+        headers.update(BaseTestCase.access_token_header(access_token=access_token))
+        response = self.test_client.get('/v1/user/group/updates', headers=headers)
 
         actual_result = self.parse_result(response)
         assert self.expected_result == actual_result
 
     def test_no_groups(self):
-        self.login()
-        current_user = self.default_user()
+        current_user = BaseTestCase.create_user()
+        access_token, refresh_token = TokenSerializer.access_refresh_token(current_user.user_id)
 
         # ----------------
 
@@ -80,14 +83,16 @@ class TestUserUpdateResource(BaseTestCase):
         user.first_name = "USER_C"
         self.add_and_safe(user)
 
-        response = self.test_client.get('/v1/user/group/updates', headers=self.default_user_json(current_user))
+        headers = BaseTestCase.default_user_json(user)
+        headers.update(BaseTestCase.access_token_header(access_token=access_token))
+        response = self.test_client.get('/v1/user/group/updates', headers=headers)
 
         result = self.result(response)
         assert len(result) == 0
 
     def test_group_empty(self):
-        self.login()
-        current_user = self.default_user()
+        current_user = BaseTestCase.create_user()
+        access_token, refresh_token = TokenSerializer.access_refresh_token(current_user.user_id)
 
         group = Group({})
         group.name = "GROUP_1"
@@ -111,21 +116,22 @@ class TestUserUpdateResource(BaseTestCase):
         user.first_name = "USER_3"
         self.add_and_safe(user)
 
-        response = self.test_client.get('/v1/user/group/updates', headers=self.default_user_json(current_user))
+        headers = BaseTestCase.default_user_json(user)
+        headers.update(BaseTestCase.access_token_header(access_token=access_token))
+        response = self.test_client.get('/v1/user/group/updates', headers=headers)
 
         result = self.result(response)
         assert len(result) == 0
 
     def test_user_group_only_creator(self):
-        self.login()
+        current_user = BaseTestCase.create_user()
+        access_token, refresh_token = TokenSerializer.access_refresh_token(current_user.user_id)
 
         group = Group({})
         group.name = "GROUP_1"
         self.add_and_safe(group)
 
         # ----------------
-
-        current_user = self.default_user()
 
         user_group = self.create_user_group(user=current_user, group=group)
         self.expected_result.append(user_group)
@@ -148,22 +154,22 @@ class TestUserUpdateResource(BaseTestCase):
         user.first_name = "USER_3"
         self.add_and_safe(user)
 
-        response = self.test_client.get('/v1/user/group/updates',
-                                        headers=self.default_user_json(current_user))
+        headers = BaseTestCase.default_user_json(user)
+        headers.update(BaseTestCase.access_token_header(access_token=access_token))
+        response = self.test_client.get('/v1/user/group/updates', headers=headers)
 
         actual_result = self.parse_result(response)
         assert self.expected_result == actual_result
 
     def test_user_group_not_all_users(self):
-        self.login()
+        current_user = BaseTestCase.create_user()
+        access_token, refresh_token = TokenSerializer.access_refresh_token(current_user.user_id)
 
         group = Group({})
         group.name = "GROUP_1"
         self.add_and_safe(group)
 
         # ----------------
-
-        current_user = self.default_user()
 
         user_group = self.create_user_group(user=current_user, group=group)
         self.expected_result.append(user_group)
@@ -194,13 +200,16 @@ class TestUserUpdateResource(BaseTestCase):
 
         # ----------------
 
-        response = self.test_client.get('/v1/user/group/updates', headers=self.default_user_json(current_user))
+        headers = BaseTestCase.default_user_json(user)
+        headers.update(BaseTestCase.access_token_header(access_token=access_token))
+        response = self.test_client.get('/v1/user/group/updates', headers=headers)
 
         actual_result = self.parse_result(response)
         assert self.expected_result == actual_result
 
     def test_single_user_in_multiple_groups(self):
-        self.login()
+        current_user = BaseTestCase.create_user()
+        access_token, refresh_token = TokenSerializer.access_refresh_token(current_user.user_id)
 
         group_1 = Group({})
         group_1.name = "GROUP_1"
@@ -219,8 +228,6 @@ class TestUserUpdateResource(BaseTestCase):
         self.add_and_safe(group_4)
 
         # ----------------
-
-        current_user = self.default_user()
 
         user_group = self.create_user_group(user=current_user, group=group_1)
         self.expected_result.append(user_group)
@@ -260,13 +267,16 @@ class TestUserUpdateResource(BaseTestCase):
 
         # ----------------
 
-        response = self.test_client.get('/v1/user/group/updates', headers=self.default_user_json(current_user))
+        headers = BaseTestCase.default_user_json(user)
+        headers.update(BaseTestCase.access_token_header(access_token=access_token))
+        response = self.test_client.get('/v1/user/group/updates', headers=headers)
 
         actual_result = self.parse_result(response)
         assert self.expected_result == actual_result
 
     def test_multiple_users_in_multiple_groups(self):
-        self.login()
+        current_user = BaseTestCase.create_user()
+        access_token, refresh_token = TokenSerializer.access_refresh_token(current_user.user_id)
 
         group_1 = Group({})
         group_1.name = "GROUP_1"
@@ -285,8 +295,6 @@ class TestUserUpdateResource(BaseTestCase):
         self.add_and_safe(group_4)
 
         # ----------------
-
-        current_user = self.default_user()
 
         user_group = self.create_user_group(user=current_user, group=group_1)
         self.expected_result.append(user_group)
@@ -325,7 +333,9 @@ class TestUserUpdateResource(BaseTestCase):
 
         # ----------------
 
-        response = self.test_client.get('/v1/user/group/updates', headers=self.default_user_json(current_user))
+        headers = BaseTestCase.default_user_json(user)
+        headers.update(BaseTestCase.access_token_header(access_token=access_token))
+        response = self.test_client.get('/v1/user/group/updates', headers=headers)
 
         actual_result = self.parse_result(response)
         assert self.expected_result == actual_result

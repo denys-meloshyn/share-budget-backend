@@ -29,8 +29,8 @@ class LoginResource(Resource):
         if user is None:
             return Constants.error_reponse(Constants.JSON.user_not_exist), 401
 
-        if not user.is_email_approved:
-            return Constants.error_reponse('email_not_approved'), 401
+        # if not user.is_email_approved:
+        #     return Constants.error_reponse('email_not_approved'), 401
 
         # if not passlib.verify(password, user.password):
         #     return Constants.error_reponse('user_password_is_wrong'), 401

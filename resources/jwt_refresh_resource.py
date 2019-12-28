@@ -1,9 +1,5 @@
 from datetime import datetime
 
-from flask_jwt_extended import (
-    create_access_token,
-    create_refresh_token
-)
 from flask_jwt_extended import jwt_refresh_token_required, get_jwt_identity
 from flask_restplus import Resource, reqparse
 
@@ -11,6 +7,7 @@ from application import api, pwd_context
 from model import db
 from model.refresh_token import RefreshToken
 from utility.constants import Constants
+from utility.token_serializer import TokenSerializer
 
 
 def post_parameters(parser):
@@ -40,8 +37,7 @@ class JWTRefreshResource(Resource):
         if current_refresh_token_entity is None:
             return Constants.error_reponse('refresh token not registered')
 
-        refresh_token = create_refresh_token(user_id)
-        access_token = create_access_token(identity=user_id, fresh=True)
+        access_token, refresh_token = TokenSerializer.access_refresh_token(user_id)
 
         encrypted_refresh_token = pwd_context.encrypt(refresh_token)
         current_refresh_token_entity.refresh_token = encrypted_refresh_token

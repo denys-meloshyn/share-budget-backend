@@ -3,10 +3,6 @@ import json
 import requests as requests
 from authlib.jose import jwk, jwt
 from authlib.jose.errors import ExpiredTokenError
-from flask_jwt_extended import (
-    create_access_token,
-    create_refresh_token
-)
 from flask_restplus import Resource, reqparse
 
 from application import api, pwd_context
@@ -14,6 +10,7 @@ from model import db
 from model.refresh_token import RefreshToken
 from model.user import User
 from utility.constants import Constants
+from utility.token_serializer import TokenSerializer
 
 
 def post_parameters(parser):
@@ -75,8 +72,7 @@ class LoginAppleResource(Resource):
                 user.update(new_value=args)
             db.session.commit()
 
-            refresh_token = create_refresh_token(user.user_id)
-            access_token = create_access_token(identity=user.user_id, fresh=True)
+            access_token, refresh_token = TokenSerializer.access_refresh_token(user.user_id)
 
             encrypted_refresh_token = pwd_context.encrypt(refresh_token)
             refresh_token_entry = RefreshToken(refresh_token=encrypted_refresh_token, user_id=user.user_id)

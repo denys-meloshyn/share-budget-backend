@@ -1,5 +1,9 @@
 import os
 
+from flask_jwt_extended import (
+    create_access_token,
+    create_refresh_token
+)
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 
 token_secret_key = os.environ['TOKEN_SECRET_KEY']
@@ -8,6 +12,13 @@ token_secret_key = os.environ['TOKEN_SECRET_KEY']
 class TokenSerializer:
     def __init__(self):
         pass
+
+    @staticmethod
+    def access_refresh_token(user_id):
+        access_token = create_access_token(identity=user_id, fresh=True)
+        refresh_token = create_refresh_token(user_id)
+
+        return access_token, refresh_token
 
     @staticmethod
     def generate_token(data, expiration=600):

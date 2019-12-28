@@ -2,20 +2,22 @@ from unittest import TestCase
 
 from flask import json
 
-from app import app
+import app
+from model import db
 from model.user import User
 from utility.constants import Constants
+from utility.token_serializer import TokenSerializer
 
 
 class BaseTestCase(TestCase):
     @staticmethod
     def configure_app():
-        app.testing = True
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/postgres_test'
+        app.flask_app.testing = True
+        app.flask_app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/postgres_test'
 
     def setUp(self):
         self.configure_app()
-        self.test_client = app.test_client()
+        self.test_client = app.flask_app.test_client()
         db.drop_all()
         db.create_all()
 
@@ -24,15 +26,29 @@ class BaseTestCase(TestCase):
         db.drop_all()
 
     def login(self):
-        self.create_account()
-        self.test_client.post('/v1/login', headers=self.default_user_json())
+        user = self.create_account()
+        access_token, refresh_token = TokenSerializer.access_refresh_token(user.user_id)
+        return access_token
+
+    @staticmethod
+    def create_user(apple_sign_in_id='default_apple_sign_in_id'):
+        user = User({})
+        user.apple_sign_in_id = apple_sign_in_id
+
+        db.session.add(user)
+        db.session.commit()
+        return user
+
+    @staticmethod
+    def access_token_header(access_token):
+        return {'Authorization': 'Bearer {}'.format(access_token)}
 
     def create_account(self, is_email_approved=True, json_attr=None):
         if json_attr is None:
             json_attr = self.default_user_json()
 
         user = User(json_attr)
-        user.is_email_approved = is_email_approved
+        user.apple_sign_in_id = 'test_apple_sign_in_id'
 
         db.session.add(user)
         db.session.commit()
@@ -64,6 +80,6 @@ class BaseTestCase(TestCase):
                      Constants.JSON.password: 'test_password'}
         if user is not None:
             json_attr[Constants.JSON.user_id] = user.user_id
-            json_attr[Constants.JSON.token] = user.token
+            # json_attr[Constants.JSON.token] = user.token
 
         return json_attr
