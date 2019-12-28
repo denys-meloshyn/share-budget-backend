@@ -15,6 +15,7 @@ jobs:
           python-version: 3.7
       - name: Install dependencies
         run: |
+          /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
           brew install libpq
           pip install -r requirements.txt
       - name: Create DB
