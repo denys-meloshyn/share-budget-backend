@@ -15,10 +15,10 @@ jobs:
           python-version: 3.7
       - name: Install dependencies
         run: |
+          brew install libpq
           pip install -r requirements.txt
       - name: Create DB
         run: |
-          brew install libpq
           psql -c 'create database postgres_test;' -U postgres
       - name: Test with pytest
         run: |
