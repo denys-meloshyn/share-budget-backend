@@ -14,12 +14,12 @@ class TestUserGroupResource(BaseTestCase):
         group = Group({})
         group.name = 'Group A'
         group.creator_user_id = creator.user_id
-        self.add_and_safe(group)
+        self.add_and_save(group)
 
         user_group = UserGroup({})
         user_group.user_id = creator.user_id
         user_group.group_id = group.group_id
-        self.add_and_safe(user_group)
+        self.add_and_save(user_group)
 
         self.assertTrue(UserGroupResource.can_modify_user_group(creator.user_id, user_group))
 
@@ -31,15 +31,15 @@ class TestUserGroupResource(BaseTestCase):
         group = Group({})
         group.name = 'Group A'
         group.creator_user_id = creator.user_id
-        self.add_and_safe(group)
+        self.add_and_save(group)
 
         user_group = UserGroup({})
         user_group.user_id = creator.user_id
         user_group.group_id = group.group_id
-        self.add_and_safe(user_group)
+        self.add_and_save(user_group)
 
         user_without_permission = User({})
         user_without_permission.first_name = 'user without permission to change user group'
-        self.add_and_safe(user_without_permission)
+        self.add_and_save(user_without_permission)
 
         self.assertFalse(UserGroupResource.can_modify_user_group(user_without_permission.user_id, user_group))

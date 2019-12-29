@@ -20,5 +20,4 @@ class ResourceParser:
     def add_default_parameters(parser):
         parser.add_argument('Authorization', help='Bearer <access_token>', location='headers', required=True)
         parser.add_argument(Constants.JSON.internal_id, type=int, help='Internal ID', location='form')
-        parser.add_argument(Constants.JSON.user_id, type=int, help='User ID', location='form', required=True)
         parser.add_argument(Constants.JSON.is_removed, type=inputs.boolean, help='Is removed', location='form')

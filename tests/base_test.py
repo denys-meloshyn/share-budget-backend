@@ -17,7 +17,6 @@ class BaseTestCase(TestCase):
     @staticmethod
     def configure_app():
         app.flask_app.testing = True
-        app.flask_app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
 
     def setUp(self):
         self.configure_app()
@@ -72,7 +71,7 @@ class BaseTestCase(TestCase):
         return data[Constants.JSON.result]
 
     @staticmethod
-    def add_and_safe(model):
+    def add_and_save(model):
         db.session.add(model)
         db.session.commit()
 

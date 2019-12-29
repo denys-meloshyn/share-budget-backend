@@ -15,7 +15,7 @@ class TestUserUpdateResource(BaseTestCase):
         user_group = UserGroup({})
         user_group.user_id = user.user_id
         user_group.group_id = group.group_id
-        self.add_and_safe(user_group)
+        self.add_and_save(user_group)
 
         return user_group
 
@@ -31,7 +31,7 @@ class TestUserUpdateResource(BaseTestCase):
 
         group = Group({})
         group.name = "GROUP_A"
-        self.add_and_safe(group)
+        self.add_and_save(group)
 
         user_group = self.create_user_group(user=user, group=group)
         self.expected_result.append(user_group)
@@ -40,7 +40,7 @@ class TestUserUpdateResource(BaseTestCase):
 
         user_a = User({})
         user_a.first_name = "USER_A"
-        self.add_and_safe(user_a)
+        self.add_and_save(user_a)
 
         user_group = self.create_user_group(user=user_a, group=group)
         self.expected_result.append(user_group)
@@ -49,7 +49,7 @@ class TestUserUpdateResource(BaseTestCase):
 
         user_b = User({})
         user_b.first_name = "USER_B"
-        self.add_and_safe(user_b)
+        self.add_and_save(user_b)
 
         user_group = self.create_user_group(user=user_b, group=group)
         self.expected_result.append(user_group)
@@ -69,19 +69,19 @@ class TestUserUpdateResource(BaseTestCase):
 
         user = User({})
         user.first_name = "USER_A"
-        self.add_and_safe(user)
+        self.add_and_save(user)
 
         # ----------------
 
         user = User({})
         user.first_name = "USER_B"
-        self.add_and_safe(user)
+        self.add_and_save(user)
 
         # ----------------
 
         user = User({})
         user.first_name = "USER_C"
-        self.add_and_safe(user)
+        self.add_and_save(user)
 
         headers = BaseTestCase.default_user_json(user)
         headers.update(BaseTestCase.access_token_header(access_token=access_token))
@@ -96,25 +96,25 @@ class TestUserUpdateResource(BaseTestCase):
 
         group = Group({})
         group.name = "GROUP_1"
-        self.add_and_safe(group)
+        self.add_and_save(group)
 
         # ----------------
 
         user = User({})
         user.first_name = "USER_1"
-        self.add_and_safe(user)
+        self.add_and_save(user)
 
         # ----------------
 
         user = User({})
         user.first_name = "USER_2"
-        self.add_and_safe(user)
+        self.add_and_save(user)
 
         # ----------------
 
         user = User({})
         user.first_name = "USER_3"
-        self.add_and_safe(user)
+        self.add_and_save(user)
 
         headers = BaseTestCase.default_user_json(user)
         headers.update(BaseTestCase.access_token_header(access_token=access_token))
@@ -129,7 +129,7 @@ class TestUserUpdateResource(BaseTestCase):
 
         group = Group({})
         group.name = "GROUP_1"
-        self.add_and_safe(group)
+        self.add_and_save(group)
 
         # ----------------
 
@@ -140,19 +140,19 @@ class TestUserUpdateResource(BaseTestCase):
 
         user = User({})
         user.first_name = "USER_1"
-        self.add_and_safe(user)
+        self.add_and_save(user)
 
         # ----------------
 
         user = User({})
         user.first_name = "USER_2"
-        self.add_and_safe(user)
+        self.add_and_save(user)
 
         # ----------------
 
         user = User({})
         user.first_name = "USER_3"
-        self.add_and_safe(user)
+        self.add_and_save(user)
 
         headers = BaseTestCase.default_user_json(user)
         headers.update(BaseTestCase.access_token_header(access_token=access_token))
@@ -167,7 +167,7 @@ class TestUserUpdateResource(BaseTestCase):
 
         group = Group({})
         group.name = "GROUP_1"
-        self.add_and_safe(group)
+        self.add_and_save(group)
 
         # ----------------
 
@@ -178,7 +178,7 @@ class TestUserUpdateResource(BaseTestCase):
 
         user = User({})
         user.first_name = "USER_1"
-        self.add_and_safe(user)
+        self.add_and_save(user)
 
         user_group = self.create_user_group(user=user, group=group)
         self.expected_result.append(user_group)
@@ -187,13 +187,13 @@ class TestUserUpdateResource(BaseTestCase):
 
         user = User({})
         user.first_name = "USER_2"
-        self.add_and_safe(user)
+        self.add_and_save(user)
 
         # ----------------
 
         user = User({})
         user.first_name = "USER_3"
-        self.add_and_safe(user)
+        self.add_and_save(user)
 
         user_group = self.create_user_group(user=current_user, group=group)
         self.expected_result.append(user_group)
@@ -213,19 +213,19 @@ class TestUserUpdateResource(BaseTestCase):
 
         group_1 = Group({})
         group_1.name = "GROUP_1"
-        self.add_and_safe(group_1)
+        self.add_and_save(group_1)
 
         group_2 = Group({})
         group_2.name = "GROUP_2"
-        self.add_and_safe(group_2)
+        self.add_and_save(group_2)
 
         group_3 = Group({})
         group_3.name = "GROUP_3"
-        self.add_and_safe(group_3)
+        self.add_and_save(group_3)
 
         group_4 = Group({})
         group_4.name = "GROUP_3"
-        self.add_and_safe(group_4)
+        self.add_and_save(group_4)
 
         # ----------------
 
@@ -236,7 +236,7 @@ class TestUserUpdateResource(BaseTestCase):
 
         user = User({})
         user.first_name = "USER_1"
-        self.add_and_safe(user)
+        self.add_and_save(user)
 
         user_group = self.create_user_group(user=user, group=group_2)
         self.expected_result.append(user_group)
@@ -248,16 +248,16 @@ class TestUserUpdateResource(BaseTestCase):
 
         user = User({})
         user.first_name = "USER_2"
-        self.add_and_safe(user)
+        self.add_and_save(user)
 
         user_group = self.create_user_group(user=user, group=group_3)
-        self.add_and_safe(user_group)
+        self.add_and_save(user_group)
 
         # ----------------
 
         user = User({})
         user.first_name = "USER_3"
-        self.add_and_safe(user)
+        self.add_and_save(user)
 
         user_group = self.create_user_group(user=user, group=group_4)
         self.expected_result.append(user_group)
@@ -280,19 +280,19 @@ class TestUserUpdateResource(BaseTestCase):
 
         group_1 = Group({})
         group_1.name = "GROUP_1"
-        self.add_and_safe(group_1)
+        self.add_and_save(group_1)
 
         group_2 = Group({})
         group_2.name = "GROUP_2"
-        self.add_and_safe(group_2)
+        self.add_and_save(group_2)
 
         group_3 = Group({})
         group_3.name = "GROUP_3"
-        self.add_and_safe(group_3)
+        self.add_and_save(group_3)
 
         group_4 = Group({})
         group_4.name = "GROUP_3"
-        self.add_and_safe(group_4)
+        self.add_and_save(group_4)
 
         # ----------------
 
@@ -303,7 +303,7 @@ class TestUserUpdateResource(BaseTestCase):
 
         user = User({})
         user.first_name = "USER_1"
-        self.add_and_safe(user)
+        self.add_and_save(user)
 
         user_group = self.create_user_group(user=user, group=group_2)
         self.expected_result.append(user_group)
@@ -315,7 +315,7 @@ class TestUserUpdateResource(BaseTestCase):
 
         user = User({})
         user.first_name = "USER_2"
-        self.add_and_safe(user)
+        self.add_and_save(user)
 
         user_group = self.create_user_group(user=user, group=group_3)
         self.expected_result.append(user_group)
@@ -327,7 +327,7 @@ class TestUserUpdateResource(BaseTestCase):
 
         user = User({})
         user.first_name = "USER_3"
-        self.add_and_safe(user)
+        self.add_and_save(user)
 
         self.create_user_group(user=user, group=group_4)
 
