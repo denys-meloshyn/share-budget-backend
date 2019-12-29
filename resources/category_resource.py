@@ -1,11 +1,12 @@
 from flask_jwt_extended import (
-    jwt_required
+    jwt_required, get_jwt_identity
 )
 from flask_restplus import Resource, reqparse
 
 from application import api
 from model import db
 from model.category import Category
+from model.user_group import UserGroup
 from utility.constants import Constants
 from utility.resource_parser import ResourceParser
 
@@ -29,6 +30,12 @@ class CategoryResource(Resource):
         put_parameters(parser)
         args = parser.parse_args()
 
+        user_id = get_jwt_identity()
+        group_id = args[Constants.JSON.group_id]
+
+        if not UserGroup.is_user_part_of_group(user_id=user_id, group_id=group_id):
+            return Constants.error_reponse(Constants.JSON.permission_not_allowed), 401
+
         category_id = args.get(Constants.JSON.category_id)
         if category_id is None:
             category = Category(args)
@@ -42,6 +49,6 @@ class CategoryResource(Resource):
                 category.update(args)
                 db.session.commit()
             else:
-                return Constants.error_reponse('category_not_exist')
+                return Constants.error_reponse(Constants.JSON.category_not_exist)
 
         return Constants.default_response(category.to_json())

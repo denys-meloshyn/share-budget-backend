@@ -13,6 +13,17 @@ class UserGroup(db.Model):
     is_removed = db.Column(db.Boolean)
     time_stamp = db.Column(db.DateTime)
 
+    @staticmethod
+    def is_user_part_of_group(user_id, group_id):
+        user_group = UserGroup.query.filter(
+            db.and_(UserGroup.group_id == group_id, UserGroup.user_id == user_id, UserGroup.is_removed.is_(False))
+        ).first()
+
+        if user_group is None:
+            return False
+
+        return True
+
     def __init__(self, input_parameters):
         self.internal_id = None
         self.is_removed = False

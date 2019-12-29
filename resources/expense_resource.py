@@ -43,12 +43,8 @@ class ExpenseResource(Resource):
         user_id = get_jwt_identity()
         group_id = args[Constants.JSON.group_id]
 
-        user_group = UserGroup.query.filter(
-            db.and_(UserGroup.group_id == group_id, UserGroup.user_id == user_id, UserGroup.is_removed.is_(False))
-        ).first()
-
-        if user_group is None:
-            return Constants.error_reponse('Permission not allowed'), 401
+        if not UserGroup.is_user_part_of_group(user_id=user_id, group_id=group_id):
+            return Constants.error_reponse(Constants.JSON.permission_not_allowed), 401
 
         expense_id = args.get(Constants.JSON.expense_id)
         # If expense_id exist?

@@ -6,6 +6,7 @@ import app
 from application import create_app
 from model import db
 from model.user import User
+from model.user_group import UserGroup
 from utility.constants import Constants
 from utility.token_serializer import TokenSerializer
 
@@ -41,6 +42,14 @@ class BaseTestCase(TestCase):
         db.session.add(user)
         db.session.commit()
         return user
+
+    def create_user_group(self, user, group):
+        user_group = UserGroup({})
+        user_group.user_id = user.user_id
+        user_group.group_id = group.group_id
+        self.add_and_save(user_group)
+
+        return user_group
 
     @staticmethod
     def access_token_header(access_token):

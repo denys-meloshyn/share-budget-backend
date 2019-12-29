@@ -1,14 +1,12 @@
-from datetime import datetime
-
-from model.expense import Expense
+from model.category import Category
 from model.group import Group
 from tests.base_test import BaseTestCase
 from utility.constants import Constants
 from utility.token_serializer import TokenSerializer
 
 
-class TestExpenseResource(BaseTestCase):
-    def test_permission_allowed_to_create_expense(self):
+class TestCategoryResource(BaseTestCase):
+    def test_permission_allowed_to_create_category(self):
         user_a = BaseTestCase.create_user()
         access_token_a, refresh_token_a = TokenSerializer.access_refresh_token(user_a.user_id)
 
@@ -20,18 +18,17 @@ class TestExpenseResource(BaseTestCase):
 
         self.create_user_group(user=user_a, group=group_a)
 
-        expense = Expense({})
-        expense.price = 0
-        expense.group_id = group_a.group_id
-        expense.creation_date = datetime.utcnow()
+        category = Category(input_parameters={})
+        category.name = 'test'
+        category.group_id = group_a.group_id
 
         # ----------------
 
-        response = self.test_client.put('/v1/expense',
+        response = self.test_client.put('/v1/category',
                                         headers=BaseTestCase.access_token_header(access_token=access_token_a),
-                                        data=expense.to_json())
+                                        data=category.to_json())
 
-        assert response.json[Constants.JSON.result][Constants.JSON.expense_id] == 1
+        assert response.json[Constants.JSON.result][Constants.JSON.category_id] == 1
 
     def test_permission_not_allowed_to_create_expense(self):
         user_a = BaseTestCase.create_user()
@@ -42,7 +39,7 @@ class TestExpenseResource(BaseTestCase):
         group_a.name = "GROUP_A"
         self.add_and_save(group_a)
 
-        user_group = self.create_user_group(user=user_a, group=group_a)
+        self.create_user_group(user=user_a, group=group_a)
 
         # ----------------
 
@@ -51,14 +48,13 @@ class TestExpenseResource(BaseTestCase):
 
         # ----------------
 
-        expense = Expense({})
-        expense.price = 0
-        expense.group_id = group_a.group_id
-        expense.creation_date = datetime.utcnow()
+        category = Category(input_parameters={})
+        category.name = 'test'
+        category.group_id = group_a.group_id
 
-        response = self.test_client.put('/v1/expense',
+        response = self.test_client.put('/v1/category',
                                         headers=BaseTestCase.access_token_header(access_token=access_token_b),
-                                        data=expense.to_json())
+                                        data=category.to_json())
 
         assert response.status_code == 401
         assert response.json == Constants.error_reponse('Permission not allowed')

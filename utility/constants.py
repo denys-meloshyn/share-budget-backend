@@ -38,8 +38,10 @@ class Constants:
         modified_user_id = 'modifiedUserID'
         category_limit_id = 'categoryLimitID'
 
+        category_not_exist = 'category_not_exist'
         group_is_not_exist = 'group_is_not_exist'
         user_is_already_exist = 'user_is_already_exist'
+        permission_not_allowed = 'Permission not allowed'
         user_is_not_creator_of_entity = 'user_is_not_creator_of_entity'
 
     registration_resource_path = '/registration'

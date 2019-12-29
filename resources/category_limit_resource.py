@@ -1,11 +1,13 @@
 from flask_jwt_extended import (
-    jwt_required
+    jwt_required, get_jwt_identity
 )
 from flask_restplus import Resource, inputs, reqparse
 
 from application import api
 from model import db
+from model.category import Category
 from model.category_limit import CategoryLimit
+from model.user_group import UserGroup
 from utility.constants import Constants
 from utility.resource_parser import ResourceParser
 
@@ -34,7 +36,17 @@ class CategoryLimitResource(Resource):
         put_parameters(parser)
         args = parser.parse_args()
 
-        category_limit_id = args.get(Constants.JSON.category_id)
+        user_id = get_jwt_identity()
+        category_id = args[Constants.JSON.category_id]
+
+        category = Category.query.filter(Category.category_id == category_id).first()
+        if category is None:
+            return Constants.error_reponse(Constants.JSON.category_not_exist)
+
+        if not UserGroup.is_user_part_of_group(user_id=user_id, group_id=category.group_id):
+            return Constants.error_reponse(Constants.JSON.permission_not_allowed), 401
+
+        category_limit_id = args[Constants.JSON.category_limit_id]
         if category_limit_id is None:
             category_limit = CategoryLimit(args)
             db.session.add(category_limit)
