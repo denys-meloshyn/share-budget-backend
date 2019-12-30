@@ -55,10 +55,6 @@ class UserGroup(db.Model):
                                                                                    self.is_removed)
 
     def update(self, new_value):
-        value = new_value.get(Constants.JSON.user_group_id)
-        if value is not None:
-            self.user_group_id = value
-
         value = new_value.get(Constants.JSON.user_id)
         if value is not None:
             self.user_id = value

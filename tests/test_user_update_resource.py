@@ -2,6 +2,7 @@ from model.group import Group
 from model.user import User
 from model.user_group import UserGroup
 from tests.base_test import BaseTestCase
+from utility.constants import Constants
 from utility.token_serializer import TokenSerializer
 
 
@@ -9,7 +10,12 @@ class TestUserUpdateResource(BaseTestCase):
     def parse_result(self, response):
         result = BaseTestCase.result(response)
 
-        return [UserGroup(item) for item in result]
+        items = [UserGroup(item) for item in result]
+        for i in range(len(items)):
+            item = items[i]
+            json = result[i]
+            item.user_group_id = json[Constants.JSON.user_group_id]
+        return items
 
     def create_user_group(self, user, group):
         user_group = UserGroup({})
