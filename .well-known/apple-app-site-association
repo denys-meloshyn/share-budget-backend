@@ -1,5 +1,11 @@
 {
-	"webcredentials": {
-		"apps": ["4ZT9N5NKNU.denys.meloshyn.share-budget"]
-	}
+  "applinks": {
+    "apps": [],
+    "details": [
+    {
+      "appID": "4ZT9N5NKNU.denys.meloshyn.share-budget",
+      "paths": ["*"]
+    }
+    ]
+  }
 }
