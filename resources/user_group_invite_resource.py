@@ -11,8 +11,8 @@ from utility.token_serializer import TokenSerializer
 
 
 def get_parameters(parser):
-    parser.add_argument(Constants.JSON.group_id, help='Group ID', location='form', required=True)
-    ResourceParser.add_default_update_parameters(parser)
+    parser.add_argument(Constants.JSON.group_id, help='Group ID', location='headers', required=True)
+    ResourceParser.add_default_parameters(parser)
 
 
 class UserGroupInviteResource(Resource):
@@ -38,4 +38,4 @@ class UserGroupInviteResource(Resource):
         token = TokenSerializer.generate_token(data={Constants.JSON.user_id: request_user_id,
                                                      Constants.JSON.group_id: group_id},
                                                expiration=300)
-        return Constants.default_response({'token': token})
+        return Constants.default_response({'token': token.decode('utf8')})
