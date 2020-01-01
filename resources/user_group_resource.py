@@ -23,7 +23,7 @@ def put_parameters(parser):
 
 
 def post_parameters(parser):
-    parser.add_argument(Constants.JSON.invitation_token, help='Invitation token', required=True)
+    parser.add_argument(Constants.JSON.invitation_token, help='Invitation token', location='form', required=True)
     ResourceParser.add_default_parameters(parser)
 
 
