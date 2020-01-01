@@ -4,7 +4,7 @@
     "details": [
     {
       "appID": "4ZT9N5NKNU.denys.meloshyn.share-budget",
-      "paths": ["*"]
+      "paths": ["/user/group/invite"]
     }
     ]
   }

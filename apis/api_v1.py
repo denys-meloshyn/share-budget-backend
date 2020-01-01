@@ -15,6 +15,7 @@ from resources.login_apple_resource import LoginAppleResource
 from resources.login_resource import LoginResource
 from resources.registration_email_resource import RegistrationEmailResource
 from resources.send_registration_email_resource import SendRegistrationEmailResource
+from resources.user_group_invite_resource import UserGroupInviteResource
 from resources.user_group_resource import UserGroupResource
 from resources.user_group_update_resource import UserGroupUpdateResource
 from resources.user_resource import UserResource
@@ -27,7 +28,6 @@ namespace.add_resource(LoginResource, '/login')
 namespace.add_resource(GroupResource, '/group')
 namespace.add_resource(ExpenseResource, '/expense')
 namespace.add_resource(CategoryResource, '/category')
-namespace.add_resource(UserGroupResource, '/user/group')
 namespace.add_resource(LoginAppleResource, '/login/apple')
 namespace.add_resource(UserUpdateResource, '/user/updates')
 namespace.add_resource(BudgetLimitResource, '/group/limit')
@@ -36,8 +36,12 @@ namespace.add_resource(JWTRefreshResource, '/login/jwt/refresh')
 namespace.add_resource(CategoryLimitResource, '/category/limit')
 namespace.add_resource(ExpenseUpdateResource, '/expense/updates')
 namespace.add_resource(CategoryUpdateResource, '/category/updates')
-namespace.add_resource(UserGroupUpdateResource, '/user/group/updates')
+
 namespace.add_resource(BudgetLimitUpdateResource, '/group/limit/updates')
 namespace.add_resource(CategoryLimitUpdateResource, '/category/limit/updates')
 namespace.add_resource(SendRegistrationEmailResource, '/registration/sendemail')
 namespace.add_resource(RegistrationEmailResource, Constants.registration_resource_path)
+
+namespace.add_resource(UserGroupResource, '/user/group')
+namespace.add_resource(UserGroupInviteResource, '/user/group/invite')
+namespace.add_resource(UserGroupUpdateResource, '/user/group/updates')

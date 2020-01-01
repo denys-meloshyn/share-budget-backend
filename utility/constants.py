@@ -36,6 +36,7 @@ class Constants:
         budget_limit_id = 'budgetLimitID'
         creator_user_id = 'creatorUserID'
         modified_user_id = 'modifiedUserID'
+        invitation_token = 'invitationToken'
         category_limit_id = 'categoryLimitID'
 
         category_not_exist = 'category_not_exist'
