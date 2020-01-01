@@ -11,7 +11,6 @@ from utility.token_serializer import TokenSerializer
 
 
 def get_parameters(parser):
-    parser.add_argument(Constants.JSON.user_id, help='User ID', location='form', required=True)
     parser.add_argument(Constants.JSON.group_id, help='Group ID', location='form', required=True)
     ResourceParser.add_default_update_parameters(parser)
 
@@ -36,8 +35,7 @@ class UserGroupInviteResource(Resource):
         if group.creator_user_id != request_user_id:
             return Constants.error_reponse(Constants.JSON.permission_not_allowed), 401
 
-        user_id = args[Constants.JSON.user_id]
-        token = TokenSerializer.generate_token(data={Constants.JSON.user_id: user_id,
+        token = TokenSerializer.generate_token(data={Constants.JSON.user_id: request_user_id,
                                                      Constants.JSON.group_id: group_id},
                                                expiration=300)
         return Constants.default_response(token)
