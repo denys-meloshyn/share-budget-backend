@@ -38,4 +38,4 @@ class UserGroupInviteResource(Resource):
         token = TokenSerializer.generate_token(data={Constants.JSON.user_id: request_user_id,
                                                      Constants.JSON.group_id: group_id},
                                                expiration=300)
-        return Constants.default_response(token)
+        return Constants.default_response({'token': token})
