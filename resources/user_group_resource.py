@@ -12,6 +12,7 @@ from model.group import Group
 from model.user_group import UserGroup
 from utility.constants import Constants
 from utility.resource_parser import ResourceParser
+from utility.token_serializer import token_secret_key
 
 
 def put_parameters(parser):
@@ -41,7 +42,7 @@ class UserGroupResource(Resource):
 
         invitation_token = args[Constants.JSON.invitation_token]
         try:
-            token_serializer = Serializer(invitation_token)
+            token_serializer = Serializer(token_secret_key)
             toke_data = token_serializer.loads(invitation_token)
         except SignatureExpired:
             # Valid token, but expired
