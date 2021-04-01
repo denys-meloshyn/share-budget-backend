@@ -18,7 +18,7 @@ class JWTRefreshResource(Resource):
     parser = api.parser()
     post_parameters(parser)
 
-    @jwt_required()
+    @jwt_required(refresh=True)
     @api.doc(parser=parser)
     def post(self):
         user_id = get_jwt_identity()
