@@ -1,9 +1,9 @@
 import json
 
 import requests as requests
-from authlib.jose import jwk
+from authlib.jose import jwk, jwt
 from flask_restplus import Resource, reqparse
-from jwt import decode, get_unverified_header
+from jwt import get_unverified_header
 
 from application import api, pwd_context
 from model import db
@@ -49,7 +49,7 @@ class LoginAppleResource(Resource):
         key = jwk.loads(auth_key)
 
         try:
-            jwt_claims = decode(identity_token, key)
+            jwt_claims = jwt.decode(s=identity_token, key=key)
             jwt_claims.validate()
 
             jwt_sub = jwt_claims['sub']
@@ -86,5 +86,5 @@ class LoginAppleResource(Resource):
             user_json['refreshToken'] = refresh_token
 
             return user_json
-        except Exception:
-            return Constants.error_reponse('expired JWT'), 401
+        except Exception as ex:
+            return Constants.error_reponse('expired JWT' + str(ex)), 401
