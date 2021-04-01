@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask_jwt_extended import jwt_refresh_token_required, get_jwt_identity
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restplus import Resource, reqparse
 
 from application import api, pwd_context
@@ -18,7 +18,7 @@ class JWTRefreshResource(Resource):
     parser = api.parser()
     post_parameters(parser)
 
-    @jwt_refresh_token_required
+    @jwt_required()
     @api.doc(parser=parser)
     def post(self):
         user_id = get_jwt_identity()
