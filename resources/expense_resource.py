@@ -33,7 +33,7 @@ class ExpenseResource(Resource):
     parser = api.parser()
     put_parameters(parser)
 
-    @jwt_required
+    @jwt_required()
     @api.doc(parser=parser)
     def put(self):
         parser = reqparse.RequestParser()

@@ -19,7 +19,7 @@ class UserGroupInviteResource(Resource):
     get_parser = api.parser()
     get_parameters(get_parser)
 
-    @jwt_required
+    @jwt_required()
     @api.doc(parser=get_parser)
     def get(self):
         parser = reqparse.RequestParser()

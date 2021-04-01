@@ -20,7 +20,7 @@ class UserUpdateResource(Resource):
     parser = api.parser()
     get_parameters(parser)
 
-    @jwt_required
+    @jwt_required()
     @api.doc(parser=parser)
     def get(self):
         parser = reqparse.RequestParser()

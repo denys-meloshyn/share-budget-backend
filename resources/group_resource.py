@@ -29,7 +29,7 @@ class GroupResource(Resource):
     def can_modify_group(sender_user_id, group_to_modify):
         return group_to_modify.creator_user_id == sender_user_id
 
-    @jwt_required
+    @jwt_required()
     @api.doc(parser=parser)
     def put(self):
         parser = reqparse.RequestParser()

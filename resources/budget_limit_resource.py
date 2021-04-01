@@ -22,13 +22,13 @@ class BudgetLimitResource(Resource):
     parser = api.parser()
     put_parameters(parser)
 
-    @jwt_required
+    @jwt_required()
     @api.doc(parser=parser)
     def put(self):
         parser = reqparse.RequestParser()
         put_parameters(parser)
         args = parser.parse_args()
-        
+
         date = args.get(Constants.JSON.date).replace(day=1)
         group_id = args.get(Constants.JSON.group_id)
 

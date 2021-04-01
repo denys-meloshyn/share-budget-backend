@@ -24,7 +24,7 @@ get_parameters(swagger_get_parser)
 
 
 class CategoryLimitUpdateResource(Resource):
-    @jwt_required
+    @jwt_required()
     @api.doc(parser=swagger_get_parser)
     def get(self):
         args = get_parser.parse_args()

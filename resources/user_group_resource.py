@@ -32,7 +32,7 @@ class UserGroupResource(Resource):
     post_parser = api.parser()
     post_parameters(post_parser)
 
-    @jwt_required
+    @jwt_required()
     @api.doc(parser=post_parser)
     def post(self):
         parser = reqparse.RequestParser()
@@ -80,7 +80,7 @@ class UserGroupResource(Resource):
     put_parser = api.parser()
     put_parameters(put_parser)
 
-    @jwt_required
+    @jwt_required()
     @api.doc(parser=put_parser)
     def put(self):
         parser = reqparse.RequestParser()
