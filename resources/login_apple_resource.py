@@ -1,9 +1,9 @@
 import json
 
 import requests as requests
-from authlib.jose import jwk, jwt
-from authlib.jose.errors import ExpiredTokenError
+from authlib.jose import jwk
 from flask_restplus import Resource, reqparse
+from jwt import decode, get_unverified_header
 
 from application import api, pwd_context
 from model import db
@@ -26,6 +26,15 @@ class LoginAppleResource(Resource):
 
     @api.doc(parser=parser)
     def post(self):
+        parser = reqparse.RequestParser()
+        post_parameters(parser)
+        args = parser.parse_args()
+
+        user_id = args['appleID']
+        identity_token = args['identityToken']
+
+        header = get_unverified_header(identity_token)
+
         auth_key_content = requests.get('https://appleid.apple.com/auth/keys').content
 
         if auth_key_content is None:
@@ -36,18 +45,11 @@ class LoginAppleResource(Resource):
         if auth_keys is None or len(auth_keys) == 0:
             return Constants.error_reponse('keys are empty'), 401
 
-        auth_key = auth_keys[0]
+        auth_key = next(filter(lambda key: key['kid'] == header['kid'], auth_keys), None)
         key = jwk.loads(auth_key)
 
-        parser = reqparse.RequestParser()
-        post_parameters(parser)
-        args = parser.parse_args()
-
-        user_id = args['appleID']
-        identity_token = args['identityToken']
-
         try:
-            jwt_claims = jwt.decode(s=identity_token, key=key)
+            jwt_claims = decode(identity_token, key)
             jwt_claims.validate()
 
             jwt_sub = jwt_claims['sub']
@@ -84,5 +86,5 @@ class LoginAppleResource(Resource):
             user_json['refreshToken'] = refresh_token
 
             return user_json
-        except ExpiredTokenError:
+        except Exception:
             return Constants.error_reponse('expired JWT'), 401
