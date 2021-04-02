@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask_jwt_extended import (
     jwt_required, get_jwt_identity
 )
@@ -6,8 +8,10 @@ from flask_restplus import Resource, inputs, reqparse
 from application import api
 from model import db
 from model.expense import Expense
+from model.group_total_expenses import GroupTotalExpenses
 from model.user_group import UserGroup
 from utility.constants import Constants
+from utility.group_total_expense_calculator import GroupTotalExpenseCalculator
 from utility.resource_parser import ResourceParser
 
 
@@ -63,4 +67,29 @@ class ExpenseResource(Resource):
             expense.update(args)
             db.session.commit()
 
+        self.update_group_total_expense(expense=expense, group_id=group_id)
         return Constants.default_response(expense.to_json())
+
+    def update_group_total_expense(self, expense, group_id):
+        year = expense.creation_date.year
+        month = expense.creation_date.month
+        primary_key = '{0}-{1}'.format(year, month)
+
+        items = GroupTotalExpenses.query.filter(
+            db.and_(GroupTotalExpenses.group_id == group_id,
+                    GroupTotalExpenses.period_date == primary_key)
+        )
+        if items.count() == 0:
+            group_total_expense = GroupTotalExpenses()
+            group_total_expense.group_id = group_id
+            group_total_expense.period_date = primary_key
+            group_total_expense.total = expense.price
+            group_total_expense.time_stamp = datetime.utcnow()
+
+            db.session.add(group_total_expense)
+            db.session.commit()
+        else:
+            group_total_expense = items[0]
+            group_total_expense.total = GroupTotalExpenseCalculator.calc(group_id=group_id)
+            group_total_expense.time_stamp = datetime.utcnow()
+            db.session.commit()
