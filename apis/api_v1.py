@@ -9,6 +9,7 @@ from resources.category_update_resource import CategoryUpdateResource
 from resources.expense_resource import ExpenseResource
 from resources.expense_update_resource import ExpenseUpdateResource
 from resources.group_resource import GroupResource
+from resources.group_total_expenses_update_resource import GroupTotalExpensesUpdateResource
 from resources.group_update_resource import GroupUpdateResource
 from resources.jwt_refresh_resource import JWTRefreshResource
 from resources.login_apple_resource import LoginAppleResource
@@ -36,6 +37,8 @@ namespace.add_resource(JWTRefreshResource, '/login/jwt/refresh')
 namespace.add_resource(CategoryLimitResource, '/category/limit')
 namespace.add_resource(ExpenseUpdateResource, '/expense/updates')
 namespace.add_resource(CategoryUpdateResource, '/category/updates')
+
+namespace.add_resource(GroupTotalExpensesUpdateResource, '/group/total-expenses/updates')
 
 namespace.add_resource(BudgetLimitUpdateResource, '/group/limit/updates')
 namespace.add_resource(CategoryLimitUpdateResource, '/category/limit/updates')
