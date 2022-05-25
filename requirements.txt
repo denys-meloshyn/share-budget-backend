@@ -16,4 +16,4 @@ requests==2.25.1
 passlib==1.7.4
 sentry-sdk==1.0.0
 Werkzeug==0.16.0
-PyJWT==2.0.1
+PyJWT==2.4.0
